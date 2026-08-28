@@ -129,7 +129,7 @@ document.addEventListener(
 
 
             fetch(
-                "http://127.0.0.1:8000/api/events",
+                "https://moon-page-production.up.railway.app/api/events",
                 {
                     method: "POST",
 
