@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Moon Page
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+
+<div
+    class="game"
+    id="gameCard"
+>
+
+
+    <!-- =====================================================
+         صفحه اول
+    ====================================================== -->
+
+    <div
+        id="introContent"
+    >
+
+        <div
+            class="light-orb"
+        ></div>
+
+
+        <div
+            class="intro-text"
+        >
+
+            <p
+                class="intro-line line-1"
+            >
+                ...بالاخره رسیدی
+            </p>
+
+
+            <p
+                class="intro-line line-2"
+            >
+                خب، منتظرت بودم
+            </p>
+
+
+            <p
+                class="intro-line line-3"
+            >
+                حالا می‌خوام یه چیزی رو بهت نشون بدم
+            </p>
+
+        </div>
+
+
+        <button
+            id="startButton"
+            class="start-button"
+            type="button"
+        >
+
+            <span
+                class="arrow"
+            >
+                ↓
+            </span>
+
+
+            <span>
+                یه قدم دیگه بردار
+            </span>
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         احراز هویت
+    ====================================================== -->
+
+    <div
+        id="authenticationContent"
+        class="hidden"
+    >
+
+        <div
+            class="authentication-light"
+        ></div>
+
+
+        <h2>
+            کلید ورود به دنیای خودت، خودتی
+        </h2>
+
+
+        <p>
+            باید مطمئن بشم کس دیگه‌ای وارد نمی‌شه
+        </p>
+
+
+        <div
+            class="keyword-wrapper"
+        >
+
+            <input
+                type="text"
+                id="keywordInput"
+                autocomplete="off"
+                spellcheck="false"
+            >
+
+
+            <span
+                class="input-line"
+            ></span>
+
+        </div>
+
+
+        <p
+            id="keywordError"
+            class="error-message"
+        ></p>
+
+
+        <button
+            id="keywordButton"
+            type="button"
+        >
+            ورود
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         پیام انتقال
+    ====================================================== -->
+
+    <div
+        id="transitionContent"
+        class="hidden"
+    >
+
+        <div
+            class="transition-light"
+        ></div>
+
+
+        <p>
+            ،از بین تمام آدم‌های دنیا
+        </p>
+
+
+        <p>
+            .فقط یک نفر می‌تونست وارد بشه
+        </p>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         دنیای اصلی
+    ====================================================== -->
+
+    <div
+        id="worldContent"
+        class="hidden"
+    >
+
+
+        <!-- =================================================
+             آسمان
+        ================================================== -->
+
+        <div
+            class="sky"
+        >
+
+            <div
+                class="moon-glow"
+            ></div>
+
+
+            <div
+                class="stars stars-1"
+            ></div>
+
+
+            <div
+                class="stars stars-2"
+            ></div>
+
+
+            <div
+                class="stars stars-3"
+            ></div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             متن ورود به دنیا
+        ================================================== -->
+
+        <div
+            class="world-content"
+        >
+
+            <p
+                class="world-intro"
+            >
+                .سلااام ؛ خوش حالم اینجایی  O⁠_⁠o
+            </p>
+
+
+            <p
+                class="world-intro world-intro-delay"
+            >
+                . چند دقیقه بیشتر وقتت رو نمی گیرم 
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             مسیر گربه
+        ================================================== -->
+
+        <svg
+            class="cat-path-svg"
+            viewBox="0 0 1000 600"
+            preserveAspectRatio="none"
+        >
+
+            <path
+                id="catPath"
+                d="
+                    M -120 535
+                    C 20 530,
+                    160 525,
+                    300 520
+                    C 390 515,
+                    440 505,
+                    500 500
+                "
+                fill="none"
+            />
+
+        </svg>
+
+
+
+        <!-- =================================================
+             گربه
+        ================================================== -->
+
+        <div
+            id="cat"
+        >
+
+            <svg
+                class="cat-svg"
+                viewBox="0 0 320 360"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+
+
+                <defs>
+
+
+                    <!-- خز -->
+
+                    <linearGradient
+                        id="furGradient"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="1"
+                    >
+
+                        <stop
+                            offset="0%"
+                            stop-color="#d9c3aa"
+                        />
+
+                        <stop
+                            offset="55%"
+                            stop-color="#b89578"
+                        />
+
+                        <stop
+                            offset="100%"
+                            stop-color="#8e6c58"
+                        />
+
+                    </linearGradient>
+
+
+
+                    <!-- شکم -->
+
+                    <linearGradient
+                        id="bellyGradient"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                    >
+
+                        <stop
+                            offset="0%"
+                            stop-color="#fff4e6"
+                        />
+
+                        <stop
+                            offset="100%"
+                            stop-color="#e5cdb7"
+                        />
+
+                    </linearGradient>
+
+
+
+                    <!-- چشم -->
+
+                    <radialGradient
+                        id="eyeGradient"
+                    >
+
+                        <stop
+                            offset="0%"
+                            stop-color="#fff8d8"
+                        />
+
+                        <stop
+                            offset="35%"
+                            stop-color="#8ed5cf"
+                        />
+
+                        <stop
+                            offset="70%"
+                            stop-color="#3b8f91"
+                        />
+
+                        <stop
+                            offset="100%"
+                            stop-color="#173d4a"
+                        />
+
+                    </radialGradient>
+
+
+
+                    <!-- گوش -->
+
+                    <linearGradient
+                        id="earGradient"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                    >
+
+                        <stop
+                            offset="0%"
+                            stop-color="#f3b5b8"
+                        />
+
+                        <stop
+                            offset="100%"
+                            stop-color="#c97886"
+                        />
+
+                    </linearGradient>
+
+
+
+                    <!-- سایه -->
+
+                    <filter
+                        id="softShadow"
+                        x="-30%"
+                        y="-30%"
+                        width="160%"
+                        height="160%"
+                    >
+
+                        <feDropShadow
+                            dx="0"
+                            dy="8"
+                            stdDeviation="7"
+                            flood-opacity="0.25"
+                        />
+
+                    </filter>
+
+
+
+                    <!-- درخشش -->
+
+                    <filter
+                        id="glow"
+                    >
+
+                        <feGaussianBlur
+                            stdDeviation="3"
+                            result="blur"
+                        />
+
+                        <feMerge>
+
+                            <feMergeNode
+                                in="blur"
+                            />
+
+                            <feMergeNode
+                                in="SourceGraphic"
+                            />
+
+                        </feMerge>
+
+                    </filter>
+
+                </defs>
+
+
+
+                <!-- =================================================
+                     دم
+                ================================================== -->
+
+                <path
+                    class="cat-tail"
+                    d="
+                        M235 270
+                        C295 260 310 205 275 184
+                        C252 170 231 185 241 207
+                        C248 222 270 218 277 201
+                    "
+                    fill="none"
+                    stroke="#9a755e"
+                    stroke-width="27"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+
+
+                <path
+                    d="
+                        M238 270
+                        C292 258 304 211 275 190
+                    "
+                    fill="none"
+                    stroke="#d8bda5"
+                    stroke-width="12"
+                    stroke-linecap="round"
+                    opacity=".7"
+                />
+
+
+
+                <!-- بدن -->
+
+                <ellipse
+                    class="cat-body"
+                    cx="160"
+                    cy="235"
+                    rx="82"
+                    ry="100"
+                    fill="url(#furGradient)"
+                    filter="url(#softShadow)"
+                />
+
+
+
+                <!-- شکم -->
+
+                <ellipse
+                    class="cat-belly"
+                    cx="160"
+                    cy="255"
+                    rx="52"
+                    ry="70"
+                    fill="url(#bellyGradient)"
+                />
+
+
+
+                <!-- خز سینه -->
+
+                <path
+                    d="
+                        M124 190
+                        Q140 205 151 190
+                        Q160 207 170 190
+                        Q181 207 195 190
+                        L188 225
+                        Q174 215 160 230
+                        Q146 215 132 225
+                        Z
+                    "
+                    fill="#f7eadc"
+                />
+
+
+
+                <!-- پاهای عقب -->
+
+                <ellipse
+                    class="cat-leg cat-leg-left"
+                    cx="105"
+                    cy="310"
+                    rx="35"
+                    ry="27"
+                    fill="#a78168"
+                />
+
+
+                <ellipse
+                    class="cat-leg cat-leg-right"
+                    cx="215"
+                    cy="310"
+                    rx="35"
+                    ry="27"
+                    fill="#a78168"
+                />
+
+
+
+                <!-- پاهای جلو -->
+
+                <path
+                    class="front-leg front-leg-left"
+                    d="
+                        M112 245
+                        Q90 265 100 320
+                        Q103 337 119 336
+                        Q134 334 130 317
+                        L134 266
+                        Z
+                    "
+                    fill="url(#furGradient)"
+                />
+
+
+                <path
+                    class="front-leg front-leg-right"
+                    d="
+                        M208 245
+                        Q230 265 220 320
+                        Q217 337 201 336
+                        Q186 334 190 317
+                        L186 266
+                        Z
+                    "
+                    fill="url(#furGradient)"
+                />
+
+
+
+                <!-- پنجه -->
+
+                <ellipse
+                    cx="113"
+                    cy="327"
+                    rx="24"
+                    ry="14"
+                    fill="#f0dcc8"
+                />
+
+
+                <ellipse
+                    cx="207"
+                    cy="327"
+                    rx="24"
+                    ry="14"
+                    fill="#f0dcc8"
+                />
+
+
+
+                <!-- خطوط پنجه -->
+
+                <g
+                    class="paw-lines"
+                    fill="none"
+                    stroke="#b58e78"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                >
+
+                    <path
+                        d="M105 323 Q108 330 108 334"
+                    />
+
+                    <path
+                        d="M114 321 Q117 329 117 334"
+                    />
+
+                    <path
+                        d="M122 323 Q124 329 123 333"
+                    />
+
+                    <path
+                        d="M198 323 Q196 330 196 334"
+                    />
+
+                    <path
+                        d="M207 321 Q204 329 204 334"
+                    />
+
+                    <path
+                        d="M215 323 Q213 329 213 333"
+                    />
+
+                </g>
+
+
+
+                <!-- =================================================
+                     سر
+                ================================================== -->
+
+                <path
+                    class="cat-head"
+                    d="
+                        M78 105
+                        Q72 48 111 25
+                        L143 52
+                        Q160 45 177 52
+                        L209 25
+                        Q248 48 242 105
+                        Q256 145 225 178
+                        Q198 205 160 205
+                        Q122 205 95 178
+                        Q64 145 78 105
+                        Z
+                    "
+                    fill="url(#furGradient)"
+                    filter="url(#softShadow)"
+                />
+
+
+
+                <!-- گوش‌ها -->
+
+                <path
+                    d="
+                        M84 91
+                        L91 42
+                        Q95 23 111 35
+                        L143 62
+                        Z
+                    "
+                    fill="#a77e68"
+                />
+
+
+                <path
+                    d="
+                        M96 76
+                        L99 52
+                        L125 68
+                        Z
+                    "
+                    fill="url(#earGradient)"
+                />
+
+
+                <path
+                    d="
+                        M236 91
+                        L229 42
+                        Q225 23 209 35
+                        L177 62
+                        Z
+                    "
+                    fill="#a77e68"
+                />
+
+
+                <path
+                    d="
+                        M224 76
+                        L221 52
+                        L195 68
+                        Z
+                    "
+                    fill="url(#earGradient)"
+                />
+
+
+
+                <!-- پیشانی -->
+
+                <path
+                    d="
+                        M137 55
+                        Q145 38 151 55
+                        Q160 35 169 55
+                        Q178 38 184 60
+                        L176 74
+                        Q160 65 144 74
+                        Z
+                    "
+                    fill="#8f6b56"
+                />
+
+
+
+                <!-- چشم‌ها -->
+
+                <ellipse
+                    class="cat-eye left-eye"
+                    cx="123"
+                    cy="108"
+                    rx="28"
+                    ry="34"
+                    fill="url(#eyeGradient)"
+                    stroke="#513d35"
+                    stroke-width="5"
+                />
+
+
+                <ellipse
+                    class="cat-eye right-eye"
+                    cx="197"
+                    cy="108"
+                    rx="28"
+                    ry="34"
+                    fill="url(#eyeGradient)"
+                    stroke="#513d35"
+                    stroke-width="5"
+                />
+
+
+
+                <!-- مردمک -->
+
+                <ellipse
+                    class="pupil left-pupil"
+                    cx="123"
+                    cy="111"
+                    rx="8"
+                    ry="18"
+                    fill="#17242c"
+                />
+
+
+                <ellipse
+                    class="pupil right-pupil"
+                    cx="197"
+                    cy="111"
+                    rx="8"
+                    ry="18"
+                    fill="#17242c"
+                />
+
+
+
+                <!-- برق چشم -->
+
+                <g
+                    class="eye-shine"
+                >
+
+                    <circle
+                        cx="114"
+                        cy="97"
+                        r="7"
+                        fill="white"
+                    />
+
+
+                    <circle
+                        cx="188"
+                        cy="97"
+                        r="7"
+                        fill="white"
+                    />
+
+
+                    <circle
+                        cx="130"
+                        cy="120"
+                        r="3"
+                        fill="white"
+                        opacity=".8"
+                    />
+
+
+                    <circle
+                        cx="204"
+                        cy="120"
+                        r="3"
+                        fill="white"
+                        opacity=".8"
+                    />
+
+                </g>
+
+
+
+                <!-- ابرو -->
+
+                <path
+                    d="M101 76 Q123 63 142 76"
+                    fill="none"
+                    stroke="#765646"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                />
+
+
+                <path
+                    d="M178 76 Q197 63 219 76"
+                    fill="none"
+                    stroke="#765646"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                />
+
+
+
+                <!-- پوزه -->
+
+                <ellipse
+                    cx="132"
+                    cy="145"
+                    rx="34"
+                    ry="27"
+                    fill="#f5e4d2"
+                />
+
+
+                <ellipse
+                    cx="188"
+                    cy="145"
+                    rx="34"
+                    ry="27"
+                    fill="#f5e4d2"
+                />
+
+
+
+                <!-- بینی -->
+
+                <path
+                    class="cat-nose"
+                    d="
+                        M148 137
+                        Q160 130 172 137
+                        Q160 150 148 137
+                        Z
+                    "
+                    fill="#d77d89"
+                />
+
+
+
+                <!-- دهان -->
+
+                <path
+                    class="cat-mouth"
+                    d="
+                        M160 148
+                        Q160 160 148 163
+
+                        M160 148
+                        Q160 160 172 163
+                    "
+                    fill="none"
+                    stroke="#66443f"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                />
+
+
+
+                <!-- سبیل -->
+
+                <g
+                    class="whiskers"
+                    fill="none"
+                    stroke="#f5e9dd"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    opacity=".95"
+                >
+
+                    <path
+                        d="M120 145 Q85 134 55 137"
+                    />
+
+                    <path
+                        d="M120 153 Q80 153 52 161"
+                    />
+
+                    <path
+                        d="M121 160 Q86 171 60 184"
+                    />
+
+                    <path
+                        d="M200 145 Q235 134 265 137"
+                    />
+
+                    <path
+                        d="M200 153 Q240 153 268 161"
+                    />
+
+                    <path
+                        d="M199 160 Q234 171 260 184"
+                    />
+
+                </g>
+
+
+
+                <!-- گونه -->
+
+                <ellipse
+                    cx="105"
+                    cy="155"
+                    rx="18"
+                    ry="9"
+                    fill="#e89ca2"
+                    opacity=".35"
+                />
+
+
+                <ellipse
+                    cx="215"
+                    cy="155"
+                    rx="18"
+                    ry="9"
+                    fill="#e89ca2"
+                    opacity=".35"
+                />
+
+
+
+                <!-- جزئیات خز -->
+
+                <g
+                    class="fur-details"
+                    fill="none"
+                    stroke="#80604f"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    opacity=".65"
+                >
+
+                    <path
+                        d="M91 126 Q83 132 88 140"
+                    />
+
+                    <path
+                        d="M229 126 Q237 132 232 140"
+                    />
+
+                    <path
+                        d="M103 183 Q114 190 124 184"
+                    />
+
+                    <path
+                        d="M217 183 Q206 190 196 184"
+                    />
+
+                    <path
+                        d="M130 211 Q140 220 149 214"
+                    />
+
+                    <path
+                        d="M190 211 Q180 220 171 214"
+                    />
+
+                </g>
+
+
+
+                <!-- قلاده -->
+
+                <path
+                    d="
+                        M91 184
+                        Q160 215 229 184
+                    "
+                    fill="none"
+                    stroke="#6e405c"
+                    stroke-width="12"
+                    stroke-linecap="round"
+                />
+
+
+                <circle
+                    cx="160"
+                    cy="204"
+                    r="13"
+                    fill="#f1d58b"
+                    stroke="#fff2bd"
+                    stroke-width="3"
+                    filter="url(#glow)"
+                />
+
+
+                <path
+                    d="
+                        M164 194
+                        A10 10 0 1 0 164 214
+                        A7 7 0 1 1 164 194
+                    "
+                    fill="#fff8d4"
+                />
+
+            </svg>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         پیام گربه
+    ====================================================== -->
+
+    <div
+        id="catMessage"
+        class="cat-message hidden"
+    >
+
+        <span
+            id="catMessageText"
+        >
+        😿... دلت نمی‌خواد نازش کنی؟ خیلی وقته منتظرته
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         باکس داستان
+    ====================================================== -->
+
+    <div id="storyArea">
+
+        <div id="storyMessage" class="story-message">
+    
+            <p id="storyMessageText"></p>
+    
+        </div>
+    
+        <div id="storyChoices" class="story-choices hidden">
+        
+            <button
+                id="choiceYes"
+                class="story-choice"
+                type="button"
+            >
+               🌙می‌تونیم بیشتر آشنا بشیم 
+            </button>
+    
+            <button
+                id="choiceNo"
+                class="story-choice"
+                type="button"
+            >
+             ✨ هنوز مطمئن نیستم
+            </button>
+    
+        </div>
+    </div>
+
+</div>
+
+
+
+<script
+    src="script.js"
+></script>
+
+
+</body>
+
+</html>

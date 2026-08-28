@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Moon Dashboard 🌙
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="dashboard.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <h1>
+                داشبورد سفر تا ماه 🌙
+            </h1>
+
+            <p>
+                تحلیل رفتار بازدیدکنندگان
+            </p>
+
+        </div>
+
+
+        <div
+            id="connectionStatus"
+            class="connection-status loading"
+        >
+
+            در حال اتصال...
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         LAST UPDATE
+         ===================================================== -->
+
+    <div class="last-update">
+
+        آخرین بروزرسانی:
+
+        <span id="lastUpdate">
+            -
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN STATS
+         ===================================================== -->
+
+    <section class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                کل Eventها
+            </div>
+
+            <div
+                id="totalEvents"
+                class="stat-value"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Sessionهای یکتا
+            </div>
+
+            <div
+                id="totalSessions"
+                class="stat-value"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                تعداد Eventهای مختلف
+            </div>
+
+            <div
+                id="eventTypes"
+                class="stat-value"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                آخرین Event
+            </div>
+
+            <div
+                id="lastEvent"
+                class="stat-value small"
+            >
+                -
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         EVENT ANALYSIS
+         ===================================================== -->
+
+    <section class="dashboard-card">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    تحلیل Eventها
+                </h2>
+
+                <p>
+                    تعداد وقوع هر Event در کل سفر
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="eventChart"
+            class="event-chart"
+        >
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FUNNEL
+         ===================================================== -->
+
+    <section class="dashboard-card">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Funnel سفر
+                </h2>
+
+                <p>
+                    میزان عبور کاربران از مراحل مختلف
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="funnelContainer"
+            class="funnel-container"
+        >
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONVERSION
+         ===================================================== -->
+
+    <section class="dashboard-card">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    نرخ تبدیل مراحل
+                </h2>
+
+                <p>
+                    درصد Sessionهایی که به هر مرحله رسیده‌اند
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="conversionContainer"
+            class="conversion-container"
+        >
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RECENT EVENTS
+         ===================================================== -->
+
+    <section class="dashboard-card">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    آخرین Eventها
+                </h2>
+
+                <p>
+                    آخرین فعالیت‌های ثبت‌شده
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Session
+                        </th>
+
+                        <th>
+                            Event
+                        </th>
+
+                        <th>
+                            زمان
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="recentEventsTable"
+                >
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SESSIONS
+         ===================================================== -->
+
+    <section class="dashboard-card">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Sessionها
+                </h2>
+
+                <p>
+                    کاربران و تعداد فعالیت‌های هر Session
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Session ID
+                        </th>
+
+                        <th>
+                            شروع
+                        </th>
+
+                        <th>
+                            آخرین فعالیت
+                        </th>
+
+                        <th>
+                            تعداد Event
+                        </th>
+
+                        <th>
+                            جزئیات
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="sessionTable"
+                >
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SESSION DETAILS
+         ===================================================== -->
+
+    <section
+        id="sessionDetails"
+        class="dashboard-card hidden"
+    >
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    جزئیات Session
+                </h2>
+
+                <p
+                    id="selectedSession"
+                >
+                    -
+                </p>
+
+            </div>
+
+
+            <button
+                id="closeSessionButton"
+                class="close-button"
+            >
+
+                بستن
+
+            </button>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Event
+                        </th>
+
+                        <th>
+                            Data
+                        </th>
+
+                        <th>
+                            زمان
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="sessionEventsTable"
+                >
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ERROR
+         ===================================================== -->
+
+    <div
+        id="errorMessage"
+        class="error-message hidden"
+    >
+
+        خطا در دریافت اطلاعات از Backend
+
+    </div>
+
+
+    <script
+        src="dashboard.js"
+    ></script>
+
+</body>
+
+</html>
