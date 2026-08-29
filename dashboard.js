@@ -286,12 +286,29 @@ async function loadFunnel() {
         await fetchAPI("/api/funnel");
 
 
+    console.log(
+        "FUNNEL DATA:",
+        data
+    );
+
+
+    if (
+        !data ||
+        !Array.isArray(data.funnel)
+    ) {
+
+        throw new Error(
+            "Invalid Funnel data format"
+        );
+
+    }
+
+
     renderFunnel(
-        data.funnel || []
+        data.funnel
     );
 
 }
-
 
 // =====================================================
 // RENDER FUNNEL
@@ -308,9 +325,11 @@ function renderFunnel(funnel) {
     ) {
 
         funnelContainer.innerHTML = `
+
             <div class="empty-message">
-                اطلاعات Funnel هنوز ثبت نشده است.
+                اطلاعات Funnel موجود نیست.
             </div>
+
         `;
 
         return;
@@ -320,25 +339,38 @@ function renderFunnel(funnel) {
 
     const maxValue =
         Math.max(
+
             ...funnel.map(
-                item => Number(item.sessions) || 0
+                item =>
+                    Number(
+                        item.sessions
+                    ) || 0
             ),
+
             1
+
         );
 
 
     funnel.forEach(function (item) {
 
         const sessions =
-            Number(item.sessions) || 0;
+            Number(
+                item.sessions
+            ) || 0;
 
 
         const percentage =
-            (sessions / maxValue) * 100;
+            (
+                sessions /
+                maxValue
+            ) * 100;
 
 
         const row =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         row.className =
@@ -353,7 +385,11 @@ function renderFunnel(funnel) {
                     مرحله ${item.stage}
                 </strong>
 
-                — ${escapeHtml(item.name)}
+                <br>
+
+                ${escapeHtml(
+                    item.name
+                )}
 
             </div>
 
@@ -377,13 +413,13 @@ function renderFunnel(funnel) {
         `;
 
 
-        funnelContainer.appendChild(row);
+        funnelContainer.appendChild(
+            row
+        );
 
     });
 
 }
-
-
 // =====================================================
 // LOAD CONVERSION
 // =====================================================
@@ -861,14 +897,13 @@ if (closeSessionButton) {
 
 async function loadDashboard() {
 
-    try {
-
-        errorMessage.classList.add(
-            "hidden"
-        );
+    errorMessage.classList.add(
+        "hidden"
+    );
 
 
-        await Promise.all([
+    const results =
+        await Promise.allSettled([
 
             loadStats(),
 
@@ -883,26 +918,22 @@ async function loadDashboard() {
         ]);
 
 
+    const successfulRequests =
+        results.filter(
+            result =>
+                result.status === "fulfilled"
+        ).length;
+
+
+    if (successfulRequests > 0) {
+
         setConnection(true);
-
-
-        lastUpdate.textContent =
-            new Date().toLocaleString(
-                "fa-IR"
-            );
 
     }
 
-    catch (error) {
-
-        console.error(
-            "DASHBOARD ERROR:",
-            error
-        );
-
+    else {
 
         setConnection(false);
-
 
         errorMessage.classList.remove(
             "hidden"
@@ -910,9 +941,31 @@ async function loadDashboard() {
 
     }
 
+
+    results.forEach(
+        function (result, index) {
+
+            if (
+                result.status === "rejected"
+            ) {
+
+                console.error(
+                    `Dashboard request ${index} failed:`,
+                    result.reason
+                );
+
+            }
+
+        }
+    );
+
+
+    lastUpdate.textContent =
+        new Date().toLocaleString(
+            "fa-IR"
+        );
+
 }
-
-
 // =====================================================
 // INITIAL LOAD
 // =====================================================
