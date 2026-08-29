@@ -121,6 +121,7 @@ document.addEventListener(
             data = {}
         ) {
 
+            alert("TRACK EVENT: " + eventName);
             console.log(
                 "TRACK EVENT:",
                 eventName,
