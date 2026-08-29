@@ -2,8 +2,12 @@
 // CONFIG
 // =====================================================
 
+// IMPORTANT:
+// آدرس باید فقط یک String ساده باشد.
+
 const API =
     "https://moon-page-production.up.railway.app";
+
 
 
 // =====================================================
@@ -59,6 +63,7 @@ const errorMessage =
     document.getElementById("errorMessage");
 
 
+
 // =====================================================
 // HELPERS
 // =====================================================
@@ -78,17 +83,26 @@ function escapeHtml(value) {
 function formatDate(value) {
 
     if (!value) {
+
         return "-";
+
     }
+
 
     const date =
         new Date(value);
 
+
     if (Number.isNaN(date.getTime())) {
+
         return value;
+
     }
 
-    return date.toLocaleString("fa-IR");
+
+    return date.toLocaleString(
+        "fa-IR"
+    );
 
 }
 
@@ -118,8 +132,9 @@ function setConnection(connected) {
 }
 
 
+
 // =====================================================
-// API HELPER
+// GENERIC API FETCH
 // =====================================================
 
 async function fetchAPI(endpoint) {
@@ -128,21 +143,25 @@ async function fetchAPI(endpoint) {
         await fetch(
             API + endpoint,
             {
+                method: "GET",
                 cache: "no-store"
             }
         );
 
+
     if (!response.ok) {
 
         throw new Error(
-            `API Error: ${endpoint} - ${response.status}`
+            `${endpoint} returned ${response.status}`
         );
 
     }
 
+
     return await response.json();
 
 }
+
 
 
 // =====================================================
@@ -152,7 +171,9 @@ async function fetchAPI(endpoint) {
 async function loadStats() {
 
     const data =
-        await fetchAPI("/api/stats");
+        await fetchAPI(
+            "/api/stats"
+        );
 
 
     totalEvents.textContent =
@@ -163,18 +184,19 @@ async function loadStats() {
         data.total_sessions ?? 0;
 
 
-    const eventCounts =
-        data.event_counts || [];
-
-
     eventTypes.textContent =
-        eventCounts.length;
+        Array.isArray(data.event_counts)
+            ? data.event_counts.length
+            : 0;
 
 
-    if (eventCounts.length > 0) {
+    if (
+        Array.isArray(data.event_counts) &&
+        data.event_counts.length > 0
+    ) {
 
         lastEvent.textContent =
-            eventCounts[0].event_name;
+            data.event_counts[0].event_name;
 
     }
 
@@ -187,10 +209,11 @@ async function loadStats() {
 
 
     renderEventChart(
-        eventCounts
+        data.event_counts || []
     );
 
 }
+
 
 
 // =====================================================
@@ -199,11 +222,12 @@ async function loadStats() {
 
 function renderEventChart(eventCounts) {
 
-    eventChart.innerHTML = "";
+    eventChart.innerHTML =
+        "";
 
 
     if (
-        !eventCounts ||
+        !Array.isArray(eventCounts) ||
         eventCounts.length === 0
     ) {
 
@@ -221,7 +245,8 @@ function renderEventChart(eventCounts) {
     const maxCount =
         Math.max(
             ...eventCounts.map(
-                item => Number(item.count) || 0
+                item =>
+                    Number(item.count) || 0
             ),
             1
         );
@@ -234,11 +259,16 @@ function renderEventChart(eventCounts) {
 
 
         const percentage =
-            (count / maxCount) * 100;
+            (
+                count /
+                maxCount
+            ) * 100;
 
 
         const row =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         row.className =
@@ -269,11 +299,14 @@ function renderEventChart(eventCounts) {
         `;
 
 
-        eventChart.appendChild(row);
+        eventChart.appendChild(
+            row
+        );
 
     });
 
 }
+
 
 
 // =====================================================
@@ -283,32 +316,24 @@ function renderEventChart(eventCounts) {
 async function loadFunnel() {
 
     const data =
-        await fetchAPI("/api/funnel");
+        await fetchAPI(
+            "/api/funnel"
+        );
 
 
     console.log(
-        "FUNNEL DATA:",
+        "FUNNEL RESPONSE:",
         data
     );
 
 
-    if (
-        !data ||
-        !Array.isArray(data.funnel)
-    ) {
-
-        throw new Error(
-            "Invalid Funnel data format"
-        );
-
-    }
-
-
     renderFunnel(
-        data.funnel
+        data.funnel || []
     );
 
 }
+
+
 
 // =====================================================
 // RENDER FUNNEL
@@ -316,7 +341,8 @@ async function loadFunnel() {
 
 function renderFunnel(funnel) {
 
-    funnelContainer.innerHTML = "";
+    funnelContainer.innerHTML =
+        "";
 
 
     if (
@@ -325,11 +351,9 @@ function renderFunnel(funnel) {
     ) {
 
         funnelContainer.innerHTML = `
-
             <div class="empty-message">
-                اطلاعات Funnel موجود نیست.
+                اطلاعات Funnel هنوز موجود نیست.
             </div>
-
         `;
 
         return;
@@ -339,25 +363,18 @@ function renderFunnel(funnel) {
 
     const maxValue =
         Math.max(
-
             ...funnel.map(
                 item =>
-                    Number(
-                        item.sessions
-                    ) || 0
+                    Number(item.sessions) || 0
             ),
-
             1
-
         );
 
 
     funnel.forEach(function (item) {
 
         const sessions =
-            Number(
-                item.sessions
-            ) || 0;
+            Number(item.sessions) || 0;
 
 
         const percentage =
@@ -382,13 +399,13 @@ function renderFunnel(funnel) {
             <div class="funnel-name">
 
                 <strong>
-                    مرحله ${item.stage}
+                    مرحله ${item.stage ?? "-"}
                 </strong>
 
                 <br>
 
                 ${escapeHtml(
-                    item.name
+                    item.name ?? item.event
                 )}
 
             </div>
@@ -420,6 +437,9 @@ function renderFunnel(funnel) {
     });
 
 }
+
+
+
 // =====================================================
 // LOAD CONVERSION
 // =====================================================
@@ -427,38 +447,96 @@ function renderFunnel(funnel) {
 async function loadConversion() {
 
     const data =
-        await fetchAPI("/api/funnel/conversion");
+        await fetchAPI(
+            "/api/funnel/conversion"
+        );
 
 
     renderConversion(
-        data
+        data.conversion_percent || {}
     );
 
 }
+
 
 
 // =====================================================
 // RENDER CONVERSION
 // =====================================================
 
-function renderConversion(data) {
+function renderConversion(conversion) {
 
-    conversionContainer.innerHTML = "";
-
-
-    const counts =
-        data.counts || {};
+    conversionContainer.innerHTML =
+        "";
 
 
-    const conversion =
-        data.conversion_percent || {};
+    const labels = {
+
+        page_view:
+            "ورود به صفحه",
+
+        start_journey_click:
+            "شروع سفر",
+
+        authentication_shown:
+            "رسیدن به مرحله ورود",
+
+        verification_requested:
+            "درخواست تایید",
+
+        verification_success:
+            "تایید موفق",
+
+        final_choice_made:
+            "انتخاب نهایی"
+
+    };
 
 
-    const eventNames =
-        Object.keys(conversion);
+    Object.entries(conversion).forEach(
+        function ([eventName, value]) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
 
 
-    if (eventNames.length === 0) {
+            card.className =
+                "conversion-card";
+
+
+            card.innerHTML = `
+
+                <div class="conversion-name">
+
+                    ${escapeHtml(
+                        labels[eventName] ||
+                        eventName
+                    )}
+
+                </div>
+
+                <div class="conversion-value">
+
+                    ${value}%
+
+                </div>
+
+            `;
+
+
+            conversionContainer.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    if (
+        Object.keys(conversion).length === 0
+    ) {
 
         conversionContainer.innerHTML = `
             <div class="empty-message">
@@ -466,65 +544,10 @@ function renderConversion(data) {
             </div>
         `;
 
-        return;
-
     }
 
-
-    eventNames.forEach(function (eventName) {
-
-        const value =
-            conversion[eventName] ?? 0;
-
-
-        const count =
-            counts[eventName] ?? 0;
-
-
-        const card =
-            document.createElement("div");
-
-
-        card.className =
-            "conversion-card";
-
-
-        card.innerHTML = `
-
-            <div class="conversion-name">
-
-                ${escapeHtml(eventName)}
-
-            </div>
-
-
-            <div class="conversion-value">
-
-                ${value}%
-
-            </div>
-
-
-            <div
-                style="
-                    margin-top:8px;
-                    color:#94a3b8;
-                    font-size:12px;
-                "
-            >
-
-                ${count} Session
-
-            </div>
-
-        `;
-
-
-        conversionContainer.appendChild(card);
-
-    });
-
 }
+
 
 
 // =====================================================
@@ -534,7 +557,9 @@ function renderConversion(data) {
 async function loadEvents() {
 
     const data =
-        await fetchAPI("/api/events");
+        await fetchAPI(
+            "/api/events"
+        );
 
 
     renderRecentEvents(
@@ -544,17 +569,19 @@ async function loadEvents() {
 }
 
 
+
 // =====================================================
 // RECENT EVENTS
 // =====================================================
 
 function renderRecentEvents(events) {
 
-    recentEventsTable.innerHTML = "";
+    recentEventsTable.innerHTML =
+        "";
 
 
     if (
-        !events ||
+        !Array.isArray(events) ||
         events.length === 0
     ) {
 
@@ -587,7 +614,9 @@ function renderRecentEvents(events) {
     recent.forEach(function (event) {
 
         const row =
-            document.createElement("tr");
+            document.createElement(
+                "tr"
+            );
 
 
         row.innerHTML = `
@@ -617,11 +646,14 @@ function renderRecentEvents(events) {
         `;
 
 
-        recentEventsTable.appendChild(row);
+        recentEventsTable.appendChild(
+            row
+        );
 
     });
 
 }
+
 
 
 // =====================================================
@@ -631,7 +663,9 @@ function renderRecentEvents(events) {
 async function loadSessions() {
 
     const data =
-        await fetchAPI("/api/sessions");
+        await fetchAPI(
+            "/api/sessions"
+        );
 
 
     renderSessions(
@@ -641,17 +675,19 @@ async function loadSessions() {
 }
 
 
+
 // =====================================================
 // RENDER SESSIONS
 // =====================================================
 
 function renderSessions(sessions) {
 
-    sessionTable.innerHTML = "";
+    sessionTable.innerHTML =
+        "";
 
 
     if (
-        !sessions ||
+        !Array.isArray(sessions) ||
         sessions.length === 0
     ) {
 
@@ -678,7 +714,9 @@ function renderSessions(sessions) {
     sessions.forEach(function (session) {
 
         const row =
-            document.createElement("tr");
+            document.createElement(
+                "tr"
+            );
 
 
         row.innerHTML = `
@@ -713,7 +751,9 @@ function renderSessions(sessions) {
                         session.session_id
                     )}"
                 >
+
                     مشاهده
+
                 </button>
 
             </td>
@@ -721,7 +761,9 @@ function renderSessions(sessions) {
         `;
 
 
-        sessionTable.appendChild(row);
+        sessionTable.appendChild(
+            row
+        );
 
     });
 
@@ -750,6 +792,7 @@ function renderSessions(sessions) {
 }
 
 
+
 // =====================================================
 // SESSION DETAILS
 // =====================================================
@@ -761,7 +804,9 @@ async function loadSessionDetails(sessionId) {
         const data =
             await fetchAPI(
                 "/api/sessions/" +
-                encodeURIComponent(sessionId)
+                encodeURIComponent(
+                    sessionId
+                )
             );
 
 
@@ -797,17 +842,19 @@ async function loadSessionDetails(sessionId) {
 }
 
 
+
 // =====================================================
 // RENDER SESSION EVENTS
 // =====================================================
 
 function renderSessionEvents(events) {
 
-    sessionEventsTable.innerHTML = "";
+    sessionEventsTable.innerHTML =
+        "";
 
 
     if (
-        !events ||
+        !Array.isArray(events) ||
         events.length === 0
     ) {
 
@@ -834,7 +881,9 @@ function renderSessionEvents(events) {
     events.forEach(function (event) {
 
         const row =
-            document.createElement("tr");
+            document.createElement(
+                "tr"
+            );
 
 
         row.innerHTML = `
@@ -864,11 +913,14 @@ function renderSessionEvents(events) {
         `;
 
 
-        sessionEventsTable.appendChild(row);
+        sessionEventsTable.appendChild(
+            row
+        );
 
     });
 
 }
+
 
 
 // =====================================================
@@ -891,11 +943,62 @@ if (closeSessionButton) {
 }
 
 
+
 // =====================================================
 // LOAD DASHBOARD
 // =====================================================
 
 async function loadDashboard() {
+
+    const endpoints = [
+        "/api/stats",
+        "/api/events"
+    ];
+
+
+    // -------------------------------------------------
+    // اول وضعیت واقعی Backend را جداگانه بررسی می‌کنیم
+    // -------------------------------------------------
+
+    try {
+
+        await fetchAPI(
+            "/api/stats"
+        );
+
+
+        setConnection(
+            true
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "BACKEND CONNECTION ERROR:",
+            error
+        );
+
+
+        setConnection(
+            false
+        );
+
+
+        errorMessage.classList.remove(
+            "hidden"
+        );
+
+        return;
+
+    }
+
+
+    // -------------------------------------------------
+    // اگر Backend وصل بود،
+    // هر بخش جداگانه لود می‌شود
+    // -------------------------------------------------
 
     errorMessage.classList.add(
         "hidden"
@@ -918,30 +1021,6 @@ async function loadDashboard() {
         ]);
 
 
-    const successfulRequests =
-        results.filter(
-            result =>
-                result.status === "fulfilled"
-        ).length;
-
-
-    if (successfulRequests > 0) {
-
-        setConnection(true);
-
-    }
-
-    else {
-
-        setConnection(false);
-
-        errorMessage.classList.remove(
-            "hidden"
-        );
-
-    }
-
-
     results.forEach(
         function (result, index) {
 
@@ -950,7 +1029,8 @@ async function loadDashboard() {
             ) {
 
                 console.error(
-                    `Dashboard request ${index} failed:`,
+                    "Dashboard section failed:",
+                    index,
                     result.reason
                 );
 
@@ -966,11 +1046,15 @@ async function loadDashboard() {
         );
 
 }
+
+
+
 // =====================================================
 // INITIAL LOAD
 // =====================================================
 
 loadDashboard();
+
 
 
 // =====================================================
