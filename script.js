@@ -120,71 +120,73 @@ document.addEventListener(
             eventName,
             data = {}
         ) {
+        
             console.log(
                 "TRACK EVENT:",
                 eventName,
                 data
             );
-            
+        
             fetch(
                 "https://moon-page-production.up.railway.app/api/events",
                 {
                     method: "POST",
-
+        
                     headers: {
                         "Content-Type": "application/json"
                     },
-
+        
                     body: JSON.stringify({
-
+        
                         session_id:
                             sessionId,
-
+        
                         event_name:
                             eventName,
-
+        
                         data:
                             data
-
+        
                     })
                 }
             )
             .then(
                 response => {
-
+        
                     if (!response.ok) {
-
+        
                         throw new Error(
                             `Event request failed: ${response.status}`
                         );
-
+        
                     }
-
+        
                     return response.json();
-
+        
                 }
             )
             .then(
                 result => {
-
+        
                     console.log(
                         "EVENT SAVED:",
                         result
                     );
-
+        
                 }
             )
             .catch(
                 error => {
-
+        
                     console.error(
                         "EVENT TRACKING ERROR:",
                         error
                     );
-
+        
                 }
             );
-
+        
+        }
 
         // =====================================================
         // PAGE VIEW
