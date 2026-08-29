@@ -814,7 +814,9 @@ def get_conversion_funnel():
 
     }
 
-
+print(
+    "MOON BACKEND VERSION: FUNNEL V2 🌙"
+)
 # =====================================================
 # SERVER START TEST
 # =====================================================
