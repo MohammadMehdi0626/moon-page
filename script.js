@@ -1,4 +1,46 @@
+// =====================================================
+// VPN NOTICE MODAL
+// =====================================================
 
+const vpnModal =
+    document.getElementById(
+        "vpnModal"
+    );
+
+
+const vpnModalButton =
+    document.getElementById(
+        "vpnModalButton"
+    );
+
+
+if (
+    vpnModal &&
+    vpnModalButton
+) {
+
+    vpnModalButton.addEventListener(
+        "click",
+        function () {
+
+            vpnModal.classList.add(
+                "hide"
+            );
+
+
+            setTimeout(
+                function () {
+
+                    vpnModal.remove();
+
+                },
+                600
+            );
+
+        }
+    );
+
+}
 // =====================================================
 // PAGE READY
 // =====================================================
