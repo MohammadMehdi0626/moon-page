@@ -121,7 +121,6 @@ document.addEventListener(
             data = {}
         ) {
 
-            alert("TRACK EVENT: " + eventName);
             console.log(
                 "TRACK EVENT:",
                 eventName,
@@ -177,29 +176,14 @@ document.addEventListener(
 
                 }
             )
-            // .catch(
-            //     error => {
-
-            //         console.error(
-            //             "EVENT TRACKING ERROR:",
-            //             error
-            //         );
-
-            //     }
-            // );
             .catch(
                 error => {
-            
+
                     console.error(
                         "EVENT TRACKING ERROR:",
                         error
                     );
-            
-                    alert(
-                        "EVENT ERROR: " +
-                        error.message
-                    );
-            
+
                 }
             );
 
@@ -213,6 +197,7 @@ document.addEventListener(
         trackEvent(
             "page_view"
         );
+        alert("AFTER PAGE VIEW");
 
 
         // =====================================================
