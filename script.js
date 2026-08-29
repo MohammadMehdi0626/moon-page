@@ -5,15 +5,13 @@
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-        alert("MOBILE SCRIPT TEST");
+       alert("MOBILE SCRIPT TEST");
 
         alert("STEP 1");
-
-        console.log("STEP 1");
-
-        alert("STEP 2");
-
-        console.log("STEP 2");
+        
+        setTimeout(function () {
+            alert("STEP 2");
+        }, 1000);
         // =====================================================
         // SESSION
         // =====================================================
