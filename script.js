@@ -6,6 +6,8 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
         alert("MOBILE SCRIPT TEST");
+        alert("BEFORE FETCH");
+
         fetch("https://moon-page-production.up.railway.app/api/events", {
             method: "POST",
             headers: {
@@ -14,37 +16,11 @@ document.addEventListener(
             body: JSON.stringify({
                 session_id: "mobile-debug-test",
                 event_name: "mobile_direct_test",
-                data: {
-                    test: true
-                }
+                data: {}
             })
-        })
-        .then(function(response) {
-        
-            alert(
-                "STATUS: " +
-                response.status
-            );
-        
-            return response.text();
-        
-        })
-        .then(function(result) {
-        
-            alert(
-                "RESPONSE: " +
-                result
-            );
-        
-        })
-        .catch(function(error) {
-        
-            alert(
-                "ERROR: " +
-                error.message
-            );
-        
         });
+        
+        alert("AFTER FETCH");
         // =====================================================
         // SESSION
         // =====================================================
