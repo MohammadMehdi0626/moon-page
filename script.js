@@ -133,22 +133,17 @@ document.addEventListener(
                 {
                     method: "POST",
             
-                    mode: "cors",
-            
                     headers: {
                         "Content-Type": "application/json"
                     },
             
                     body: JSON.stringify({
             
-                        session_id:
-                            sessionId,
+                        session_id: sessionId,
             
-                        event_name:
-                            eventName,
+                        event_name: eventName,
             
-                        data:
-                            data
+                        data: data
             
                     })
                 }
@@ -157,23 +152,36 @@ document.addEventListener(
                 response => {
             
                     alert(
-                        "SERVER STATUS: " +
+                        "FETCH RESPONSE: " +
                         response.status
                     );
             
-                    if (!response.ok) {
-            
-                        throw new Error(
-                            "Event request failed: " +
-                            response.status
-                        );
-            
-                    }
-            
-                    return response.json();
+                    return response.text();
             
                 }
             )
+            .then(
+                text => {
+            
+                    alert(
+                        "SERVER RESPONSE: " +
+                        text
+                    );
+            
+                }
+            )
+            .catch(
+                error => {
+            
+                    alert(
+                        "FETCH ERROR: " +
+                        error.name +
+                        " / " +
+                        error.message
+                    );
+            
+                }
+            );
             // fetch(
             //     "https://moon-page-production.up.railway.app/api/events",
             //     {
