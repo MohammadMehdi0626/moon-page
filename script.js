@@ -116,6 +116,77 @@ document.addEventListener(
         // EVENT TRACKING
         // =====================================================
 
+        // function trackEvent(
+        //     eventName,
+        //     data = {}
+        // ) {
+        
+        //     console.log(
+        //         "TRACK EVENT:",
+        //         eventName,
+        //         data
+        //     );
+        
+        //     fetch(
+        //         "https://moon-page-production.up.railway.app/api/events",
+        //         {
+        //             method: "POST",
+        
+        //             headers: {
+        //                 "Content-Type": "application/json"
+        //             },
+        
+        //             body: JSON.stringify({
+        
+        //                 session_id:
+        //                     sessionId,
+        
+        //                 event_name:
+        //                     eventName,
+        
+        //                 data:
+        //                     data
+        
+        //             })
+        //         }
+        //     )
+        //     .then(
+        //         response => {
+        
+        //             if (!response.ok) {
+        
+        //                 throw new Error(
+        //                     `Event request failed: ${response.status}`
+        //                 );
+        
+        //             }
+        
+        //             return response.json();
+        
+        //         }
+        //     )
+        //     .then(
+        //         result => {
+        
+        //             console.log(
+        //                 "EVENT SAVED:",
+        //                 result
+        //             );
+        
+        //         }
+        //     )
+        //     .catch(
+        //         error => {
+        
+        //             console.error(
+        //                 "EVENT TRACKING ERROR:",
+        //                 error
+        //             );
+        
+        //         }
+        //     );
+        
+        // }
         function trackEvent(
             eventName,
             data = {}
@@ -153,6 +224,12 @@ document.addEventListener(
             .then(
                 response => {
         
+                    console.log(
+                        "EVENT RESPONSE:",
+                        eventName,
+                        response.status
+                    );
+        
                     if (!response.ok) {
         
                         throw new Error(
@@ -170,6 +247,7 @@ document.addEventListener(
         
                     console.log(
                         "EVENT SAVED:",
+                        eventName,
                         result
                     );
         
@@ -180,6 +258,7 @@ document.addEventListener(
         
                     console.error(
                         "EVENT TRACKING ERROR:",
+                        eventName,
                         error
                     );
         
@@ -187,7 +266,6 @@ document.addEventListener(
             );
         
         }
-
         // =====================================================
         // PAGE VIEW
         // =====================================================
