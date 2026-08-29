@@ -176,14 +176,29 @@ document.addEventListener(
 
                 }
             )
+            // .catch(
+            //     error => {
+
+            //         console.error(
+            //             "EVENT TRACKING ERROR:",
+            //             error
+            //         );
+
+            //     }
+            // );
             .catch(
                 error => {
-
+            
                     console.error(
                         "EVENT TRACKING ERROR:",
                         error
                     );
-
+            
+                    alert(
+                        "EVENT ERROR: " +
+                        error.message
+                    );
+            
                 }
             );
 
