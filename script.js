@@ -223,23 +223,24 @@ document.addEventListener(
             )
             .then(
                 response => {
-        
+            
                     console.log(
                         "EVENT RESPONSE:",
                         eventName,
-                        response.status
+                        response.status,
+                        response.type
                     );
-        
+            
                     if (!response.ok) {
-        
+            
                         throw new Error(
                             `Event request failed: ${response.status}`
                         );
-        
+            
                     }
-        
+            
                     return response.json();
-        
+            
                 }
             )
             .then(
