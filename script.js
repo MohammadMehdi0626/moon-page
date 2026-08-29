@@ -120,91 +120,35 @@ document.addEventListener(
             eventName,
             data = {}
         ) {
-
-            alert("TRACK EVENT: " + eventName);
             console.log(
                 "TRACK EVENT:",
                 eventName,
                 data
             );
-
+            
             fetch(
                 "https://moon-page-production.up.railway.app/api/events",
                 {
                     method: "POST",
-            
+
                     headers: {
                         "Content-Type": "application/json"
                     },
-            
+
                     body: JSON.stringify({
-            
-                        session_id: sessionId,
-            
-                        event_name: eventName,
-            
-                        data: data
-            
+
+                        session_id:
+                            sessionId,
+
+                        event_name:
+                            eventName,
+
+                        data:
+                            data
+
                     })
                 }
             )
-            .then(
-                response => {
-            
-                    alert(
-                        "FETCH RESPONSE: " +
-                        response.status
-                    );
-            
-                    return response.text();
-            
-                }
-            )
-            .then(
-                text => {
-            
-                    alert(
-                        "SERVER RESPONSE: " +
-                        text
-                    );
-            
-                }
-            )
-            .catch(
-                error => {
-            
-                    alert(
-                        "FETCH ERROR: " +
-                        error.name +
-                        " / " +
-                        error.message
-                    );
-            
-                }
-            );
-            // fetch(
-            //     "https://moon-page-production.up.railway.app/api/events",
-            //     {
-            //         method: "POST",
-
-            //         headers: {
-            //             "Content-Type": "application/json"
-            //         },
-
-            //         body: JSON.stringify({
-
-            //             session_id:
-            //                 sessionId,
-
-            //             event_name:
-            //                 eventName,
-
-            //             data:
-            //                 data
-
-            //         })
-            //     }
-            // )
             .then(
                 response => {
 
@@ -230,32 +174,16 @@ document.addEventListener(
 
                 }
             )
-            // .catch(
-            //     error => {
-
-            //         console.error(
-            //             "EVENT TRACKING ERROR:",
-            //             error
-            //         );
-
-            //     }
-            // );
             .catch(
                 error => {
-            
+
                     console.error(
                         "EVENT TRACKING ERROR:",
                         error
                     );
-            
-                    alert(
-                        "EVENT ERROR: " +
-                        error.message
-                    );
-            
+
                 }
             );
-        }
 
 
         // =====================================================
