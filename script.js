@@ -5,7 +5,7 @@
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-        alert("SCRIPT RUNNING");
+        // alert("SCRIPT RUNNING");
         // =====================================================
         // SESSION
         // =====================================================
