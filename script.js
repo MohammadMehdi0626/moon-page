@@ -7,11 +7,50 @@ document.addEventListener(
     function () {
        alert("MOBILE SCRIPT TEST");
 
-        alert("STEP 1");
+        alert("BEFORE FETCH");
+
+        fetch(
+            "https://moon-page-production.up.railway.app/api/events",
+            {
+                method: "POST",
         
-        setTimeout(function () {
-            alert("STEP 2");
-        }, 1000);
+                headers: {
+                    "Content-Type": "application/json"
+                },
+        
+                body: JSON.stringify({
+                    session_id: "mobile-debug-test",
+                    event_name: "mobile_direct_test",
+                    data: {}
+                })
+            }
+        )
+        .then(function(response) {
+        
+            alert(
+                "STATUS: " +
+                response.status
+            );
+        
+            return response.text();
+        
+        })
+        .then(function(result) {
+        
+            alert(
+                "RESPONSE: " +
+                result
+            );
+        
+        })
+        .catch(function(error) {
+        
+            alert(
+                "ERROR: " +
+                error.message
+            );
+        
+        });
         // =====================================================
         // SESSION
         // =====================================================
