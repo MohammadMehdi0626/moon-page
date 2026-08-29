@@ -333,6 +333,30 @@ document.addEventListener(
             );
         
         }
+
+        setTimeout(function () {
+
+            fetch(
+                "https://moon-page-production.up.railway.app/api/events",
+                {
+                    method: "POST",
+        
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+        
+                    body: JSON.stringify({
+                        session_id: sessionId,
+                        event_name: "mobile_test",
+                        data: {
+                            test: true,
+                            time: new Date().toISOString()
+                        }
+                    })
+                }
+            );
+        
+        }, 2000);
         // =====================================================
         // PAGE VIEW
         // =====================================================
