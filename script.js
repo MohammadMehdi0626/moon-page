@@ -192,12 +192,10 @@ document.addEventListener(
         // PAGE VIEW
         // =====================================================
 
-        alert("BEFORE PAGE VIEW");
         
         trackEvent(
             "page_view"
         );
-        alert("AFTER PAGE VIEW");
 
 
         // =====================================================
