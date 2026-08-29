@@ -662,155 +662,99 @@ def get_funnel():
 
     }
 
+
 # =====================================================
-# SESSION FUNNEL
+# FINAL CHOICES STATISTICS
 # =====================================================
 
-@app.get("/api/funnel/sessions")
-def get_session_funnel():
+@app.get("/api/final-choices")
+def get_final_choices():
 
     connection = get_db()
 
     cursor = connection.cursor()
 
 
-    event_names = [
+    # -------------------------------------------------
+    # دریافت تمام انتخاب‌های نهایی
+    # -------------------------------------------------
 
-        "page_view",
-
-        "start_journey_click",
-
-        "authentication_shown",
-
-        "verification_requested",
-
-        "verification_success",
-
-        "final_choice_made"
-
-    ]
+    cursor.execute(
+        """
+        SELECT
+            data
+        FROM events
+        WHERE event_name = 'final_choice_made'
+        """
+    )
 
 
-    funnel = {}
+    rows = cursor.fetchall()
 
 
-    for event_name in event_names:
+    yes_count = 0
 
-        cursor.execute(
-            """
-            SELECT COUNT(DISTINCT session_id)
-            FROM events
-            WHERE event_name = ?
-            """,
-            (event_name,)
-        )
-
-        count = cursor.fetchone()[0]
-
-        funnel[event_name] = count
+    no_count = 0
 
 
-    connection.close()
+    # -------------------------------------------------
+    # شمارش بله و خیر
+    # -------------------------------------------------
 
+    for row in rows:
 
-    return {
+        try:
 
-        "success": True,
-
-        "funnel":
-            funnel
-
-    }
-
-
-# =====================================================
-# CONVERSION FUNNEL
-# =====================================================
-
-@app.get("/api/funnel/conversion")
-def get_conversion_funnel():
-
-    connection = get_db()
-
-    cursor = connection.cursor()
-
-
-    event_names = [
-
-        "page_view",
-
-        "start_journey_click",
-
-        "authentication_shown",
-
-        "verification_requested",
-
-        "verification_success",
-
-        "final_choice_made"
-
-    ]
-
-
-    counts = {}
-
-
-    for event_name in event_names:
-
-        cursor.execute(
-            """
-            SELECT COUNT(DISTINCT session_id)
-            FROM events
-            WHERE event_name = ?
-            """,
-            (event_name,)
-        )
-
-        counts[event_name] = (
-            cursor.fetchone()[0]
-        )
-
-
-    connection.close()
-
-
-    page_views = counts["page_view"]
-
-
-    conversion = {}
-
-
-    if page_views > 0:
-
-        for event_name in event_names:
-
-            conversion[event_name] = round(
-                (
-                    counts[event_name]
-                    / page_views
-                ) * 100,
-                2
+            event_data = json.loads(
+                row["data"]
             )
 
-    else:
 
-        for event_name in event_names:
+            choice = event_data.get(
+                "choice"
+            )
 
-            conversion[event_name] = 0
 
+            if choice == "yes":
+
+                yes_count += 1
+
+
+            elif choice == "no":
+
+                no_count += 1
+
+
+        except Exception as error:
+
+            print(
+                "FINAL CHOICE DATA ERROR:",
+                error
+            )
+
+
+    connection.close()
+
+
+    # -------------------------------------------------
+    # RESPONSE
+    # -------------------------------------------------
 
     return {
 
         "success": True,
 
-        "base_sessions":
-            page_views,
+        "final_choices": {
 
-        "counts":
-            counts,
+            "yes": yes_count,
 
-        "conversion_percent":
-            conversion
+            "no": no_count,
+
+            "total":
+                yes_count +
+                no_count
+
+        }
 
     }
 
