@@ -1,4 +1,3 @@
-
 // =====================================================
 // CONFIG
 // =====================================================
@@ -8,187 +7,56 @@ const API =
 
 
 // =====================================================
-// EVENT NAMES
-// =====================================================
-
-const FUNNEL_EVENTS = [
-
-    {
-        name: "page_view",
-        label: "ورود به صفحه"
-    },
-
-    {
-        name: "start_journey_click",
-        label: "شروع سفر"
-    },
-
-    {
-        name: "authentication_shown",
-        label: "نمایش احراز هویت"
-    },
-
-    {
-        name: "keyword_submitted",
-        label: "ارسال کلمه"
-    },
-
-    {
-        name: "authentication_success",
-        label: "احراز هویت موفق"
-    },
-
-    {
-        name: "transition_started",
-        label: "شروع انتقال"
-    },
-
-    {
-        name: "main_world_entered",
-        label: "ورود به دنیای اصلی"
-    },
-
-    {
-        name: "cat_appearing",
-        label: "ظاهر شدن گربه"
-    },
-
-    {
-        name: "cat_started_walking",
-        label: "شروع حرکت گربه"
-    },
-
-    {
-        name: "cat_reached_destination",
-        label: "رسیدن گربه"
-    },
-
-    {
-        name: "cat_petted",
-        label: "نوازش گربه"
-    },
-
-    {
-        name: "story_sequence_started",
-        label: "شروع داستان"
-    },
-
-    {
-        name: "story_choices_shown",
-        label: "نمایش انتخاب نهایی"
-    },
-
-    {
-        name: "final_choice_yes",
-        label: "انتخاب بله"
-    },
-
-    {
-        name: "final_choice_no",
-        label: "انتخاب خیر"
-    }
-
-];
-
-
-// =====================================================
 // DOM
 // =====================================================
 
 const totalEvents =
-    document.getElementById(
-        "totalEvents"
-    );
-
+    document.getElementById("totalEvents");
 
 const totalSessions =
-    document.getElementById(
-        "totalSessions"
-    );
-
+    document.getElementById("totalSessions");
 
 const eventTypes =
-    document.getElementById(
-        "eventTypes"
-    );
-
+    document.getElementById("eventTypes");
 
 const lastEvent =
-    document.getElementById(
-        "lastEvent"
-    );
-
+    document.getElementById("lastEvent");
 
 const eventChart =
-    document.getElementById(
-        "eventChart"
-    );
-
+    document.getElementById("eventChart");
 
 const funnelContainer =
-    document.getElementById(
-        "funnelContainer"
-    );
-
+    document.getElementById("funnelContainer");
 
 const conversionContainer =
-    document.getElementById(
-        "conversionContainer"
-    );
-
+    document.getElementById("conversionContainer");
 
 const recentEventsTable =
-    document.getElementById(
-        "recentEventsTable"
-    );
-
+    document.getElementById("recentEventsTable");
 
 const sessionTable =
-    document.getElementById(
-        "sessionTable"
-    );
-
+    document.getElementById("sessionTable");
 
 const sessionDetails =
-    document.getElementById(
-        "sessionDetails"
-    );
-
+    document.getElementById("sessionDetails");
 
 const selectedSession =
-    document.getElementById(
-        "selectedSession"
-    );
-
+    document.getElementById("selectedSession");
 
 const sessionEventsTable =
-    document.getElementById(
-        "sessionEventsTable"
-    );
-
+    document.getElementById("sessionEventsTable");
 
 const closeSessionButton =
-    document.getElementById(
-        "closeSessionButton"
-    );
-
+    document.getElementById("closeSessionButton");
 
 const connectionStatus =
-    document.getElementById(
-        "connectionStatus"
-    );
-
+    document.getElementById("connectionStatus");
 
 const lastUpdate =
-    document.getElementById(
-        "lastUpdate"
-    );
-
+    document.getElementById("lastUpdate");
 
 const errorMessage =
-    document.getElementById(
-        "errorMessage"
-    );
+    document.getElementById("errorMessage");
 
 
 // =====================================================
@@ -198,26 +66,11 @@ const errorMessage =
 function escapeHtml(value) {
 
     return String(value ?? "")
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
@@ -225,37 +78,22 @@ function escapeHtml(value) {
 function formatDate(value) {
 
     if (!value) {
-
         return "-";
-
     }
-
 
     const date =
         new Date(value);
 
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
+    if (Number.isNaN(date.getTime())) {
         return value;
-
     }
 
-
-    return date.toLocaleString(
-        "fa-IR"
-    );
+    return date.toLocaleString("fa-IR");
 
 }
 
 
-function setConnection(
-    connected
-) {
+function setConnection(connected) {
 
     if (connected) {
 
@@ -281,49 +119,62 @@ function setConnection(
 
 
 // =====================================================
+// API HELPER
+// =====================================================
+
+async function fetchAPI(endpoint) {
+
+    const response =
+        await fetch(
+            API + endpoint,
+            {
+                cache: "no-store"
+            }
+        );
+
+    if (!response.ok) {
+
+        throw new Error(
+            `API Error: ${endpoint} - ${response.status}`
+        );
+
+    }
+
+    return await response.json();
+
+}
+
+
+// =====================================================
 // LOAD STATS
 // =====================================================
 
 async function loadStats() {
 
-    const response =
-        await fetch(
-            API +
-            "/api/stats"
-        );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            "Stats API error"
-        );
-
-    }
-
-
     const data =
-        await response.json();
+        await fetchAPI("/api/stats");
 
 
     totalEvents.textContent =
-        data.total_events;
+        data.total_events ?? 0;
 
 
     totalSessions.textContent =
-        data.total_sessions;
+        data.total_sessions ?? 0;
+
+
+    const eventCounts =
+        data.event_counts || [];
 
 
     eventTypes.textContent =
-        data.event_counts.length;
+        eventCounts.length;
 
 
-    if (
-        data.event_counts.length > 0
-    ) {
+    if (eventCounts.length > 0) {
 
         lastEvent.textContent =
-            data.event_counts[0].event_name;
+            eventCounts[0].event_name;
 
     }
 
@@ -336,7 +187,7 @@ async function loadStats() {
 
 
     renderEventChart(
-        data.event_counts
+        eventCounts
     );
 
 }
@@ -346,12 +197,9 @@ async function loadStats() {
 // EVENT CHART
 // =====================================================
 
-function renderEventChart(
-    eventCounts
-) {
+function renderEventChart(eventCounts) {
 
-    eventChart.innerHTML =
-        "";
+    eventChart.innerHTML = "";
 
 
     if (
@@ -373,64 +221,57 @@ function renderEventChart(
     const maxCount =
         Math.max(
             ...eventCounts.map(
-                item =>
-                    item.count
-            )
+                item => Number(item.count) || 0
+            ),
+            1
         );
 
 
-    eventCounts.forEach(
-        function (item) {
+    eventCounts.forEach(function (item) {
 
-            const percentage =
-                maxCount > 0
-                    ? (
-                        item.count /
-                        maxCount
-                    ) * 100
-                    : 0;
+        const count =
+            Number(item.count) || 0;
 
 
-            const row =
-                document.createElement(
-                    "div"
-                );
+        const percentage =
+            (count / maxCount) * 100;
 
 
-            row.className =
-                "event-row";
+        const row =
+            document.createElement("div");
 
 
-            row.innerHTML = `
-
-                <div class="event-name">
-                    ${escapeHtml(
-                        item.event_name
-                    )}
-                </div>
-
-                <div class="event-bar-container">
-
-                    <div
-                        class="event-bar"
-                        style="width:${percentage}%"
-                    ></div>
-
-                </div>
-
-                <div class="event-count">
-                    ${item.count}
-                </div>
-
-            `;
+        row.className =
+            "event-row";
 
 
-            eventChart.appendChild(
-                row
-            );
+        row.innerHTML = `
 
-        }
-    );
+            <div class="event-name">
+                ${escapeHtml(
+                    item.event_name
+                )}
+            </div>
+
+            <div class="event-bar-container">
+
+                <div
+                    class="event-bar"
+                    style="width:${percentage}%"
+                ></div>
+
+            </div>
+
+            <div class="event-count">
+                ${count}
+            </div>
+
+        `;
+
+
+        eventChart.appendChild(row);
+
+    });
 
 }
 
@@ -441,28 +282,12 @@ function renderEventChart(
 
 async function loadFunnel() {
 
-    const response =
-        await fetch(
-            API +
-            "/api/funnel"
-        );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            "Funnel API error"
-        );
-
-    }
-
-
     const data =
-        await response.json();
+        await fetchAPI("/api/funnel");
 
 
     renderFunnel(
-        data.funnel
+        data.funnel || []
     );
 
 }
@@ -472,80 +297,89 @@ async function loadFunnel() {
 // RENDER FUNNEL
 // =====================================================
 
-function renderFunnel(
-    funnel
-) {
+function renderFunnel(funnel) {
 
-    funnelContainer.innerHTML =
-        "";
+    funnelContainer.innerHTML = "";
 
 
-    const values =
-        FUNNEL_EVENTS.map(
-            item =>
-                funnel[item.name] || 0
-        );
+    if (
+        !Array.isArray(funnel) ||
+        funnel.length === 0
+    ) {
+
+        funnelContainer.innerHTML = `
+            <div class="empty-message">
+                اطلاعات Funnel هنوز ثبت نشده است.
+            </div>
+        `;
+
+        return;
+
+    }
 
 
     const maxValue =
         Math.max(
-            ...values,
+            ...funnel.map(
+                item => Number(item.sessions) || 0
+            ),
             1
         );
 
 
-    FUNNEL_EVENTS.forEach(
-        function (item) {
+    funnel.forEach(function (item) {
 
-            const count =
-                funnel[item.name] || 0;
-
-
-            const percentage =
-                (
-                    count /
-                    maxValue
-                ) * 100;
+        const sessions =
+            Number(item.sessions) || 0;
 
 
-            const row =
-                document.createElement(
-                    "div"
-                );
+        const percentage =
+            (sessions / maxValue) * 100;
 
 
-            row.className =
-                "funnel-row";
+        const row =
+            document.createElement("div");
 
 
-            row.innerHTML = `
-
-                <div class="funnel-name">
-                    ${item.label}
-                </div>
-
-                <div class="funnel-bar-container">
-
-                    <div
-                        class="funnel-bar"
-                        style="width:${percentage}%"
-                    ></div>
-
-                </div>
-
-                <div class="funnel-count">
-                    ${count}
-                </div>
-
-            `;
+        row.className =
+            "funnel-row";
 
 
-            funnelContainer.appendChild(
-                row
-            );
+        row.innerHTML = `
 
-        }
-    );
+            <div class="funnel-name">
+
+                <strong>
+                    مرحله ${item.stage}
+                </strong>
+
+                — ${escapeHtml(item.name)}
+
+            </div>
+
+
+            <div class="funnel-bar-container">
+
+                <div
+                    class="funnel-bar"
+                    style="width:${percentage}%"
+                ></div>
+
+            </div>
+
+
+            <div class="funnel-count">
+
+                ${sessions}
+
+            </div>
+
+        `;
+
+
+        funnelContainer.appendChild(row);
+
+    });
 
 }
 
@@ -556,28 +390,12 @@ function renderFunnel(
 
 async function loadConversion() {
 
-    const response =
-        await fetch(
-            API +
-            "/api/funnel/conversion"
-        );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            "Conversion API error"
-        );
-
-    }
-
-
     const data =
-        await response.json();
+        await fetchAPI("/api/funnel/conversion");
 
 
     renderConversion(
-        data.conversion_percent
+        data
     );
 
 }
@@ -587,50 +405,88 @@ async function loadConversion() {
 // RENDER CONVERSION
 // =====================================================
 
-function renderConversion(
-    conversion
-) {
+function renderConversion(data) {
 
-    conversionContainer.innerHTML =
-        "";
+    conversionContainer.innerHTML = "";
 
 
-    FUNNEL_EVENTS.forEach(
-        function (item) {
-
-            const value =
-                conversion[item.name] || 0;
+    const counts =
+        data.counts || {};
 
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+    const conversion =
+        data.conversion_percent || {};
 
 
-            card.className =
-                "conversion-card";
+    const eventNames =
+        Object.keys(conversion);
 
 
-            card.innerHTML = `
+    if (eventNames.length === 0) {
 
-                <div class="conversion-name">
-                    ${item.label}
-                </div>
+        conversionContainer.innerHTML = `
+            <div class="empty-message">
+                اطلاعات نرخ تبدیل موجود نیست.
+            </div>
+        `;
 
-                <div class="conversion-value">
-                    ${value}%
-                </div>
+        return;
 
-            `;
+    }
 
 
-            conversionContainer.appendChild(
-                card
-            );
+    eventNames.forEach(function (eventName) {
 
-        }
-    );
+        const value =
+            conversion[eventName] ?? 0;
+
+
+        const count =
+            counts[eventName] ?? 0;
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "conversion-card";
+
+
+        card.innerHTML = `
+
+            <div class="conversion-name">
+
+                ${escapeHtml(eventName)}
+
+            </div>
+
+
+            <div class="conversion-value">
+
+                ${value}%
+
+            </div>
+
+
+            <div
+                style="
+                    margin-top:8px;
+                    color:#94a3b8;
+                    font-size:12px;
+                "
+            >
+
+                ${count} Session
+
+            </div>
+
+        `;
+
+
+        conversionContainer.appendChild(card);
+
+    });
 
 }
 
@@ -641,28 +497,12 @@ function renderConversion(
 
 async function loadEvents() {
 
-    const response =
-        await fetch(
-            API +
-            "/api/events"
-        );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            "Events API error"
-        );
-
-    }
-
-
     const data =
-        await response.json();
+        await fetchAPI("/api/events");
 
 
     renderRecentEvents(
-        data.events
+        data.events || []
     );
 
 }
@@ -672,12 +512,9 @@ async function loadEvents() {
 // RECENT EVENTS
 // =====================================================
 
-function renderRecentEvents(
-    events
-) {
+function renderRecentEvents(events) {
 
-    recentEventsTable.innerHTML =
-        "";
+    recentEventsTable.innerHTML = "";
 
 
     if (
@@ -708,54 +545,45 @@ function renderRecentEvents(
     const recent =
         [...events]
             .reverse()
-            .slice(
-                0,
-                20
-            );
+            .slice(0, 20);
 
 
-    recent.forEach(
-        function (event) {
+    recent.forEach(function (event) {
 
-            const row =
-                document.createElement(
-                    "tr"
-                );
+        const row =
+            document.createElement("tr");
 
 
-            row.innerHTML = `
+        row.innerHTML = `
 
-                <td>
-                    ${event.id}
-                </td>
+            <td>
+                ${event.id ?? "-"}
+            </td>
 
-                <td>
-                    ${escapeHtml(
-                        event.session_id
-                    )}
-                </td>
+            <td>
+                ${escapeHtml(
+                    event.session_id
+                )}
+            </td>
 
-                <td>
-                    ${escapeHtml(
-                        event.event_name
-                    )}
-                </td>
+            <td>
+                ${escapeHtml(
+                    event.event_name
+                )}
+            </td>
 
-                <td>
-                    ${formatDate(
-                        event.created_at
-                    )}
-                </td>
+            <td>
+                ${formatDate(
+                    event.created_at
+                )}
+            </td>
 
-            `;
+        `;
 
 
-            recentEventsTable.appendChild(
-                row
-            );
+        recentEventsTable.appendChild(row);
 
-        }
-    );
+    });
 
 }
 
@@ -766,28 +594,12 @@ function renderRecentEvents(
 
 async function loadSessions() {
 
-    const response =
-        await fetch(
-            API +
-            "/api/sessions"
-        );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            "Sessions API error"
-        );
-
-    }
-
-
     const data =
-        await response.json();
+        await fetchAPI("/api/sessions");
 
 
     renderSessions(
-        data.sessions
+        data.sessions || []
     );
 
 }
@@ -797,12 +609,9 @@ async function loadSessions() {
 // RENDER SESSIONS
 // =====================================================
 
-function renderSessions(
-    sessions
-) {
+function renderSessions(sessions) {
 
-    sessionTable.innerHTML =
-        "";
+    sessionTable.innerHTML = "";
 
 
     if (
@@ -830,61 +639,55 @@ function renderSessions(
     }
 
 
-    sessions.forEach(
-        function (session) {
+    sessions.forEach(function (session) {
 
-            const row =
-                document.createElement(
-                    "tr"
-                );
+        const row =
+            document.createElement("tr");
 
 
-            row.innerHTML = `
+        row.innerHTML = `
 
-                <td>
-                    ${escapeHtml(
+            <td>
+                ${escapeHtml(
+                    session.session_id
+                )}
+            </td>
+
+            <td>
+                ${formatDate(
+                    session.started_at
+                )}
+            </td>
+
+            <td>
+                ${formatDate(
+                    session.last_activity
+                )}
+            </td>
+
+            <td>
+                ${session.event_count ?? 0}
+            </td>
+
+            <td>
+
+                <button
+                    class="session-button"
+                    data-session="${escapeHtml(
                         session.session_id
-                    )}
-                </td>
+                    )}"
+                >
+                    مشاهده
+                </button>
 
-                <td>
-                    ${formatDate(
-                        session.started_at
-                    )}
-                </td>
+            </td>
 
-                <td>
-                    ${formatDate(
-                        session.last_activity
-                    )}
-                </td>
-
-                <td>
-                    ${session.event_count}
-                </td>
-
-                <td>
-
-                    <button
-                        class="session-button"
-                        data-session="${escapeHtml(
-                            session.session_id
-                        )}"
-                    >
-                        مشاهده
-                    </button>
-
-                </td>
-
-            `;
+        `;
 
 
-            sessionTable.appendChild(
-                row
-            );
+        sessionTable.appendChild(row);
 
-        }
-    );
+    });
 
 
     const buttons =
@@ -893,26 +696,20 @@ function renderSessions(
         );
 
 
-    buttons.forEach(
-        function (button) {
+    buttons.forEach(function (button) {
 
-            button.addEventListener(
-                "click",
-                function () {
+        button.addEventListener(
+            "click",
+            function () {
 
-                    const sessionId =
-                        button.dataset.session;
+                loadSessionDetails(
+                    button.dataset.session
+                );
 
+            }
+        );
 
-                    loadSessionDetails(
-                        sessionId
-                    );
-
-                }
-            );
-
-        }
-    );
+    });
 
 }
 
@@ -921,33 +718,15 @@ function renderSessions(
 // SESSION DETAILS
 // =====================================================
 
-async function loadSessionDetails(
-    sessionId
-) {
+async function loadSessionDetails(sessionId) {
 
     try {
 
-        const response =
-            await fetch(
-                API +
-                "/api/sessions/" +
-                encodeURIComponent(
-                    sessionId
-                )
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Session details error"
-            );
-
-        }
-
-
         const data =
-            await response.json();
+            await fetchAPI(
+                "/api/sessions/" +
+                encodeURIComponent(sessionId)
+            );
 
 
         selectedSession.textContent =
@@ -955,7 +734,7 @@ async function loadSessionDetails(
 
 
         renderSessionEvents(
-            data.events
+            data.events || []
         );
 
 
@@ -973,6 +752,7 @@ async function loadSessionDetails(
     catch (error) {
 
         console.error(
+            "SESSION DETAILS ERROR:",
             error
         );
 
@@ -985,12 +765,9 @@ async function loadSessionDetails(
 // RENDER SESSION EVENTS
 // =====================================================
 
-function renderSessionEvents(
-    events
-) {
+function renderSessionEvents(events) {
 
-    sessionEventsTable.innerHTML =
-        "";
+    sessionEventsTable.innerHTML = "";
 
 
     if (
@@ -1018,48 +795,42 @@ function renderSessionEvents(
     }
 
 
-    events.forEach(
-        function (event) {
+    events.forEach(function (event) {
 
-            const row =
-                document.createElement(
-                    "tr"
-                );
+        const row =
+            document.createElement("tr");
 
 
-            row.innerHTML = `
+        row.innerHTML = `
 
-                <td>
-                    ${event.id}
-                </td>
+            <td>
+                ${event.id ?? "-"}
+            </td>
 
-                <td>
-                    ${escapeHtml(
-                        event.event_name
-                    )}
-                </td>
+            <td>
+                ${escapeHtml(
+                    event.event_name
+                )}
+            </td>
 
-                <td>
-                    ${escapeHtml(
-                        event.data
-                    )}
-                </td>
+            <td>
+                ${escapeHtml(
+                    event.data
+                )}
+            </td>
 
-                <td>
-                    ${formatDate(
-                        event.created_at
-                    )}
-                </td>
+            <td>
+                ${formatDate(
+                    event.created_at
+                )}
+            </td>
 
-            `;
+        `;
 
 
-            sessionEventsTable.appendChild(
-                row
-            );
+        sessionEventsTable.appendChild(row);
 
-        }
-    );
+    });
 
 }
 
@@ -1112,17 +883,11 @@ async function loadDashboard() {
         ]);
 
 
-        setConnection(
-            true
-        );
-
-
-        const now =
-            new Date();
+        setConnection(true);
 
 
         lastUpdate.textContent =
-            now.toLocaleString(
+            new Date().toLocaleString(
                 "fa-IR"
             );
 
@@ -1136,9 +901,7 @@ async function loadDashboard() {
         );
 
 
-        setConnection(
-            false
-        );
+        setConnection(false);
 
 
         errorMessage.classList.remove(
@@ -1162,10 +925,6 @@ loadDashboard();
 // =====================================================
 
 setInterval(
-    function () {
-
-        loadDashboard();
-
-    },
+    loadDashboard,
     5000
 );
