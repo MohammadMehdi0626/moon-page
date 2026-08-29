@@ -187,10 +187,28 @@ document.addEventListener(
         //     );
         
         // }
+        // =====================================================
+        // EVENT TRACKING
+        // =====================================================
+        
         function trackEvent(
             eventName,
             data = {}
         ) {
+        
+            const eventPayload = {
+        
+                session_id:
+                    sessionId,
+        
+                event_name:
+                    eventName,
+        
+                data:
+                    data
+        
+            };
+        
         
             console.log(
                 "TRACK EVENT:",
@@ -198,49 +216,49 @@ document.addEventListener(
                 data
             );
         
+        
+            // -------------------------------------------------
+            // METHOD 1: fetch
+            // -------------------------------------------------
+        
             fetch(
                 "https://moon-page-production.up.railway.app/api/events",
                 {
+        
                     method: "POST",
         
                     headers: {
                         "Content-Type": "application/json"
                     },
         
-                    body: JSON.stringify({
+                    body: JSON.stringify(
+                        eventPayload
+                    )
         
-                        session_id:
-                            sessionId,
-        
-                        event_name:
-                            eventName,
-        
-                        data:
-                            data
-        
-                    })
                 }
             )
             .then(
                 response => {
-            
+        
                     console.log(
                         "EVENT RESPONSE:",
                         eventName,
-                        response.status,
-                        response.type
+                        response.status
                     );
-            
+        
+        
                     if (!response.ok) {
-            
+        
                         throw new Error(
-                            `Event request failed: ${response.status}`
+                            "HTTP " +
+                            response.status
                         );
-            
+        
                     }
-            
+        
+        
                     return response.json();
-            
+        
                 }
             )
             .then(
@@ -258,10 +276,58 @@ document.addEventListener(
                 error => {
         
                     console.error(
-                        "EVENT TRACKING ERROR:",
+                        "FETCH EVENT ERROR:",
                         eventName,
                         error
                     );
+        
+        
+                    // -------------------------------------------------
+                    // METHOD 2: sendBeacon fallback
+                    // -------------------------------------------------
+        
+                    try {
+        
+                        const blob =
+                            new Blob(
+                                [
+                                    JSON.stringify(
+                                        eventPayload
+                                    )
+                                ],
+                                {
+                                    type:
+                                        "application/json"
+                                }
+                            );
+        
+        
+                        const sent =
+                            navigator.sendBeacon(
+                                "https://moon-page-production.up.railway.app/api/events",
+                                blob
+                            );
+        
+        
+                        console.log(
+                            "BEACON SENT:",
+                            eventName,
+                            sent
+                        );
+        
+                    }
+        
+                    catch (
+                        beaconError
+                    ) {
+        
+                        console.error(
+                            "BEACON ERROR:",
+                            eventName,
+                            beaconError
+                        );
+        
+                    }
         
                 }
             );
