@@ -508,7 +508,7 @@ def get_stats():
 
 
 # =====================================================
-# FUNNEL STATISTICS
+# FUNNEL STATISTICS - JOURNEY TO THE MOON
 # =====================================================
 
 @app.get("/api/funnel")
@@ -519,40 +519,132 @@ def get_funnel():
     cursor = connection.cursor()
 
 
-    event_names = [
+    # -------------------------------------------------
+    # مراحل اصلی سفر
+    # -------------------------------------------------
 
-        "page_view",
+    journey_stages = [
 
-        "start_journey_click",
+        {
+            "stage": 1,
+            "name": "ورود به صفحه",
+            "event": "page_view"
+        },
 
-        "authentication_shown",
+        {
+            "stage": 2,
+            "name": "شروع سفر",
+            "event": "start_journey_click"
+        },
 
-        "verification_requested",
+        {
+            "stage": 3,
+            "name": "رسیدن به مرحله ورود",
+            "event": "authentication_shown"
+        },
 
-        "verification_success",
+        {
+            "stage": 4,
+            "name": "ورود موفق با کلمه نور",
+            "event": "authentication_success"
+        },
 
-        "final_choice_made"
+        {
+            "stage": 5,
+            "name": "شروع گذر از دنیای جدید",
+            "event": "transition_started"
+        },
+
+        {
+            "stage": 6,
+            "name": "ورود به دنیای اصلی",
+            "event": "main_world_entered"
+        },
+
+        {
+            "stage": 7,
+            "name": "ظاهر شدن گربه",
+            "event": "cat_appearing"
+        },
+
+        {
+            "stage": 8,
+            "name": "گربه به مقصد رسید",
+            "event": "cat_reached_destination"
+        },
+
+        {
+            "stage": 9,
+            "name": "نوازش گربه",
+            "event": "cat_petted"
+        },
+
+        {
+            "stage": 10,
+            "name": "شروع داستان",
+            "event": "story_sequence_started"
+        },
+
+        {
+            "stage": 11,
+            "name": "پایان داستان",
+            "event": "story_sequence_finished"
+        },
+
+        {
+            "stage": 12,
+            "name": "نمایش انتخاب نهایی",
+            "event": "final_choice_shown"
+        },
+
+        {
+            "stage": 13,
+            "name": "انتخاب نهایی",
+            "event": "final_choice_made"
+        }
 
     ]
 
 
-    funnel = {}
+    funnel = []
 
 
-    for event_name in event_names:
+    # -------------------------------------------------
+    # شمارش کاربران هر مرحله
+    # -------------------------------------------------
+
+    for stage in journey_stages:
 
         cursor.execute(
             """
-            SELECT COUNT(*)
+            SELECT COUNT(DISTINCT session_id)
             FROM events
             WHERE event_name = ?
             """,
-            (event_name,)
+            (stage["event"],)
         )
 
-        count = cursor.fetchone()[0]
 
-        funnel[event_name] = count
+        session_count = (
+            cursor.fetchone()[0]
+        )
+
+
+        funnel.append({
+
+            "stage":
+                stage["stage"],
+
+            "name":
+                stage["name"],
+
+            "event":
+                stage["event"],
+
+            "sessions":
+                session_count
+
+        })
 
 
     connection.close()
@@ -562,11 +654,13 @@ def get_funnel():
 
         "success": True,
 
+        "total_stages":
+            len(journey_stages),
+
         "funnel":
             funnel
 
     }
-
 
 # =====================================================
 # SESSION FUNNEL
