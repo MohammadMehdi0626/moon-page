@@ -758,6 +758,89 @@ def get_final_choices():
 
     }
 
+# =====================================================
+# FINAL CHOICES STATISTICS
+# =====================================================
+
+@app.get("/api/final-choices")
+def get_final_choices():
+
+    connection = get_db()
+
+    cursor = connection.cursor()
+
+
+    cursor.execute(
+        """
+        SELECT data
+        FROM events
+        WHERE event_name = 'final_choice_made'
+        """
+    )
+
+
+    rows = cursor.fetchall()
+
+
+    yes_count = 0
+
+    no_count = 0
+
+
+    for row in rows:
+
+        try:
+
+            event_data = json.loads(
+                row["data"]
+            )
+
+
+            choice = event_data.get(
+                "choice"
+            )
+
+
+            if choice == "yes":
+
+                yes_count += 1
+
+
+            elif choice == "no":
+
+                no_count += 1
+
+
+        except Exception as error:
+
+            print(
+                "FINAL CHOICE ERROR:",
+                error
+            )
+
+
+    connection.close()
+
+
+    return {
+
+        "success": True,
+
+        "final_choices": {
+
+            "yes":
+                yes_count,
+
+            "no":
+                no_count,
+
+            "total":
+                yes_count +
+                no_count
+
+        }
+
+    }
 print(
     "MOON BACKEND VERSION: FUNNEL V2 🌙"
 )
