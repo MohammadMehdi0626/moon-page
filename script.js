@@ -128,30 +128,75 @@ document.addEventListener(
                 data
             );
 
-
             fetch(
                 "https://moon-page-production.up.railway.app/api/events",
                 {
                     method: "POST",
-
+            
+                    mode: "cors",
+            
                     headers: {
                         "Content-Type": "application/json"
                     },
-
+            
                     body: JSON.stringify({
-
+            
                         session_id:
                             sessionId,
-
+            
                         event_name:
                             eventName,
-
+            
                         data:
                             data
-
+            
                     })
                 }
             )
+            .then(
+                response => {
+            
+                    alert(
+                        "SERVER STATUS: " +
+                        response.status
+                    );
+            
+                    if (!response.ok) {
+            
+                        throw new Error(
+                            "Event request failed: " +
+                            response.status
+                        );
+            
+                    }
+            
+                    return response.json();
+            
+                }
+            )
+            // fetch(
+            //     "https://moon-page-production.up.railway.app/api/events",
+            //     {
+            //         method: "POST",
+
+            //         headers: {
+            //             "Content-Type": "application/json"
+            //         },
+
+            //         body: JSON.stringify({
+
+            //             session_id:
+            //                 sessionId,
+
+            //             event_name:
+            //                 eventName,
+
+            //             data:
+            //                 data
+
+            //         })
+            //     }
+            // )
             .then(
                 response => {
 
