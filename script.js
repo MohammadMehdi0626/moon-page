@@ -5,52 +5,7 @@
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-       alert("MOBILE SCRIPT TEST");
 
-        alert("BEFORE FETCH");
-
-        fetch(
-            "https://moon-page-production.up.railway.app/api/events",
-            {
-                method: "POST",
-        
-                headers: {
-                    "Content-Type": "application/json"
-                },
-        
-                body: JSON.stringify({
-                    session_id: "mobile-debug-test",
-                    event_name: "mobile_direct_test",
-                    data: {}
-                })
-            }
-        )
-        .then(function(response) {
-        
-            alert(
-                "STATUS: " +
-                response.status
-            );
-        
-            return response.text();
-        
-        })
-        .then(function(result) {
-        
-            alert(
-                "RESPONSE: " +
-                result
-            );
-        
-        })
-        .catch(function(error) {
-        
-            alert(
-                "ERROR: " +
-                error.message
-            );
-        
-        });
         // =====================================================
         // SESSION
         // =====================================================
@@ -65,9 +20,7 @@ document.addEventListener(
             sessionId =
                 window.crypto.randomUUID();
 
-        }
-
-        else {
+        } else {
 
             sessionId =
                 "session-" +
@@ -78,12 +31,6 @@ document.addEventListener(
                     .substring(2, 10);
 
         }
-
-
-        console.log(
-            "SESSION ID:",
-            sessionId
-        );
 
 
         // =====================================================
@@ -140,199 +87,64 @@ document.addEventListener(
 
 
         // =====================================================
-        // ELEMENT CHECK
-        // =====================================================
-
-        console.log(
-            "HTML elements loaded"
-        );
-
-
-        if (!startButton) {
-
-            console.error(
-                "startButton not found!"
-            );
-
-        }
-
-
-        // =====================================================
         // EVENT TRACKING
         // =====================================================
 
-        // function trackEvent(
-        //     eventName,
-        //     data = {}
-        // ) {
-        
-        //     console.log(
-        //         "TRACK EVENT:",
-        //         eventName,
-        //         data
-        //     );
-        
-        //     fetch(
-        //         "https://moon-page-production.up.railway.app/api/events",
-        //         {
-        //             method: "POST",
-        
-        //             headers: {
-        //                 "Content-Type": "application/json"
-        //             },
-        
-        //             body: JSON.stringify({
-        
-        //                 session_id:
-        //                     sessionId,
-        
-        //                 event_name:
-        //                     eventName,
-        
-        //                 data:
-        //                     data
-        
-        //             })
-        //         }
-        //     )
-        //     .then(
-        //         response => {
-        
-        //             if (!response.ok) {
-        
-        //                 throw new Error(
-        //                     `Event request failed: ${response.status}`
-        //                 );
-        
-        //             }
-        
-        //             return response.json();
-        
-        //         }
-        //     )
-        //     .then(
-        //         result => {
-        
-        //             console.log(
-        //                 "EVENT SAVED:",
-        //                 result
-        //             );
-        
-        //         }
-        //     )
-        //     .catch(
-        //         error => {
-        
-        //             console.error(
-        //                 "EVENT TRACKING ERROR:",
-        //                 error
-        //             );
-        
-        //         }
-        //     );
-        
-        // }
-        // =====================================================
-        // EVENT TRACKING
-        // =====================================================
-        
         function trackEvent(
             eventName,
             data = {}
         ) {
-        
+
             const eventPayload = {
-        
-                session_id:
-                    sessionId,
-        
-                event_name:
-                    eventName,
-        
-                data:
-                    data
-        
+                session_id: sessionId,
+                event_name: eventName,
+                data: data
             };
-        
-        
-            console.log(
-                "TRACK EVENT:",
-                eventName,
-                data
-            );
-        
-        
-            // -------------------------------------------------
-            // METHOD 1: fetch
-            // -------------------------------------------------
-        
+
+
+            const apiUrl =
+                "https://moon-page-production.up.railway.app/api/events";
+
+
             fetch(
-                "https://moon-page-production.up.railway.app/api/events",
+                apiUrl,
                 {
-        
                     method: "POST",
-        
+
                     headers: {
                         "Content-Type": "application/json"
                     },
-        
+
                     body: JSON.stringify(
                         eventPayload
-                    )
-        
+                    ),
+
+                    keepalive: true
                 }
             )
             .then(
-                response => {
-        
-                    console.log(
-                        "EVENT RESPONSE:",
-                        eventName,
-                        response.status
-                    );
-        
-        
+                function (response) {
+
                     if (!response.ok) {
-        
+
                         throw new Error(
                             "HTTP " +
                             response.status
                         );
-        
+
                     }
-        
-        
-                    return response.json();
-        
-                }
-            )
-            .then(
-                result => {
-        
-                    console.log(
-                        "EVENT SAVED:",
-                        eventName,
-                        result
-                    );
-        
+
                 }
             )
             .catch(
-                error => {
-        
-                    console.error(
-                        "FETCH EVENT ERROR:",
-                        eventName,
-                        error
-                    );
-        
-        
+                function () {
+
                     // -------------------------------------------------
-                    // METHOD 2: sendBeacon fallback
+                    // Fallback: sendBeacon
                     // -------------------------------------------------
-        
+
                     try {
-        
+
                         const blob =
                             new Blob(
                                 [
@@ -345,68 +157,33 @@ document.addEventListener(
                                         "application/json"
                                 }
                             );
-        
-        
-                        const sent =
-                            navigator.sendBeacon(
-                                "https://moon-page-production.up.railway.app/api/events",
-                                blob
-                            );
-        
-        
-                        console.log(
-                            "BEACON SENT:",
-                            eventName,
-                            sent
+
+
+                        navigator.sendBeacon(
+                            apiUrl,
+                            blob
                         );
-        
+
                     }
-        
                     catch (
-                        beaconError
+                        error
                     ) {
-        
-                        console.error(
-                            "BEACON ERROR:",
-                            eventName,
-                            beaconError
-                        );
-        
+
+                        // Event tracking failure should
+                        // never stop the main experience.
+
                     }
-        
+
                 }
             );
-        
+
         }
 
-        setTimeout(function () {
 
-            fetch(
-                "https://moon-page-production.up.railway.app/api/events",
-                {
-                    method: "POST",
-        
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-        
-                    body: JSON.stringify({
-                        session_id: sessionId,
-                        event_name: "mobile_test",
-                        data: {
-                            test: true,
-                            time: new Date().toISOString()
-                        }
-                    })
-                }
-            );
-        
-        }, 2000);
         // =====================================================
         // PAGE VIEW
         // =====================================================
 
-        
         trackEvent(
             "page_view"
         );
@@ -424,23 +201,9 @@ document.addEventListener(
 
                     event.preventDefault();
 
-                    console.log(
-                        "BUTTON CLICK"
-                    );
-
 
                     trackEvent(
                         "start_journey_click"
-                    );
-
-
-                    console.log(
-                        "AFTER TRACK EVENT"
-                    );
-
-
-                    console.log(
-                        "BEFORE INTRO FADE"
                     );
 
 
@@ -454,18 +217,8 @@ document.addEventListener(
                         "scale(.97)";
 
 
-                    console.log(
-                        "AFTER INTRO FADE"
-                    );
-
-
                     setTimeout(
                         function () {
-
-                            console.log(
-                                "INSIDE SETTIMEOUT"
-                            );
-
 
                             introContent.classList.add(
                                 "hidden"
@@ -474,11 +227,6 @@ document.addEventListener(
 
                             authenticationContent.classList.remove(
                                 "hidden"
-                            );
-
-
-                            console.log(
-                                "AUTHENTICATION SHOWN"
                             );
 
 
@@ -492,11 +240,6 @@ document.addEventListener(
                             requestAnimationFrame(
                                 function () {
 
-                                    console.log(
-                                        "AUTH ANIMATION START"
-                                    );
-
-
                                     authenticationContent.style.transition =
                                         "opacity .8s ease, transform .8s ease";
 
@@ -506,22 +249,12 @@ document.addEventListener(
                                     authenticationContent.style.transform =
                                         "translateY(0)";
 
-
-                                    console.log(
-                                        "AUTH ANIMATION APPLIED"
-                                    );
-
                                 }
                             );
 
 
                             trackEvent(
                                 "authentication_shown"
-                            );
-
-
-                            console.log(
-                                "AFTER AUTH EVENT"
                             );
 
                         },
@@ -805,10 +538,6 @@ document.addEventListener(
 
             if (!cat || !path) {
 
-                console.error(
-                    "Cat or catPath not found!"
-                );
-
                 return;
 
             }
@@ -851,10 +580,6 @@ document.addEventListener(
 
 
             if (!matrix) {
-
-                console.error(
-                    "SVG matrix پیدا نشد"
-                );
 
                 return;
 
@@ -1380,7 +1105,7 @@ document.addEventListener(
 
 
             `
-            اگه انیشتین برای رسیدن به هدفش دست از تلاش می‌کشید؛<br>
+            اگه انیشتین برای رسیدن به هدفش دست از تلاش نمی‌کشید؛<br>
             ...زندگی همه‌مون تیره و تاریک بود<br>
             منم دنبال نورم؛<br>
             🌙... ولی راستش من ماه رو می‌خوام 
@@ -1432,7 +1157,7 @@ document.addEventListener(
          <br> Talk with me ... 🌙
          ... البته دو نفره <br>
           🐈😂 ! بدون خانم گربه
-        `,
+        `
 
         ];
 
@@ -1912,10 +1637,7 @@ document.addEventListener(
             answer
         ) {
 
-            console.log(
-                "FINAL ANSWER:",
-                answer
-            );
+            // Reserved for future use.
 
         }
 
@@ -1992,15 +1714,6 @@ document.addEventListener(
             );
 
         }
-
-
-        // =====================================================
-        // SCRIPT READY
-        // =====================================================
-
-        console.log(
-            "Moon script initialized successfully 🌙"
-        );
 
     }
 );
