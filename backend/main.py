@@ -149,7 +149,15 @@ class Event(BaseModel):
         default_factory=dict
     )
 
+# =====================================================
+# CONTACT SUBMISSION MODEL
+# =====================================================
 
+class ContactSubmission(BaseModel):
+
+    session_id: str
+
+    phone: str
 # =====================================================
 # HOME
 # =====================================================
@@ -389,7 +397,460 @@ def send_page_open_sms():
 
     }
 
+# =====================================================
+# FINAL CONTACT SUBMISSION
+# =====================================================
 
+@app.post("/api/final-contact")
+def submit_final_contact(contact: ContactSubmission):
+
+    print()
+    print("==============================")
+    print("FINAL CONTACT SUBMISSION")
+    print("==============================")
+
+    # -------------------------------------------------
+    # Clean phone number
+    # -------------------------------------------------
+
+    phone = contact.phone.strip()
+
+    # -------------------------------------------------
+    # Normalize Persian / Arabic digits
+    # -------------------------------------------------
+
+    phone = (
+        phone
+        .replace("۰", "0")
+        .replace("۱", "1")
+        .replace("۲", "2")
+        .replace("۳", "3")
+        .replace("۴", "4")
+        .replace("۵", "5")
+        .replace("۶", "6")
+        .replace("۷", "7")
+        .replace("۸", "8")
+        .replace("۹", "9")
+    )
+
+    # -------------------------------------------------
+    # Normalize +98 / 0098
+    # -------------------------------------------------
+
+    if phone.startswith("+98"):
+        phone = "0" + phone[3:]
+
+    elif phone.startswith("0098"):
+        phone = "0" + phone[4:]
+
+    # -------------------------------------------------
+    # Validate Iranian mobile
+    # -------------------------------------------------
+
+    if (
+        len(phone) != 11
+        or not phone.isdigit()
+        or not phone.startswith("09")
+    ):
+
+        print(
+            "FINAL CONTACT ERROR: INVALID PHONE"
+        )
+
+        return {
+            "success": False,
+            "message": "Invalid phone number"
+        }
+
+    # -------------------------------------------------
+    # Database
+    # -------------------------------------------------
+
+    connection = get_db()
+
+    cursor = connection.cursor()
+
+    # -------------------------------------------------
+    # Get session events
+    # -------------------------------------------------
+
+    cursor.execute(
+        """
+        SELECT
+            event_name,
+            data,
+            created_at
+        FROM events
+        WHERE session_id = ?
+        ORDER BY id ASC
+        """,
+        (
+            contact.session_id,
+        )
+    )
+
+    rows = cursor.fetchall()
+
+    # -------------------------------------------------
+    # Build journey summary
+    # -------------------------------------------------
+
+    event_names = []
+
+    for row in rows:
+
+        if row["event_name"] not in event_names:
+
+            event_names.append(
+                row["event_name"]
+            )
+
+    # -------------------------------------------------
+    # Human readable journey
+    # -------------------------------------------------
+
+    journey_map = {
+
+        "page_view":
+            "صفحه را باز کرد",
+
+        "start_journey_click":
+            "سفر را شروع کرد",
+
+        "authentication_shown":
+            "به مرحله ورود رسید",
+
+        "keyword_submitted":
+            "کلمه عبور را وارد کرد",
+
+        "authentication_success":
+            "با کلمه «نور» وارد شد",
+
+        "authentication_failed":
+            "کلمه عبور اشتباه وارد کرد",
+
+        "transition_started":
+            "وارد مرحله گذر شد",
+
+        "main_world_entered":
+            "وارد دنیای اصلی شد",
+
+        "cat_appearing":
+            "با گربه روبه‌رو شد",
+
+        "cat_started_walking":
+            "حرکت گربه را دید",
+
+        "cat_reached_destination":
+            "گربه به مقصد رسید",
+
+        "cat_message_shown":
+            "پیام گربه را دید",
+
+        "cat_attention_started":
+            "گربه توجهش را جلب کرد",
+
+        "cat_petted":
+            "گربه را نوازش کرد",
+
+        "cat_happy":
+            "باعث خوشحالی گربه شد",
+
+        "cat_leaving":
+            "گربه را تا خروج دنبال کرد",
+
+        "cat_left_screen":
+            "گربه از صفحه خارج شد",
+
+        "story_sequence_started":
+            "داستان را شروع کرد",
+
+        "story_sequence_finished":
+            "داستان را تا پایان دید",
+
+        "story_choices_shown":
+            "انتخاب نهایی را دید",
+
+        "final_choice_shown":
+            "انتخاب نهایی برایش نمایش داده شد",
+
+        "final_choice_made":
+            "گزینه «می‌تونیم بیشتر آشنا بشیم» را انتخاب کرد",
+
+        "final_message_shown":
+            "پیام پایانی را دید",
+
+        "final_scene_started":
+            "وارد صحنه پایانی شد"
+
+    }
+
+    journey_lines = []
+
+    for event_name in event_names:
+
+        if event_name in journey_map:
+
+            journey_lines.append(
+                "✓ " +
+                journey_map[event_name]
+            )
+
+    # -------------------------------------------------
+    # Save contact event
+    # -------------------------------------------------
+
+    created_at = datetime.now().isoformat()
+
+    contact_data = {
+
+        "phone":
+            phone,
+
+        "choice":
+            "yes"
+
+    }
+
+    cursor.execute(
+        """
+        INSERT INTO events
+        (
+            session_id,
+            event_name,
+            data,
+            created_at
+        )
+        VALUES (?, ?, ?, ?)
+        """,
+        (
+            contact.session_id,
+            "contact_submitted",
+            json.dumps(
+                contact_data,
+                ensure_ascii=False
+            ),
+            created_at
+        )
+    )
+
+    connection.commit()
+
+    contact_event_id = cursor.lastrowid
+
+    connection.close()
+
+    # =================================================
+    # SEND SMS TO OWNER
+    # =================================================
+
+    if not SMS_API_KEY:
+
+        print(
+            "FINAL SMS ERROR: SMS_API_KEY missing"
+        )
+
+        return {
+            "success": False,
+            "message":
+                "SMS_API_KEY is not configured"
+        }
+
+    if not SMS_LINE_NUMBER:
+
+        print(
+            "FINAL SMS ERROR: SMS_LINE_NUMBER missing"
+        )
+
+        return {
+            "success": False,
+            "message":
+                "SMS_LINE_NUMBER is not configured"
+        }
+
+    # -------------------------------------------------
+    # Journey text
+    # -------------------------------------------------
+
+    if journey_lines:
+
+        journey_text = "\n".join(
+            journey_lines
+        )
+
+    else:
+
+        journey_text = (
+            "اطلاعات مسیر ثبت نشده است."
+        )
+
+    # -------------------------------------------------
+    # Final SMS
+    # -------------------------------------------------
+
+    owner_final_message = f"""
+🌙 سفر تا ماه — گزارش نهایی
+
+یک نفر تا پایان مسیر رسید.
+
+انتخاب نهایی:
+می‌تونیم بیشتر آشنا بشیم 🤍
+
+شماره تماس:
+{phone}
+
+مسیر طی‌شده:
+{journey_text}
+
+Session:
+{contact.session_id}
+
+زمان ثبت شماره:
+{created_at}
+""".strip()
+
+    headers = {
+
+        "Content-Type":
+            "application/json",
+
+        "Accept":
+            "application/json",
+
+        "X-API-KEY":
+            SMS_API_KEY
+
+    }
+
+    owner_data = {
+
+        "lineNumber":
+            SMS_LINE_NUMBER,
+
+        "MessageText":
+            owner_final_message,
+
+        "Mobiles": [
+            OWNER_MOBILE
+        ]
+
+    }
+
+    try:
+
+        owner_response = requests.post(
+
+            SMS_API_URL,
+
+            headers=headers,
+
+            json=owner_data,
+
+            timeout=15
+
+        )
+
+        print(
+            "FINAL OWNER SMS STATUS:",
+            owner_response.status_code
+        )
+
+        print(
+            "FINAL OWNER SMS RESPONSE:",
+            owner_response.text
+        )
+
+        # -------------------------------------------------
+        # Parse SMS.ir response
+        # -------------------------------------------------
+
+        try:
+
+            sms_result = (
+                owner_response.json()
+            )
+
+        except Exception:
+
+            sms_result = {}
+
+        sms_success = (
+            owner_response.status_code == 200
+            and
+            sms_result.get("status") == 1
+        )
+
+        if not sms_success:
+
+            print(
+                "FINAL SMS WAS NOT ACCEPTED"
+            )
+
+            return {
+
+                "success": False,
+
+                "message":
+                    "SMS sending failed",
+
+                "sms_status_code":
+                    owner_response.status_code,
+
+                "sms_response":
+                    sms_result
+
+            }
+
+    except Exception as error:
+
+        print(
+            "FINAL OWNER SMS ERROR:",
+            error
+        )
+
+        return {
+
+            "success": False,
+
+            "message":
+                "SMS request failed",
+
+            "error":
+                str(error)
+
+        }
+
+    # -------------------------------------------------
+    # Success
+    # -------------------------------------------------
+
+    print(
+        "FINAL CONTACT SAVED:",
+        contact_event_id
+    )
+
+    print(
+        "FINAL PHONE:",
+        phone
+    )
+
+    print("==============================")
+    print()
+
+    return {
+
+        "success": True,
+
+        "message":
+            "Final contact submitted successfully",
+
+        "phone":
+            phone,
+
+        "event_id":
+            contact_event_id
+
+    }
 # =====================================================
 # CREATE EVENT
 # =====================================================
