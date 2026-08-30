@@ -2,8 +2,19 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from datetime import datetime
+from dotenv import load_dotenv
+
 import sqlite3
 import json
+import os
+import requests
+
+
+# =====================================================
+# ENVIRONMENT
+# =====================================================
+
+load_dotenv()
 
 
 # =====================================================
@@ -12,8 +23,8 @@ import json
 
 app = FastAPI(
     title="Moon Page Backend",
-    description="Backend for Moon Page analytics",
-    version="1.0.0"
+    description="Backend for Moon Page analytics and SMS",
+    version="2.0.0"
 )
 
 
@@ -37,15 +48,61 @@ app.add_middleware(
 
 
 # =====================================================
-# DATABASE
+# SMS.ir CONFIG
 # =====================================================
 
-# DATABASE = (
-#     r"C:\Users\Ertebatat-Sahar"
-#     r"\OneDrive\Desktop\database_page"
-#     r"\moon_data.db"
-# )
-import os
+SMS_API_KEY = os.getenv(
+    "SMS_API_KEY"
+)
+
+SMS_LINE_NUMBER = os.getenv(
+    "SMS_LINE_NUMBER"
+)
+
+SMS_API_URL = (
+    "https://api.sms.ir/v1/send/bulk"
+)
+
+
+# =====================================================
+# PHONE NUMBERS
+# =====================================================
+
+# شماره تست یگانه
+YEGANEH_MOBILE = "9028671965"
+
+# شماره خودت
+OWNER_MOBILE = "9154956997"
+
+
+# =====================================================
+# SMS MESSAGES
+# =====================================================
+
+YEGANEH_MESSAGE = """
+یه کلمه هست که بدون اون نمی‌تونی وارد این دنیا بشی...
+چیزی که وقتی همه‌جا تاریکه، بیشتر از همیشه بهش نیاز داری 🌙
+کلمه عبور، همون چیزیه که تاریکی رو کنار می‌زنه
+
+یه دونه ن داره :))
+""".strip()
+
+
+# -----------------------------------------------------
+# متن پیام خودت
+# -----------------------------------------------------
+# متن دقیق نسخه دوم قبلی در context فعلی قابل بازیابی نبود.
+# این مقدار را با همان نسخه دوم نهایی خودت جایگزین کن.
+
+OWNER_MESSAGE = """
+🌙 یکی وارد صفحه «سفر تا ماه» شد.
+به نظر می‌رسه سفر شروع شده...
+""".strip()
+
+
+# =====================================================
+# DATABASE
+# =====================================================
 
 DATABASE = os.getenv(
     "DATABASE_PATH",
@@ -110,6 +167,15 @@ class Event(BaseModel):
 
 
 # =====================================================
+# PAGE OPEN MODEL
+# =====================================================
+
+class PageOpen(BaseModel):
+
+    session_id: str
+
+
+# =====================================================
 # HOME
 # =====================================================
 
@@ -123,11 +189,286 @@ def home():
 
 
 # =====================================================
+# HEALTH
+# =====================================================
+
+@app.get("/health")
+def health():
+
+    return {
+        "status":
+            "ok"
+    }
+
+
+# =====================================================
+# SMS FUNCTION
+# =====================================================
+
+def send_sms(
+    mobile,
+    message
+):
+
+    if not SMS_API_KEY:
+
+        return {
+            "success": False,
+            "error":
+                "SMS_API_KEY is not configured"
+        }
+
+
+    if not SMS_LINE_NUMBER:
+
+        return {
+            "success": False,
+            "error":
+                "SMS_LINE_NUMBER is not configured"
+        }
+
+
+    headers = {
+
+        "Content-Type":
+            "application/json",
+
+        "Accept":
+            "application/json",
+
+        "X-API-KEY":
+            SMS_API_KEY
+    }
+
+
+    data = {
+
+        "lineNumber":
+            SMS_LINE_NUMBER,
+
+        "MessageText":
+            message,
+
+        "Mobiles":
+            [mobile]
+    }
+
+
+    try:
+
+        response = requests.post(
+
+            SMS_API_URL,
+
+            headers=headers,
+
+            json=data,
+
+            timeout=15
+        )
+
+
+        try:
+
+            response_data = response.json()
+
+        except Exception:
+
+            response_data = {
+                "raw_response":
+                    response.text
+            }
+
+
+        return {
+
+            "success":
+                response.ok,
+
+            "status_code":
+                response.status_code,
+
+            "response":
+                response_data
+
+        }
+
+
+    except Exception as error:
+
+        return {
+
+            "success":
+                False,
+
+            "error":
+                str(error)
+
+        }
+
+
+# =====================================================
+# SEND SMS WHEN PAGE OPENS
+# =====================================================
+
+@app.post("/api/page-open")
+def page_open(
+    page_data: PageOpen
+):
+
+    created_at = (
+        datetime.now().isoformat()
+    )
+
+
+    # =================================================
+    # SEND SMS TO YEGANEH
+    # =================================================
+
+    yeganeh_result = send_sms(
+
+        YEGANEH_MOBILE,
+
+        YEGANEH_MESSAGE
+
+    )
+
+
+    # =================================================
+    # SEND SMS TO OWNER
+    # =================================================
+
+    owner_result = send_sms(
+
+        OWNER_MOBILE,
+
+        OWNER_MESSAGE
+
+    )
+
+
+    # =================================================
+    # SAVE SMS EVENT
+    # =================================================
+
+    connection = get_db()
+
+    cursor = connection.cursor()
+
+
+    event_data = {
+
+        "yeganeh_sms":
+            yeganeh_result,
+
+        "owner_sms":
+            owner_result
+
+    }
+
+
+    cursor.execute(
+        """
+        INSERT INTO events
+        (
+            session_id,
+            event_name,
+            data,
+            created_at
+        )
+        VALUES (?, ?, ?, ?)
+        """,
+
+        (
+
+            page_data.session_id,
+
+            "page_open_sms_sent",
+
+            json.dumps(
+                event_data,
+                ensure_ascii=False
+            ),
+
+            created_at
+
+        )
+    )
+
+
+    connection.commit()
+
+    event_id = cursor.lastrowid
+
+    connection.close()
+
+
+    # =================================================
+    # TERMINAL LOG
+    # =================================================
+
+    print()
+    print("==============================")
+    print("PAGE OPEN - SMS")
+    print("==============================")
+
+    print(
+        "Session :",
+        page_data.session_id
+    )
+
+    print(
+        "Yeganeh:",
+        yeganeh_result
+    )
+
+    print(
+        "Owner  :",
+        owner_result
+    )
+
+    print(
+        "Event ID:",
+        event_id
+    )
+
+    print(
+        "Time   :",
+        created_at
+    )
+
+    print("==============================")
+    print()
+
+
+    return {
+
+        "success":
+            True,
+
+        "message":
+            "Page open SMS process completed",
+
+        "event_id":
+            event_id,
+
+        "yeganeh":
+            yeganeh_result,
+
+        "owner":
+            owner_result
+
+    }
+
+
+# =====================================================
 # CREATE EVENT
 # =====================================================
 
 @app.post("/api/events")
-def receive_event(event: Event):
+def receive_event(
+    event: Event
+):
 
     connection = get_db()
 
@@ -151,6 +492,7 @@ def receive_event(event: Event):
         )
         VALUES (?, ?, ?, ?)
         """,
+
         (
             event.session_id,
             event.event_name,
@@ -206,7 +548,8 @@ def receive_event(event: Event):
 
     return {
 
-        "success": True,
+        "success":
+            True,
 
         "message":
             "Event saved",
@@ -252,6 +595,7 @@ def get_events():
 
     events = []
 
+
     for row in rows:
 
         events.append({
@@ -276,7 +620,8 @@ def get_events():
 
     return {
 
-        "success": True,
+        "success":
+            True,
 
         "count":
             len(events),
@@ -316,6 +661,7 @@ def get_sessions():
 
     sessions = []
 
+
     for row in rows:
 
         sessions.append({
@@ -337,7 +683,8 @@ def get_sessions():
 
     return {
 
-        "success": True,
+        "success":
+            True,
 
         "count":
             len(sessions),
@@ -352,7 +699,9 @@ def get_sessions():
 # GET EVENTS OF ONE SESSION
 # =====================================================
 
-@app.get("/api/sessions/{session_id}")
+@app.get(
+    "/api/sessions/{session_id}"
+)
 def get_session_events(
     session_id: str
 ):
@@ -373,6 +722,7 @@ def get_session_events(
         WHERE session_id = ?
         ORDER BY id ASC
         """,
+
         (session_id,)
     )
 
@@ -382,6 +732,7 @@ def get_session_events(
 
 
     events = []
+
 
     for row in rows:
 
@@ -407,7 +758,8 @@ def get_session_events(
 
     return {
 
-        "success": True,
+        "success":
+            True,
 
         "session_id":
             session_id,
@@ -442,7 +794,9 @@ def get_stats():
         FROM events
     """)
 
-    total_events = cursor.fetchone()[0]
+    total_events = (
+        cursor.fetchone()[0]
+    )
 
 
     # -------------------------------------------------
@@ -454,7 +808,9 @@ def get_stats():
         FROM events
     """)
 
-    total_sessions = cursor.fetchone()[0]
+    total_sessions = (
+        cursor.fetchone()[0]
+    )
 
 
     # -------------------------------------------------
@@ -475,6 +831,7 @@ def get_stats():
 
     event_counts = []
 
+
     for row in rows:
 
         event_counts.append({
@@ -493,7 +850,8 @@ def get_stats():
 
     return {
 
-        "success": True,
+        "success":
+            True,
 
         "total_events":
             total_events,
@@ -508,7 +866,7 @@ def get_stats():
 
 
 # =====================================================
-# FUNNEL STATISTICS - JOURNEY TO THE MOON
+# FUNNEL
 # =====================================================
 
 @app.get("/api/funnel")
@@ -518,10 +876,6 @@ def get_funnel():
 
     cursor = connection.cursor()
 
-
-    # -------------------------------------------------
-    # مراحل اصلی سفر
-    # -------------------------------------------------
 
     journey_stages = [
 
@@ -609,10 +963,6 @@ def get_funnel():
     funnel = []
 
 
-    # -------------------------------------------------
-    # شمارش کاربران هر مرحله
-    # -------------------------------------------------
-
     for stage in journey_stages:
 
         cursor.execute(
@@ -621,6 +971,7 @@ def get_funnel():
             FROM events
             WHERE event_name = ?
             """,
+
             (stage["event"],)
         )
 
@@ -652,7 +1003,8 @@ def get_funnel():
 
     return {
 
-        "success": True,
+        "success":
+            True,
 
         "total_stages":
             len(journey_stages),
@@ -662,101 +1014,6 @@ def get_funnel():
 
     }
 
-
-# =====================================================
-# FINAL CHOICES STATISTICS
-# =====================================================
-
-@app.get("/api/final-choices")
-def get_final_choices():
-
-    connection = get_db()
-
-    cursor = connection.cursor()
-
-
-    # -------------------------------------------------
-    # دریافت تمام انتخاب‌های نهایی
-    # -------------------------------------------------
-
-    cursor.execute(
-        """
-        SELECT
-            data
-        FROM events
-        WHERE event_name = 'final_choice_made'
-        """
-    )
-
-
-    rows = cursor.fetchall()
-
-
-    yes_count = 0
-
-    no_count = 0
-
-
-    # -------------------------------------------------
-    # شمارش بله و خیر
-    # -------------------------------------------------
-
-    for row in rows:
-
-        try:
-
-            event_data = json.loads(
-                row["data"]
-            )
-
-
-            choice = event_data.get(
-                "choice"
-            )
-
-
-            if choice == "yes":
-
-                yes_count += 1
-
-
-            elif choice == "no":
-
-                no_count += 1
-
-
-        except Exception as error:
-
-            print(
-                "FINAL CHOICE DATA ERROR:",
-                error
-            )
-
-
-    connection.close()
-
-
-    # -------------------------------------------------
-    # RESPONSE
-    # -------------------------------------------------
-
-    return {
-
-        "success": True,
-
-        "final_choices": {
-
-            "yes": yes_count,
-
-            "no": no_count,
-
-            "total":
-                yes_count +
-                no_count
-
-        }
-
-    }
 
 # =====================================================
 # FINAL CHOICES STATISTICS
@@ -824,7 +1081,8 @@ def get_final_choices():
 
     return {
 
-        "success": True,
+        "success":
+            True,
 
         "final_choices": {
 
@@ -835,18 +1093,20 @@ def get_final_choices():
                 no_count,
 
             "total":
-                yes_count +
-                no_count
+                yes_count + no_count
 
         }
 
     }
+
+
+# =====================================================
+# VERSION LOG
+# =====================================================
+
 print(
-    "MOON BACKEND VERSION: FUNNEL V2 🌙"
+    "MOON BACKEND VERSION: SMS + FUNNEL V2 🌙"
 )
-# =====================================================
-# SERVER START TEST
-# =====================================================
 
 print(
     "MAIN.PY LOADED - MOON BACKEND READY 🌙"
