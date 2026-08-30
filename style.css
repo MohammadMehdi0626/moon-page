@@ -1,530 +1,170 @@
-/* =====================================================
+/* =========================================================
    RESET
-   ===================================================== */
+========================================================= */
 
 * {
-    margin: 0;
-    padding: 0;
+
     box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 0;
+
 }
+
 
 html,
 body {
+
     width: 100%;
+
     height: 100%;
+
+    overflow: hidden;
+
 }
+
 
 body {
-    overflow: hidden;
-    font-family: "Vazirmatn", sans-serif;
-    background: #050816;
-    color: #ffffff;
-    direction: rtl;
-}
 
-
-/* =====================================================
-   GLOBAL
-   ===================================================== */
-
-button,
-input {
-    font-family: inherit;
-}
-
-button {
-    border: none;
-    outline: none;
-    cursor: pointer;
-}
-
-.hidden {
-    display: none !important;
-}
-
-
-/* =====================================================
-   MAIN GAME
-   ===================================================== */
-
-.game {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
     min-height: 100vh;
-    overflow: hidden;
 
     background:
         radial-gradient(
-            circle at 50% 35%,
-            rgba(76, 91, 150, 0.16),
-            transparent 35%
-        ),
-        linear-gradient(
-            180deg,
-            #03040c 0%,
-            #080b1b 45%,
-            #10152b 100%
+            circle at 50% 45%,
+            #18233f 0%,
+            #0b1020 42%,
+            #050711 100%
         );
+
+    color: #f5f3ed;
+
+    font-family:
+        "Vazirmatn",
+        sans-serif;
+
+    overflow: hidden;
+
 }
 
 
-/* =====================================================
-   VPN MODAL
-   ===================================================== */
+/* =========================================================
+   BACKGROUND
+========================================================= */
 
-.vpn-modal {
+body::before,
+body::after {
+
+    content: "";
+
     position: fixed;
+
     inset: 0;
-    z-index: 9999;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 24px;
-
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(83, 94, 170, 0.16),
-            rgba(2, 4, 13, 0.96) 65%
-        );
-
-    backdrop-filter: blur(14px);
-
-    opacity: 1;
-    transition:
-        opacity .6s ease,
-        visibility .6s ease;
-}
-
-.vpn-modal.hide {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.vpn-modal-card {
-    position: relative;
-
-    width: min(500px, 92vw);
-    padding: 42px 34px 34px;
-
-    text-align: center;
-
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 28px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(22, 28, 55, 0.96),
-            rgba(8, 11, 27, 0.97)
-        );
-
-    box-shadow:
-        0 30px 100px rgba(0, 0, 0, .55),
-        inset 0 1px 0 rgba(255, 255, 255, .05);
-
-    animation: modalAppear 1s ease both;
-}
-
-.vpn-modal-moon {
-    font-size: 52px;
-    margin-bottom: 18px;
-
-    filter:
-        drop-shadow(
-            0 0 20px rgba(255, 239, 177, .55)
-        );
-
-    animation: moonFloat 3s ease-in-out infinite;
-}
-
-.vpn-modal-card h2 {
-    margin-bottom: 18px;
-
-    font-size: clamp(20px, 4vw, 27px);
-    font-weight: 700;
-}
-
-.vpn-modal-card p {
-    line-height: 2;
-}
-
-.vpn-modal-description {
-    margin-top: 20px;
-
-    color: rgba(255, 255, 255, .68);
-    font-size: 13px;
-    line-height: 2.1 !important;
-}
-
-.vpn-ready {
-    margin-top: 22px;
-
-    color: #e9d7a3;
-    font-size: 14px;
-}
-
-.vpn-modal-button {
-    margin-top: 25px;
-
-    padding: 13px 32px;
-
-    border-radius: 999px;
-
-    color: #171421;
-    background:
-        linear-gradient(
-            135deg,
-            #f5e5b1,
-            #d6b978
-        );
-
-    font-size: 14px;
-    font-weight: 700;
-
-    box-shadow:
-        0 8px 25px rgba(214, 185, 120, .18);
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease;
-}
-
-.vpn-modal-button:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 12px 32px rgba(214, 185, 120, .3);
-}
-
-.vpn-modal-button:active {
-    transform: scale(.97);
-}
-
-
-/* =====================================================
-   INTRO
-   ===================================================== */
-
-#introContent {
-    position: absolute;
-    inset: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    overflow: hidden;
-}
-
-.light-orb {
-    position: absolute;
-
-    width: min(500px, 90vw);
-    height: min(500px, 90vw);
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255, 244, 204, .15) 0%,
-            rgba(126, 144, 210, .07) 32%,
-            transparent 70%
-        );
-
-    filter: blur(8px);
-
-    animation: orbPulse 5s ease-in-out infinite;
-}
-
-.intro-text {
-    position: relative;
-    z-index: 2;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 18px;
-
-    padding: 25px;
-}
-
-.intro-line {
-    opacity: 0;
-
-    color: rgba(255, 255, 255, .9);
-
-    font-size: clamp(17px, 3.5vw, 25px);
-    font-weight: 400;
-
-    letter-spacing: -.3px;
-
-    animation:
-        introTextAppear 1.2s ease forwards;
-}
-
-.line-1 {
-    animation-delay: .7s;
-}
-
-.line-2 {
-    animation-delay: 1.8s;
-}
-
-.line-3 {
-    color: rgba(255, 255, 255, .65);
-    font-size: clamp(14px, 3vw, 19px);
-
-    animation-delay: 3s;
-}
-
-.start-button {
-    position: absolute;
-    bottom: 9vh;
-
-    z-index: 5;
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    padding: 13px 25px;
-
-    border: 1px solid rgba(255,255,255,.14);
-    border-radius: 999px;
-
-    color: rgba(255,255,255,.88);
-
-    background:
-        rgba(255,255,255,.045);
-
-    backdrop-filter: blur(10px);
-
-    font-size: 14px;
-
-    opacity: 0;
-
-    animation:
-        buttonAppear 1s ease 4.2s forwards;
-
-    transition:
-        background .3s ease,
-        transform .3s ease,
-        border-color .3s ease;
-}
-
-.start-button:hover {
-    background: rgba(255,255,255,.09);
-
-    border-color:
-        rgba(255,255,255,.25);
-
-    transform: translateY(-3px);
-}
-
-.arrow {
-    font-size: 20px;
-
-    animation:
-        arrowBounce 1.5s ease-in-out infinite;
-}
-
-
-/* =====================================================
-   AUTHENTICATION
-   ===================================================== */
-
-#authenticationContent {
-    position: absolute;
-    inset: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 30px;
-}
-
-.authentication-light {
-    position: absolute;
-
-    width: 420px;
-    height: 420px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(216, 198, 139, .12),
-            transparent 68%
-        );
-
-    filter: blur(5px);
 
     pointer-events: none;
+
 }
 
-#authenticationContent h2,
-#authenticationContent p,
-.keyword-wrapper,
-#keywordButton {
+
+body::before {
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.55) 1px,
+            transparent 1px
+        ),
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.35) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        130px 130px,
+        210px 210px;
+
+    background-position:
+        20px 30px,
+        90px 120px;
+
+    opacity: .25;
+
+}
+
+
+body::after {
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(255,214,130,.08),
+            transparent 40%
+        );
+
+    animation:
+        ambientLight 5s ease-in-out infinite alternate;
+
+}
+
+
+/* =========================================================
+   GAME
+========================================================= */
+
+.game {
+
     position: relative;
-    z-index: 2;
-}
 
-#authenticationContent h2 {
-    margin-bottom: 15px;
+    width: 100vw;
 
-    font-size: clamp(20px, 4vw, 28px);
-    font-weight: 500;
-}
+    height: 100vh;
 
-#authenticationContent > p {
-    margin-bottom: 45px;
-
-    color: rgba(255,255,255,.58);
-
-    font-size: 14px;
-}
-
-.keyword-wrapper {
-    width: min(300px, 75vw);
-
-    position: relative;
-}
-
-#keywordInput {
-    width: 100%;
-
-    padding: 13px 8px;
-
-    border: none;
-    outline: none;
-
-    color: #fff;
-
-    background: transparent;
+    overflow: hidden;
 
     text-align: center;
 
-    font-size: 21px;
 }
 
-.input-line {
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+#introContent {
+
     position: absolute;
 
-    bottom: 0;
-    left: 50%;
-
-    width: 100%;
-    height: 1px;
-
-    transform: translateX(-50%);
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(236, 218, 168, .75),
-            transparent
-        );
-
-    transition:
-        box-shadow .3s ease;
-}
-
-.keyword-wrapper:focus-within .input-line {
-    box-shadow:
-        0 0 14px rgba(236, 218, 168, .45);
-}
-
-.error-message {
-    min-height: 28px;
-
-    margin-top: 13px;
-
-    color: #e9a0a8 !important;
-
-    font-size: 12px !important;
-}
-
-#keywordButton {
-    margin-top: 18px;
-
-    padding: 12px 38px;
-
-    border-radius: 999px;
-
-    color: #171421;
-
-    background:
-        linear-gradient(
-            135deg,
-            #f0dfae,
-            #cdb36f
-        );
-
-    font-size: 14px;
-    font-weight: 700;
-
-    box-shadow:
-        0 8px 30px rgba(205,179,111,.16);
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease;
-}
-
-#keywordButton:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 12px 35px rgba(205,179,111,.3);
-}
-
-#keywordButton:active {
-    transform: scale(.96);
-}
-
-
-/* =====================================================
-   TRANSITION
-   ===================================================== */
-
-#transitionContent {
-    position: absolute;
     inset: 0;
 
     display: flex;
+
     flex-direction: column;
 
-    align-items: center;
     justify-content: center;
 
-    gap: 13px;
+    align-items: center;
 
-    text-align: center;
-
-    overflow: hidden;
 }
 
-.transition-light {
+
+.light-orb {
+
     position: absolute;
 
     width: 260px;
+
     height: 260px;
 
     border-radius: 50%;
@@ -532,1155 +172,2553 @@ button {
     background:
         radial-gradient(
             circle,
-            rgba(255,245,202,.3),
-            rgba(167,185,255,.08) 35%,
-            transparent 72%
+            rgba(255,218,150,.18),
+            rgba(255,218,150,.06) 35%,
+            transparent 70%
         );
 
-    filter: blur(5px);
+    filter: blur(8px);
+
+    z-index: -1;
 
     animation:
-        transitionLight 4.5s ease-in-out infinite;
-}
+        orbPulse 4s ease-in-out infinite;
 
-#transitionContent p {
-    position: relative;
-    z-index: 2;
-
-    font-size: clamp(19px, 4vw, 28px);
-
-    color: rgba(255,255,255,.9);
-
-    animation:
-        transitionText 3s ease-in-out infinite;
-}
-
-#transitionContent p:last-child {
-    color: rgba(255,255,255,.62);
-    font-size: clamp(15px, 3vw, 21px);
 }
 
 
-/* =====================================================
-   WORLD
-   ===================================================== */
+.intro-text {
 
-#worldContent {
-    position: absolute;
-    inset: 0;
+    display: flex;
 
-    overflow: hidden;
+    flex-direction: column;
 
-    background:
-        linear-gradient(
-            180deg,
-            #030513 0%,
-            #080d20 48%,
-            #111a32 100%
-        );
+    gap: 20px;
+
+    margin-bottom: 75px;
+
 }
 
 
-/* =====================================================
-   SKY
-   ===================================================== */
+.intro-line {
 
-.sky {
-    position: absolute;
-    inset: 0;
-
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            circle at 75% 20%,
-            rgba(196, 203, 255, .06),
-            transparent 25%
-        );
-
-    transition:
-        background 3s ease;
-}
-
-.moon-glow {
-    position: absolute;
-
-    top: 9vh;
-    right: 11vw;
-
-    width: clamp(90px, 13vw, 160px);
-    height: clamp(90px, 13vw, 160px);
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 38% 35%,
-            #fffce9 0%,
-            #f7edc6 43%,
-            #d8ca9e 75%,
-            rgba(216,202,158,.2) 100%
-        );
-
-    box-shadow:
-        0 0 30px rgba(255,247,207,.32),
-        0 0 90px rgba(255,242,189,.18);
-
-    opacity: .95;
-
-    transition:
-        box-shadow 4s ease,
-        transform 4s ease,
-        filter 4s ease;
-}
-
-.stars {
-    position: absolute;
-    inset: 0;
-
-    pointer-events: none;
-
-    background-repeat: repeat;
-
-    opacity: .65;
-
-    transition:
-        opacity 4s ease,
-        transform 4s ease;
-}
-
-.stars-1 {
-    background-image:
-        radial-gradient(circle, rgba(255,255,255,.8) 0 1px, transparent 1.5px);
-
-    background-size: 83px 97px;
-
-    animation:
-        starsMove1 35s linear infinite;
-}
-
-.stars-2 {
-    background-image:
-        radial-gradient(circle, rgba(255,255,255,.55) 0 1px, transparent 1.7px);
-
-    background-size: 137px 151px;
-
-    animation:
-        starsMove2 50s linear infinite;
-}
-
-.stars-3 {
-    background-image:
-        radial-gradient(circle, rgba(213,225,255,.7) 0 1px, transparent 1.5px);
-
-    background-size: 191px 179px;
-
-    animation:
-        starsMove3 70s linear infinite;
-}
-
-
-/* =====================================================
-   WORLD TEXT
-   ===================================================== */
-
-.world-content {
-    position: absolute;
-
-    top: 20vh;
-    left: 50%;
-
-    width: min(650px, 90vw);
-
-    transform: translateX(-50%);
-
-    text-align: center;
-
-    z-index: 10;
-
-    opacity: 1;
-
-    transition:
-        opacity 1.2s ease,
-        transform 1.2s ease;
-}
-
-.world-content.hide-text {
     opacity: 0;
+
     transform:
-        translateX(-50%)
-        translateY(-20px);
+        translateY(15px);
+
+    animation:
+        textReveal 1s ease forwards;
+
 }
 
-.world-intro {
-    margin-bottom: 18px;
 
-    color: rgba(255,255,255,.9);
+.line-1 {
 
-    font-size: clamp(17px, 3.5vw, 25px);
+    font-size:
+        clamp(1.7rem,4vw,2.5rem);
+
+    font-weight: 500;
+
+    animation-delay: .5s;
+
+}
+
+
+.line-2 {
+
+    font-size:
+        clamp(1.25rem,3vw,1.7rem);
+
+    color: #d9d6ce;
+
+    animation-delay: 1.7s;
+
+}
+
+
+.line-3 {
+
+    font-size: 1rem;
+
+    color: #aaa9a5;
 
     line-height: 2;
 
-    text-shadow:
-        0 2px 20px rgba(0,0,0,.5);
-}
+    animation-delay: 3.1s;
 
-.world-intro-delay {
-    color: rgba(255,255,255,.58);
-
-    font-size: clamp(14px, 3vw, 18px);
 }
 
 
-/* =====================================================
-   CAT PATH
-   ===================================================== */
-
-.cat-path-svg {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    z-index: 15;
-
-    pointer-events: none;
-
-    overflow: visible;
-}
-
-#catPath {
-    stroke: transparent;
-}
-
-
-/* =====================================================
-   CAT
-   ===================================================== */
-
-#cat {
-    position: fixed;
-
-    width: clamp(125px, 18vw, 190px);
-    height: auto;
-
-    z-index: 30;
-
-    opacity: 0;
-
-    cursor: pointer;
-
-    transform-origin: center bottom;
-
-    will-change:
-        left,
-        top,
-        transform,
-        opacity;
-
-    filter:
-        drop-shadow(
-            0 15px 20px rgba(0,0,0,.28)
-        );
-
-    transition:
-        filter .3s ease;
-}
-
-#cat:hover {
-    filter:
-        drop-shadow(
-            0 15px 22px rgba(0,0,0,.32)
-        )
-        drop-shadow(
-            0 0 10px rgba(255,236,180,.12)
-        );
-}
-
-.cat-svg {
-    width: 100%;
-    height: auto;
-
-    display: block;
-
-    overflow: visible;
-}
-
-
-/* =====================================================
-   CAT STATES
-   ===================================================== */
-
-.cat-start {
-    animation:
-        catAppear .7s ease forwards;
-}
-
-.cat-walking {
-    animation:
-        catWalk .38s ease-in-out infinite alternate;
-}
-
-.cat-idle {
-    animation:
-        catIdle 2.2s ease-in-out infinite;
-}
-
-.cat-attention {
-    animation:
-        catAttention .75s ease-in-out infinite alternate;
-}
-
-.cat-petted {
-    animation:
-        catPetted .8s ease-in-out;
-}
-
-.cat-happy {
-    animation:
-        catHappy .9s ease-in-out;
-}
-
-.cat-peek {
-    animation:
-        catPeek 1s ease-in-out;
-}
-
-
-/* =====================================================
-   CAT PART ANIMATIONS
-   ===================================================== */
-
-.cat-walking .cat-tail {
-    animation:
-        tailWalk .45s ease-in-out infinite alternate;
-    transform-origin: 235px 270px;
-}
-
-.cat-idle .cat-tail {
-    animation:
-        tailIdle 2s ease-in-out infinite;
-    transform-origin: 235px 270px;
-}
-
-.cat-attention .cat-eye {
-    animation:
-        eyeLook 1.2s ease-in-out infinite alternate;
-}
-
-.cat-petted .cat-tail {
-    animation:
-        tailHappy .25s ease-in-out infinite alternate;
-    transform-origin: 235px 270px;
-}
-
-.cat-happy .cat-tail {
-    animation:
-        tailHappy .22s ease-in-out infinite alternate;
-    transform-origin: 235px 270px;
-}
-
-.cat-petted .cat-head {
-    animation:
-        headPet .35s ease-in-out 2;
-    transform-origin: 160px 150px;
-}
-
-.cat-happy .cat-head {
-    animation:
-        headHappy .3s ease-in-out 3;
-    transform-origin: 160px 150px;
-}
-
-
-/* =====================================================
-   CAT MESSAGE
-   ===================================================== */
-
-.cat-message {
-    position: fixed;
-
-    left: 50%;
-    bottom: 17vh;
-
-    z-index: 40;
-
-    width: min(390px, 82vw);
-
-    padding: 15px 22px;
-
-    transform:
-        translate(-50%, 15px)
-        scale(.97);
-
-    opacity: 0;
-
-    text-align: center;
-
-    border:
-        1px solid rgba(255,255,255,.1);
-
-    border-radius: 18px;
-
-    background:
-        rgba(12,16,34,.78);
-
-    backdrop-filter:
-        blur(14px);
-
-    box-shadow:
-        0 15px 45px rgba(0,0,0,.28);
-
-    color: rgba(255,255,255,.88);
-
-    font-size: 13px;
-
-    pointer-events: none;
-
-    transition:
-        opacity .8s ease,
-        transform .8s ease;
-}
-
-.cat-message.show {
-    opacity: 1;
-
-    transform:
-        translate(-50%, 0)
-        scale(1);
-}
-
-
-/* =====================================================
-   STORY AREA
-   ===================================================== */
-
-#storyArea {
-    position: absolute;
-    inset: 0;
-
-    z-index: 50;
-
-    pointer-events: none;
-}
-
-.story-message {
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    width: min(760px, 88vw);
-
-    transform:
-        translate(-50%, -50%)
-        translateY(20px)
-        scale(.98);
-
-    opacity: 0;
-
-    text-align: center;
-
-    transition:
-        opacity .9s ease,
-        transform .9s ease;
-}
-
-.story-message.show {
-    opacity: 1;
-
-    transform:
-        translate(-50%, -50%)
-        translateY(0)
-        scale(1);
-}
-
-.story-message p {
-    color: rgba(255,255,255,.91);
-
-    font-size: clamp(15px, 3vw, 22px);
-
-    line-height: 2.25;
-
-    text-shadow:
-        0 3px 25px rgba(0,0,0,.65);
-}
-
-
-/* =====================================================
-   STORY CHOICES
-   ===================================================== */
-
-.story-choices {
-    position: absolute;
-
-    left: 50%;
-    bottom: 13vh;
-
-    z-index: 60;
-
-    width: min(500px, 88vw);
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.start-button {
 
     display: flex;
-    flex-direction: column;
 
-    gap: 13px;
+    align-items: center;
 
-    transform:
-        translateX(-50%)
-        translateY(20px);
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    transition:
-        opacity .8s ease,
-        transform .8s ease;
-}
-
-.story-choices.show {
-    opacity: 1;
-
-    transform:
-        translateX(-50%)
-        translateY(0);
-
-    pointer-events: auto;
-}
-
-.story-choice {
-    width: 100%;
-
-    padding: 15px 20px;
+    gap: 12px;
 
     border:
-        1px solid rgba(255,255,255,.12);
-
-    border-radius: 16px;
+        1px solid
+        rgba(255,218,150,.35);
 
     background:
-        rgba(255,255,255,.055);
+        rgba(255,255,255,.025);
 
-    backdrop-filter:
-        blur(12px);
+    color: #f4eee2;
 
-    color: rgba(255,255,255,.9);
+    padding:
+        14px 24px;
 
-    font-size: 14px;
+    border-radius: 50px;
 
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.18);
+    font-family: inherit;
+
+    font-size: 1rem;
+
+    cursor: pointer;
 
     transition:
         transform .3s ease,
         background .3s ease,
         border-color .3s ease,
         box-shadow .3s ease;
+
 }
 
-.story-choice:hover {
-    transform: translateY(-3px);
+
+.start-button:hover {
+
+    transform:
+        translateY(-3px);
 
     background:
-        rgba(255,255,255,.095);
+        rgba(255,218,150,.07);
 
     border-color:
-        rgba(235,218,171,.3);
+        rgba(255,218,150,.7);
 
     box-shadow:
-        0 14px 40px rgba(0,0,0,.25);
+        0 0 25px
+        rgba(255,218,150,.12);
+
 }
 
-.story-choice:active {
-    transform: scale(.98);
+
+.arrow {
+
+    font-size: 1.1rem;
+
+    transition:
+        transform .3s ease;
+
 }
 
 
-/* =====================================================
-   FINAL CONTACT FORM
-   ===================================================== */
+.start-button:hover .arrow {
 
-.final-contact-form {
+    transform:
+        translateY(4px);
+
+}
+
+
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
+
+#authenticationContent {
+
     position: absolute;
 
-    left: 50%;
-    bottom: 5vh;
+    inset: 0;
 
-    z-index: 100;
+    display: flex;
 
-    width: min(520px, 90vw);
+    flex-direction: column;
 
-    transform: translateX(-50%);
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+.authentication-light {
+
+    position: absolute;
+
+    width: 240px;
+
+    height: 240px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,220,150,.12),
+            transparent 70%
+        );
+
+    filter: blur(10px);
+
+    z-index: -1;
+
+}
+
+
+#authenticationContent h2 {
+
+    font-size:
+        clamp(1.4rem,3vw,2rem);
+
+    font-weight: 500;
+
+    margin-bottom: 18px;
+
+}
+
+
+#authenticationContent > p {
+
+    color: #aaa9a5;
+
+    margin-bottom: 45px;
+
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.keyword-wrapper {
+
+    position: relative;
+
+    width:
+        min(300px,80vw);
+
+}
+
+
+#keywordInput {
+
+    width: 100%;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #f5f3ed;
 
     text-align: center;
 
-    pointer-events: auto;
+    font-family: inherit;
+
+    font-size: 1.4rem;
+
+    padding: 12px 10px;
+
+}
+
+
+.input-line {
+
+    display: block;
+
+    width: 100%;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,218,150,.7),
+            transparent
+        );
+
+}
+
+
+.error-message {
+
+    min-height: 28px;
+
+    margin-top: 15px;
+
+    color: #d99b9b;
+
+    font-size: .9rem;
+
+}
+
+
+#keywordButton {
+
+    margin-top: 25px;
+
+    padding:
+        12px 30px;
+
+    border-radius: 30px;
+
+    border:
+        1px solid
+        rgba(255,218,150,.3);
+
+    background: transparent;
+
+    color: #f5f3ed;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================================
+   TRANSITION
+========================================================= */
+
+#transitionContent {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 18px;
+
+    font-size:
+        clamp(1.3rem,3vw,2rem);
+
+    line-height: 2;
+
+}
+
+
+.transition-light {
+
+    position: absolute;
+
+    width: 50px;
+
+    height: 50px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,220,150,.8);
+
+    filter: blur(25px);
+
+    animation:
+        transitionGlow 3s ease forwards;
+
+}
+
+
+/* =========================================================
+   WORLD
+========================================================= */
+
+#worldContent {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+
+    height: 100vh;
+
+    overflow: hidden;
+
+}
+
+
+/* =========================================================
+   SKY
+========================================================= */
+
+.sky {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(75,91,150,.16),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #030611,
+            #080d1e,
+            #10162c
+        );
+
+}
+
+
+/* =========================================================
+   MOON
+========================================================= */
+
+.moon-glow {
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    border-radius: 50%;
+
+    top: 12%;
+
+    right: 15%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,245,215,.95) 0%,
+            rgba(255,232,175,.35) 25%,
+            rgba(255,220,150,.08) 50%,
+            transparent 70%
+        );
+
+    filter: blur(2px);
+
+    animation:
+        moonFloat 6s ease-in-out infinite alternate;
+
+}
+
+
+/* =========================================================
+   STARS
+========================================================= */
+
+.stars {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+}
+
+
+.stars-1 {
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.8) 1px,
+            transparent 1.5px
+        );
+
+    background-size:
+        130px 130px;
+
+    opacity: .35;
+
+}
+
+
+.stars-2 {
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.55) 1px,
+            transparent 1.5px
+        );
+
+    background-size:
+        190px 190px;
+
+    background-position:
+        40px 70px;
+
+    opacity: .25;
+
+}
+
+
+.stars-3 {
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(255,220,150,.7) 1px,
+            transparent 1.5px
+        );
+
+    background-size:
+        260px 260px;
+
+    background-position:
+        120px 30px;
+
+    opacity: .2;
+
+}
+
+
+/* =========================================================
+   WORLD TEXT
+========================================================= */
+
+.world-content {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 5;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s ease;
+
+}
+
+
+.world-intro {
+
+    font-size:
+        clamp(1.3rem,3vw,1.8rem);
+
+    color: #eeeae1;
+
+    line-height: 2;
+
+    opacity: 0;
+
+    transform:
+        translateY(20px);
+
+    animation:
+        worldTextReveal 1.5s ease forwards;
+
+}
+
+
+.world-intro-delay {
+
+    animation-delay: 1.5s;
+
+    color: #aaaebe;
+
+}
+
+
+.world-content.hide-text {
+
+    opacity: 0;
+
+    transform:
+        translateY(-20px);
+
+}
+
+
+/* =========================================================
+   CAT PATH
+========================================================= */
+
+.cat-path-svg {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    z-index: 10;
+
+}
+
+
+/* =========================================================
+   CAT
+========================================================= */
+
+#cat {
+
+    position: absolute;
+
+    width: 280px;
+
+    height: 315px;
+
+    left: 0;
+
+    top: 0;
+
+    opacity: 0;
+
+    transform-origin:
+        center bottom;
+
+    z-index: 20;
+
+    cursor: pointer;
+
+}
+
+
+.cat-svg {
+
+    width: 100%;
+
+    height: 100%;
+
+    overflow: visible;
+
+}
+
+
+/* =========================================================
+   CAT WALKING
+========================================================= */
+
+#cat.cat-walking {
+
+    animation:
+        catBodyWalk .48s ease-in-out infinite;
+
+}
+
+
+@keyframes catBodyWalk {
+
+    0%,
+    100% {
+
+        transform:
+            translate(-50%,-50%)
+            translateY(0)
+            rotate(0deg);
+
+    }
+
+    50% {
+
+        transform:
+            translate(-50%,-50%)
+            translateY(-4px)
+            rotate(.6deg);
+
+    }
+
+}
+
+
+/* =========================================================
+   LEGS
+========================================================= */
+
+#cat.cat-walking .front-leg {
+
+    transform-box:
+        fill-box;
+
+    transform-origin:
+        50% 10%;
+
+}
+
+
+#cat.cat-walking .front-leg-left {
+
+    animation:
+        frontLeftWalk .48s ease-in-out infinite;
+
+}
+
+
+#cat.cat-walking .front-leg-right {
+
+    animation:
+        frontRightWalk .48s ease-in-out infinite;
+
+}
+
+
+@keyframes frontLeftWalk {
+
+    0%,
+    100% {
+        transform: rotate(14deg);
+    }
+
+    50% {
+        transform: rotate(-14deg);
+    }
+
+}
+
+
+@keyframes frontRightWalk {
+
+    0%,
+    100% {
+        transform: rotate(-14deg);
+    }
+
+    50% {
+        transform: rotate(14deg);
+    }
+
+}
+
+
+#cat.cat-walking .cat-leg {
+
+    transform-box:
+        fill-box;
+
+    transform-origin:
+        50% 20%;
+
+}
+
+
+#cat.cat-walking .cat-leg-left {
+
+    animation:
+        backLeftWalk .48s ease-in-out infinite;
+
+}
+
+
+#cat.cat-walking .cat-leg-right {
+
+    animation:
+        backRightWalk .48s ease-in-out infinite;
+
+}
+
+
+@keyframes backLeftWalk {
+
+    0%,
+    100% {
+        transform: rotate(-10deg);
+    }
+
+    50% {
+        transform: rotate(10deg);
+    }
+
+}
+
+
+@keyframes backRightWalk {
+
+    0%,
+    100% {
+        transform: rotate(10deg);
+    }
+
+    50% {
+        transform: rotate(-10deg);
+    }
+
+}
+
+
+/* =========================================================
+   TAIL
+========================================================= */
+
+#cat.cat-walking .cat-tail {
+
+    transform-box:
+        fill-box;
+
+    transform-origin:
+        10% 50%;
+
+    animation:
+        tailWalk .9s ease-in-out infinite;
+
+}
+
+
+@keyframes tailWalk {
+
+    0%,
+    100% {
+        transform: rotate(-4deg);
+    }
+
+    50% {
+        transform: rotate(9deg);
+    }
+
+}
+
+
+/* =========================================================
+   HEAD
+========================================================= */
+
+#cat.cat-walking .cat-head {
+
+    animation:
+        headBounce .48s ease-in-out infinite;
+
+}
+
+
+@keyframes headBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-2px);
+    }
+
+}
+
+
+/* =========================================================
+   IDLE
+========================================================= */
+
+#cat.cat-idle {
+
+    animation:
+        catIdle 2.5s ease-in-out infinite;
+
+}
+
+
+@keyframes catIdle {
+
+    0%,
+    100% {
+
+        transform:
+            translate(-50%,-50%)
+            translateY(0);
+
+    }
+
+    50% {
+
+        transform:
+            translate(-50%,-50%)
+            translateY(-3px);
+
+    }
+
+}
+
+
+/* =========================================================
+   ATTENTION
+========================================================= */
+
+#cat.cat-attention .cat-head {
+
+    transform-box:
+        fill-box;
+
+    transform-origin:
+        center bottom;
+
+    animation:
+        catLookAtPlayer 1s ease-in-out forwards;
+
+}
+
+
+@keyframes catLookAtPlayer {
+
+    0% {
+        transform:
+            rotate(0deg)
+            translateY(0);
+    }
+
+    45% {
+        transform:
+            rotate(-4deg)
+            translateY(-2px);
+    }
+
+    100% {
+        transform:
+            rotate(2deg)
+            translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   PETTED
+========================================================= */
+
+#cat.cat-petted {
+
+    animation:
+        catPetted .8s ease-in-out;
+
+}
+
+
+@keyframes catPetted {
+
+    0% {
+
+        transform:
+            translate(-50%,-50%)
+            translateY(0)
+            rotate(0deg)
+            scale(1);
+
+    }
+
+    30% {
+
+        transform:
+            translate(-50%,-50%)
+            translateY(-8px)
+            rotate(-2deg)
+            scale(1.03);
+
+    }
+
+    60% {
+
+        transform:
+            translate(-50%,-50%)
+            translateY(2px)
+            rotate(2deg)
+            scale(1.02);
+
+    }
+
+    100% {
+
+        transform:
+            translate(-50%,-50%)
+            translateY(0)
+            rotate(0deg)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   HAPPY
+========================================================= */
+
+#cat.cat-happy .cat-tail {
+
+    transform-box:
+        fill-box;
+
+    transform-origin:
+        left center;
+
+    animation:
+        happyTail .7s ease-in-out infinite alternate;
+
+}
+
+
+@keyframes happyTail {
+
+    from {
+        transform:
+            rotate(-8deg);
+    }
+
+    to {
+        transform:
+            rotate(12deg);
+    }
+
+}
+
+
+/* =========================================================
+   EYE
+========================================================= */
+
+.eye-shine {
+
+    animation:
+        eyeSparkle 3s ease-in-out infinite;
+
+}
+
+
+@keyframes eyeSparkle {
+
+    0%,
+    100% {
+        opacity: .8;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   CAT HOVER
+========================================================= */
+
+#cat:hover {
+
+    filter:
+        drop-shadow(
+            0 0 18px
+            rgba(255,220,180,.35)
+        );
+
+}
+
+
+/* =========================================================
+   CAT MESSAGE
+========================================================= */
+
+.cat-message {
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 10%;
+
+    transform:
+        translateX(-50%)
+        translateY(15px);
+
+    z-index: 40;
+
+    width:
+        min(480px,85vw);
+
+    padding:
+        12px 22px;
+
+    border-radius: 30px;
+
+    background:
+        rgba(5,7,17,.55);
+
+    border:
+        1px solid
+        rgba(255,218,150,.15);
+
+    backdrop-filter:
+        blur(8px);
+
+    color: #eeeae1;
+
+    font-size:
+        1.05rem;
+
+    line-height: 2;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+
+}
+
+
+.cat-message.show {
 
     opacity: 1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+
+}
+
+
+/* =========================================================
+   STORY MESSAGE
+========================================================= */
+
+#storyMessage {
+
+    position: fixed;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform:
+        translate(-50%,-50%)
+        translateY(20px);
+
+    z-index: 60;
+
+    width:
+        min(650px,85vw);
+
+    min-height: 180px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding:
+        30px 40px;
+
+    border-radius: 28px;
+
+    background:
+        rgba(5,7,17,.58);
+
+    border:
+        1px solid
+        rgba(255,218,150,.18);
+
+    backdrop-filter:
+        blur(12px);
+
+    box-shadow:
+        0 0 40px
+        rgba(255,220,160,.06);
+
+    color: #eeeae1;
+
+    font-size:
+        clamp(1.05rem,2.2vw,1.35rem);
+
+    line-height: 2.2;
+
+    text-align: center;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s ease;
+
+}
+
+
+#storyMessage.show {
+
+    opacity: 1;
+
+    transform:
+        translate(-50%,-50%)
+        translateY(0);
+
+}
+
+
+#storyMessageText {
+
+    width: 100%;
+
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes textReveal {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(15px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+@keyframes orbPulse {
+
+    from {
+
+        transform:
+            scale(.9);
+
+        opacity: .6;
+
+    }
+
+    to {
+
+        transform:
+            scale(1.1);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+@keyframes ambientLight {
+
+    from {
+        opacity: .5;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+@keyframes transitionGlow {
+
+    0% {
+
+        transform:
+            scale(.5);
+
+        opacity: .2;
+
+    }
+
+    70% {
+
+        transform:
+            scale(8);
+
+        opacity: .5;
+
+    }
+
+    100% {
+
+        transform:
+            scale(18);
+
+        opacity: 0;
+
+    }
+
+}
+
+
+@keyframes moonFloat {
+
+    from {
+
+        transform:
+            translateY(0)
+            scale(.95);
+
+        opacity: .75;
+
+    }
+
+    to {
+
+        transform:
+            translateY(-15px)
+            scale(1.05);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+@keyframes worldTextReveal {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #cat {
+
+        width: 180px;
+
+        height: 210px;
+
+    }
+
+
+    .moon-glow {
+
+        width: 140px;
+
+        height: 140px;
+
+        right: 8%;
+
+    }
+
+
+    .cat-message {
+
+        width: 90%;
+
+        font-size: .95rem;
+
+        bottom: 8%;
+
+    }
+
+
+    #storyMessage {
+
+        width: 90%;
+
+        min-height: 160px;
+
+        padding:
+            25px 20px;
+
+        font-size: .95rem;
+
+    }
+
+}
+
+/* =========================================
+   پیام بعد از رفتن گربه
+========================================= */
+
+#afterCatMessage {
+    position: fixed;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%) translateY(20px);
+
+    width: min(700px, 85vw);
+
+    z-index: 50;
+
+    opacity: 0;
+
+    color: #eeeae1;
+
+    text-align: center;
+
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+
+    line-height: 2.2;
+
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+}
+
+
+/* نمایش پیام */
+
+#afterCatMessage.show {
+    opacity: 1;
+
+    transform:
+        translate(-50%, -50%)
+        translateY(0);
+}
+
+
+/* هر جمله یک خط مستقل */
+
+#afterCatMessage p {
+    margin: 0 0 12px 0;
+}
+
+
+/* آخرین خط فاصله نداشته باشد */
+
+#afterCatMessage p:last-child {
+    margin-bottom: 0;
+}
+
+/* =====================================================
+   STORY CHOICES
+   دکمه‌ها خارج از باکس پیام
+===================================================== */
+
+.story-choices {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 22px;
+
+    opacity: 0;
+
+    transform: translateY(10px);
 
     transition:
         opacity .8s ease,
         transform .8s ease;
 }
 
-.final-contact-label {
-    margin-bottom: 13px;
 
-    color: rgba(255,255,255,.7);
+/* نمایش دکمه‌ها */
 
-    font-size: 13px;
+.story-choices.show {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
 }
 
-.final-contact-row {
-    display: flex;
 
-    align-items: stretch;
+/* =====================================================
+   BUTTON BASE
+===================================================== */
 
-    gap: 8px;
+.story-choice {
 
-    direction: ltr;
-}
+    min-width: 190px;
 
-#finalPhoneInput,
-#phoneInput {
-    flex: 1;
+    padding: 12px 24px;
 
-    min-width: 0;
+    border-radius: 30px;
 
-    padding: 13px 16px;
+    font-family: inherit;
 
-    border:
-        1px solid rgba(255,255,255,.12);
+    font-size: .95rem;
 
-    border-radius: 13px;
+    color: #f5f3ed;
 
-    outline: none;
-
-    color: #fff;
-
-    background:
-        rgba(255,255,255,.055);
+    cursor: pointer;
 
     backdrop-filter: blur(10px);
 
-    font-size: 14px;
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+        transform .3s ease,
+        background .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+
+}
+
+
+/* =====================================================
+   ACCEPT
+   سبز مات
+===================================================== */
+
+#choiceYes {
+
+    background:
+        rgba(90, 180, 120, .16);
+
+    border:
+        1px solid rgba(120, 220, 150, .35);
+
+    box-shadow:
+        0 0 20px rgba(90, 180, 120, .05);
+
+}
+
+
+#choiceYes:hover {
+
+    transform:
+        translateY(-3px);
+
+    background:
+        rgba(90, 180, 120, .25);
+
+    border-color:
+        rgba(140, 235, 165, .65);
+
+    box-shadow:
+        0 0 25px rgba(90, 200, 130, .18);
+
+}
+
+
+/* =====================================================
+   REJECT
+   قرمز مات
+===================================================== */
+
+#choiceNo {
+
+    background:
+        rgba(180, 80, 90, .14);
+
+    border:
+        1px solid rgba(220, 120, 130, .32);
+
+    box-shadow:
+        0 0 20px rgba(180, 80, 90, .05);
+
+}
+
+
+#choiceNo:hover {
+
+    transform:
+        translateY(-3px);
+
+    background:
+        rgba(180, 80, 90, .23);
+
+    border-color:
+        rgba(235, 140, 150, .6);
+
+    box-shadow:
+        0 0 25px rgba(200, 80, 100, .18);
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .story-choices {
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        margin-top: 10px;
+
+    }
+
+
+    .story-choice {
+
+        padding: 20px 13px ;
+        font-size: 0.8rem;
+        width: 220px;
+
+    }
+
+}
+
+/* =====================================================
+   STORY CHOICES
+===================================================== */
+
+.story-choices {
+
+    position:fixed;
+
+    left: 50%;
+    right: 50%;
+    /* bottom: 14%; */
+    top: calc(50% + 190px);
+
+    transform: translateX(-50%);
+
+    /* width: min(500px, 90vw); */
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    z-index: 100;
+
+}
+
+
+/* =====================================================
+   CHOICE BUTTON
+===================================================== */
+
+.choice-button {
+
+    position: relative;
+
+    min-width: 190px;
+
+    padding: 13px 22px;
+
+    border-radius: 30px;
+
+    font-family: inherit;
+
+    font-size: .95rem;
+
+    color: #f5f3ed;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease,
+        background .3s ease;
+
+}
+
+
+/* =====================================================
+   ACCEPT
+===================================================== */
+
+.choice-button.accept {
+
+    background:
+        rgba(80, 170, 110, .18);
+
+    border:
+        1px solid rgba(110, 220, 140, .4);
+
+    box-shadow:
+        0 0 20px rgba(90, 190, 120, .08);
+
+}
+
+
+.choice-button.accept:hover {
+
+    transform: translateY(-3px);
+
+    background:
+        rgba(80, 170, 110, .28);
+
+    box-shadow:
+        0 0 25px rgba(90, 190, 120, .18);
+
+}
+
+
+/* =====================================================
+   REJECT
+===================================================== */
+
+.choice-button.reject {
+
+    background:
+        rgba(180, 70, 75, .16);
+
+    border:
+        1px solid rgba(220, 110, 115, .4);
+
+    box-shadow:
+        0 0 20px rgba(190, 80, 85, .08);
+
+}
+
+
+.choice-button.reject:hover {
+
+    transform: translateY(-3px);
+
+    background:
+        rgba(180, 70, 75, .25);
+
+    box-shadow:
+        0 0 25px rgba(190, 80, 85, .18);
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .story-choices {
+
+        bottom: 28%;
+
+        left: 5%;
+
+        width: 90vw;
+
+        flex-direction: row;
+
+        align-items: center;
+
+        gap: 5px;
+
+    }
+
+
+    .choice-button {
+
+        width: 100%;
+
+        max-width: 300px;
+
+    }
+
+}
+/* =====================================================
+   FINAL MOON ENDING
+===================================================== */
+
+.moon-glow.final-glow {
+
+    animation:
+        finalMoonGlow 4s ease-in-out forwards;
+
+}
+
+
+@keyframes finalMoonGlow {
+
+    0% {
+
+        transform:
+            scale(1);
+
+        opacity: 1;
+
+        filter:
+            blur(2px);
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.12);
+
+        opacity: 1.25;
+
+        filter:
+            blur(1px);
+
+    }
+
+    100% {
+
+        transform:
+            scale(1.05);
+
+        opacity: .9;
+
+        filter:
+            blur(3px);
+
+    }
+
+}
+/* =====================================================
+   FINAL SCENE
+===================================================== */
+
+.moon-glow.final-glow {
+
+    animation:
+        finalMoonGlow 5s ease-in-out forwards;
+
+}
+
+
+@keyframes finalMoonGlow {
+
+    0% {
+
+        transform: scale(1);
+
+        opacity: .75;
+
+        filter: blur(2px);
+
+    }
+
+    50% {
+
+        transform: scale(1.18);
+
+        opacity: 1;
+
+        filter: blur(1px);
+
+    }
+
+    100% {
+
+        transform: scale(1.1);
+
+        opacity: .95;
+
+        filter: blur(2px);
+
+    }
+
+}
+
+
+/* =====================================================
+   FINAL SKY LIGHT
+===================================================== */
+
+.sky.final-sky {
+
+    animation:
+        finalSkyLight 5s ease-in-out forwards;
+
+}
+
+
+@keyframes finalSkyLight {
+
+    from {
+
+        filter:
+            brightness(1);
+
+    }
+
+    to {
+
+        filter:
+            brightness(1.22);
+
+    }
+
+}
+
+
+/* =====================================================
+   FINAL STARS
+===================================================== */
+
+.stars.final-stars {
+
+    animation:
+        finalStarsGlow 5s ease-in-out forwards;
+
+}
+
+
+@keyframes finalStarsGlow {
+
+    from {
+
+        opacity: .35;
+
+    }
+
+    to {
+
+        opacity: .75;
+
+    }
+
+}
+/* =====================================================
+   VPN NOTICE MODAL
+   ===================================================== */
+
+.vpn-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 99999;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(5, 8, 20, 0.72);
+
+    backdrop-filter: blur(10px);
+
+    -webkit-backdrop-filter: blur(10px);
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transition:
+        opacity 0.5s ease,
+        visibility 0.5s ease;
+
+}
+
+
+.vpn-modal-card {
+
+    width: 100%;
+
+    max-width: 520px;
+
+    padding: 38px 34px;
 
     text-align: center;
 
-    transition:
-        border-color .3s ease,
-        box-shadow .3s ease,
-        background .3s ease;
-}
-
-#finalPhoneInput::placeholder,
-#phoneInput::placeholder {
-    color: rgba(255,255,255,.38);
-}
-
-#finalPhoneInput:focus,
-#phoneInput:focus {
-    border-color:
-        rgba(236,218,168,.45);
+    border-radius: 24px;
 
     background:
-        rgba(255,255,255,.075);
+        rgba(20, 28, 48, 0.88);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
 
     box-shadow:
-        0 0 20px rgba(236,218,168,.08);
+        0 25px 80px
+        rgba(0, 0, 0, 0.45);
+
+    animation:
+        vpnModalAppear
+        0.6s ease;
+
 }
 
-#finalPhoneSubmit,
-#phoneSubmit {
-    flex: 0 0 auto;
 
-    padding: 0 24px;
+.vpn-modal-moon {
 
-    border-radius: 13px;
+    font-size: 42px;
 
-    color: #18151d;
+    margin-bottom: 12px;
+
+}
+
+
+.vpn-modal-card h2 {
+
+    margin:
+        0 0 18px;
+
+    font-size:
+        25px;
+
+    color:
+        #ffffff;
+
+}
+
+
+.vpn-modal-card p {
+
+    margin:
+        0 0 18px;
+
+    line-height:
+        2;
+
+    color:
+        #e2e8f0;
+
+    font-size:
+        15px;
+
+}
+
+
+.vpn-modal-description {
+
+    color:
+        #aeb9c9 !important;
+
+    font-size:
+        14px !important;
+
+    line-height:
+        2.1 !important;
+
+}
+
+
+.vpn-ready {
+
+    margin-top:
+        24px !important;
+
+    margin-bottom:
+        14px !important;
+
+    color:
+        #f8fafc !important;
+
+}
+
+
+.vpn-modal-button {
+
+    width: 100%;
+
+    border:
+        none;
+
+    border-radius:
+        14px;
+
+    padding:
+        14px 20px;
+
+    font-family:
+        inherit;
+
+    font-size:
+        16px;
+
+    font-weight:
+        600;
+
+    cursor:
+        pointer;
 
     background:
         linear-gradient(
             135deg,
-            #f1dfad,
-            #cdb26c
+            #6366f1,
+            #8b5cf6
         );
 
-    font-size: 13px;
-    font-weight: 700;
+    color:
+        white;
 
     transition:
-        transform .25s ease,
-        box-shadow .25s ease,
-        opacity .25s ease;
-}
+        transform 0.2s ease,
+        opacity 0.2s ease;
 
-#finalPhoneSubmit:hover,
-#phoneSubmit:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 8px 25px rgba(205,178,108,.25);
-}
-
-#finalPhoneSubmit:active,
-#phoneSubmit:active {
-    transform: scale(.97);
-}
-
-#finalPhoneSubmit:disabled,
-#phoneSubmit:disabled {
-    opacity: .55;
-
-    cursor: not-allowed;
-
-    transform: none;
-}
-
-.final-phone-error,
-.phone-error {
-    min-height: 24px;
-
-    margin-top: 8px;
-
-    color: #e7a0a8;
-
-    font-size: 11px;
 }
 
 
-/* =====================================================
-   FINAL SCENE
-   ===================================================== */
+.vpn-modal-button:hover {
 
-.moon-glow.final-glow {
-    transform: scale(1.18);
+    transform:
+        translateY(-2px);
 
-    filter:
-        brightness(1.15)
-        drop-shadow(
-            0 0 25px rgba(255,248,210,.7)
-        );
+    opacity:
+        0.92;
 
-    box-shadow:
-        0 0 55px rgba(255,247,207,.65),
-        0 0 150px rgba(255,242,189,.42),
-        0 0 260px rgba(255,242,189,.18);
-}
-
-.sky.final-sky {
-    background:
-        radial-gradient(
-            circle at 75% 20%,
-            rgba(255,242,193,.15),
-            transparent 35%
-        );
-}
-
-.stars.final-stars {
-    opacity: .9;
-
-    transform: scale(1.03);
 }
 
 
-/* =====================================================
-   KEYFRAMES
-   ===================================================== */
+.vpn-modal-button:active {
 
-@keyframes modalAppear {
+    transform:
+        translateY(0);
+
+}
+
+
+/* HIDE MODAL */
+
+.vpn-modal.hide {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+}
+
+
+/* ANIMATION */
+
+@keyframes vpnModalAppear {
+
     from {
+
         opacity: 0;
-        transform: translateY(25px) scale(.96);
+
+        transform:
+            translateY(20px)
+            scale(0.97);
+
     }
 
     to {
+
         opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
 
-@keyframes moonFloat {
-    0%,
-    100% {
-        transform: translateY(0);
+        transform:
+            translateY(0)
+            scale(1);
+
     }
 
-    50% {
-        transform: translateY(-7px);
-    }
-}
-
-@keyframes orbPulse {
-    0%,
-    100% {
-        transform: scale(.95);
-        opacity: .7;
-    }
-
-    50% {
-        transform: scale(1.08);
-        opacity: 1;
-    }
-}
-
-@keyframes introTextAppear {
-    from {
-        opacity: 0;
-        transform: translateY(18px);
-        filter: blur(6px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-        filter: blur(0);
-    }
-}
-
-@keyframes buttonAppear {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes arrowBounce {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(5px);
-    }
-}
-
-@keyframes transitionLight {
-    0%,
-    100% {
-        transform: scale(.85);
-        opacity: .5;
-    }
-
-    50% {
-        transform: scale(1.3);
-        opacity: 1;
-    }
-}
-
-@keyframes transitionText {
-    0%,
-    100% {
-        opacity: .65;
-    }
-
-    50% {
-        opacity: 1;
-    }
-}
-
-@keyframes starsMove1 {
-    from {
-        transform: translate(0, 0);
-    }
-
-    to {
-        transform: translate(-80px, 40px);
-    }
-}
-
-@keyframes starsMove2 {
-    from {
-        transform: translate(0, 0);
-    }
-
-    to {
-        transform: translate(100px, -60px);
-    }
-}
-
-@keyframes starsMove3 {
-    from {
-        transform: translate(0, 0);
-    }
-
-    to {
-        transform: translate(-60px, -80px);
-    }
-}
-
-@keyframes catAppear {
-    from {
-        opacity: 0;
-        transform: scale(.85) translateY(12px);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-@keyframes catWalk {
-    from {
-        transform: translateY(0) rotate(-1deg);
-    }
-
-    to {
-        transform: translateY(-5px) rotate(1deg);
-    }
-}
-
-@keyframes catIdle {
-    0%,
-    100% {
-        transform: translateY(0) scale(1);
-    }
-
-    50% {
-        transform: translateY(-5px) scale(1.01);
-    }
-}
-
-@keyframes catAttention {
-    from {
-        transform: translateY(0) rotate(-2deg);
-    }
-
-    to {
-        transform: translateY(-4px) rotate(2deg);
-    }
-}
-
-@keyframes catPetted {
-    0% {
-        transform: scale(1);
-    }
-
-    25% {
-        transform: scale(.96) translateY(3px);
-    }
-
-    55% {
-        transform: scale(1.04) translateY(-4px);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes catHappy {
-    0% {
-        transform: translateY(0) rotate(0);
-    }
-
-    25% {
-        transform: translateY(-10px) rotate(-3deg);
-    }
-
-    50% {
-        transform: translateY(0) rotate(3deg);
-    }
-
-    75% {
-        transform: translateY(-7px) rotate(-2deg);
-    }
-
-    100% {
-        transform: translateY(0) rotate(0);
-    }
-}
-
-@keyframes catPeek {
-    0% {
-        transform: translateX(0);
-    }
-
-    50% {
-        transform: translateX(-10px);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
-}
-
-@keyframes tailWalk {
-    from {
-        transform: rotate(-4deg);
-    }
-
-    to {
-        transform: rotate(5deg);
-    }
-}
-
-@keyframes tailIdle {
-    0%,
-    100% {
-        transform: rotate(-2deg);
-    }
-
-    50% {
-        transform: rotate(7deg);
-    }
-}
-
-@keyframes tailHappy {
-    from {
-        transform: rotate(-8deg);
-    }
-
-    to {
-        transform: rotate(10deg);
-    }
-}
-
-@keyframes eyeLook {
-    from {
-        transform: translateX(-1px);
-    }
-
-    to {
-        transform: translateX(3px);
-    }
-}
-
-@keyframes headPet {
-    0%,
-    100% {
-        transform: rotate(0);
-    }
-
-    50% {
-        transform: rotate(-4deg);
-    }
-}
-
-@keyframes headHappy {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-5px);
-    }
 }
 
 
-/* =====================================================
-   RESPONSIVE
-   ===================================================== */
+/* MOBILE */
 
 @media (max-width: 600px) {
 
     .vpn-modal-card {
+
         padding:
-            32px
-            22px
-            27px;
+            30px 22px;
+
+        border-radius:
+            20px;
+
     }
 
-    .vpn-modal-description {
-        font-size: 11px;
+
+    .vpn-modal-card h2 {
+
+        font-size:
+            22px;
+
     }
 
-    .intro-text {
-        gap: 13px;
+
+    .vpn-modal-card p {
+
+        font-size:
+            14px;
+
     }
 
-    .start-button {
-        bottom: 7vh;
-    }
+}
 
-    #authenticationContent > p {
-        margin-bottom: 35px;
-    }
+/* =====================================================
+   FINAL YES RESPONSE
+   شماره تماس زیر پیام
+===================================================== */
 
-    .moon-glow {
-        top: 8vh;
-        right: 8vw;
-    }
+#yesFinalContent {
 
-    .world-content {
-        top: 24vh;
-    }
+    position: fixed;
 
-    .story-message {
-        width: 88vw;
-    }
+    inset: 0;
 
-    .story-message p {
-        line-height: 2.1;
-    }
+    z-index: 200;
 
-    .story-choices {
-        bottom: 8vh;
-    }
+    display: flex;
 
-    .final-contact-form {
-        bottom: 3vh;
-    }
+    flex-direction: column;
 
-    .final-contact-row {
-        gap: 6px;
-    }
+    justify-content: center;
 
-    #finalPhoneSubmit,
-    #phoneSubmit {
-        padding: 0 16px;
-    }
+    align-items: center;
 
-    #cat {
-        width: 145px;
-    }
+    text-align: center;
+
+    padding: 20px;
+
+    opacity: 1;
+
+    transition:
+        opacity 1.5s ease;
+
 }
 
 
-@media (max-height: 650px) {
+/* پیام اصلی */
 
-    .world-content {
-        top: 17vh;
-    }
+#yesFinalContent .final-message {
 
-    .story-message {
-        top: 46%;
-    }
+    width: min(650px, 88vw);
 
-    .story-choices {
-        bottom: 7vh;
-    }
+    color: #eeeae1;
 
-    .final-contact-form {
-        bottom: 2vh;
-    }
+    font-size:
+        clamp(1.05rem, 2.3vw, 1.4rem);
+
+    line-height: 2.2;
+
+    text-align: center;
+
+    margin-bottom: 28px;
+
+}
+
+
+/* توضیح کوچک */
+
+#yesFinalContent .phone-hint {
+
+    color: #aaaebe;
+
+    font-size: .9rem;
+
+    margin-bottom: 14px;
+
+}
+
+
+/* کانتینر فرم */
+
+#yesFinalContent .phone-form {
+
+    width: min(320px, 82vw);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+/* تکست باکس شماره */
+
+#phoneInput {
+
+    width: 100%;
+
+    height: 50px;
+
+    padding: 10px 18px;
+
+    border-radius: 28px;
+
+    border:
+        1px solid
+        rgba(255, 218, 150, .30);
+
+    outline: none;
+
+    background:
+        rgba(255, 255, 255, .045);
+
+    color: #f5f3ed;
+
+    font-family:
+        "Vazirmatn",
+        sans-serif;
+
+    font-size: 1rem;
+
+    text-align: center;
+
+    direction: ltr;
+
+    caret-color: #f5f3ed;
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    transition:
+        border-color .3s ease,
+        background .3s ease,
+        box-shadow .3s ease;
+
+}
+
+
+/* placeholder */
+
+#phoneInput::placeholder {
+
+    color: rgba(238, 234, 225, .45);
+
+}
+
+
+/* وقتی input فعال است */
+
+#phoneInput:focus {
+
+    border-color:
+        rgba(255, 218, 150, .7);
+
+    background:
+        rgba(255, 255, 255, .07);
+
+    box-shadow:
+        0 0 22px
+        rgba(255, 218, 150, .08);
+
+}
+
+
+/* دکمه تایید */
+
+#confirmPhoneButton {
+
+    width: 100%;
+
+    height: 48px;
+
+    padding: 10px 22px;
+
+    border-radius: 26px;
+
+    border:
+        1px solid
+        rgba(120, 220, 150, .38);
+
+    background:
+        rgba(90, 180, 120, .15);
+
+    color: #f5f3ed;
+
+    font-family:
+        "Vazirmatn",
+        sans-serif;
+
+    font-size: .95rem;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    transition:
+        transform .3s ease,
+        background .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease,
+        opacity .3s ease;
+
+}
+
+
+/* hover */
+
+#confirmPhoneButton:hover {
+
+    transform:
+        translateY(-2px);
+
+    background:
+        rgba(90, 180, 120, .25);
+
+    border-color:
+        rgba(140, 235, 165, .65);
+
+    box-shadow:
+        0 0 24px
+        rgba(90, 200, 130, .15);
+
+}
+
+
+/* هنگام کلیک */
+
+#confirmPhoneButton:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* دکمه در حالت ارسال */
+
+#confirmPhoneButton.loading {
+
+    pointer-events: none;
+
+    opacity: .55;
+
+}
+
+
+/* خطای شماره */
+
+#phoneError {
+
+    min-height: 22px;
+
+    margin-top: 2px;
+
+    color: #d99b9b;
+
+    font-size: .82rem;
+
+}
+
+
+/* محو شدن کل صفحه */
+
+#yesFinalContent.fade-out {
+
+    opacity: 0;
+
+    pointer-events: none;
+
 }
 
 
 /* =====================================================
-   ACCESSIBILITY
-   ===================================================== */
+   MOBILE
+===================================================== */
 
-@media (prefers-reduced-motion: reduce) {
+@media (max-width: 600px) {
 
-    *,
-    *::before,
-    *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
+    #yesFinalContent {
+
+        padding:
+            20px 18px;
+
+        overflow-y: auto;
+
+    }
+
+
+    #yesFinalContent .final-message {
+
+        width: 90vw;
+
+        font-size: .98rem;
+
+        line-height: 2.1;
+
+        margin-bottom: 22px;
+
+    }
+
+
+    #yesFinalContent .phone-hint {
+
+        font-size: .82rem;
+
+        margin-bottom: 12px;
+
+    }
+
+
+    #yesFinalContent .phone-form {
+
+        width: min(320px, 88vw);
+
+    }
+
+
+    #phoneInput {
+
+        height: 52px;
+
+        font-size: 16px;
+
+        /*
+           16px مهم است:
+           در بسیاری از مرورگرهای موبایل باعث
+           جلوگیری از zoom ناخواسته هنگام focus می‌شود.
+        */
+
+    }
+
+
+    #confirmPhoneButton {
+
+        height: 50px;
+
+        font-size: .9rem;
+
     }
 
 }
