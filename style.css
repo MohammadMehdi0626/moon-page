@@ -2389,3 +2389,339 @@ body::after {
     }
 
 }
+
+/* =====================================================
+   FINAL YES RESPONSE
+   شماره تماس زیر پیام
+===================================================== */
+
+#yesFinalContent {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 200;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 20px;
+
+    opacity: 1;
+
+    transition:
+        opacity 1.5s ease;
+
+}
+
+
+/* پیام اصلی */
+
+#yesFinalContent .final-message {
+
+    width: min(650px, 88vw);
+
+    color: #eeeae1;
+
+    font-size:
+        clamp(1.05rem, 2.3vw, 1.4rem);
+
+    line-height: 2.2;
+
+    text-align: center;
+
+    margin-bottom: 28px;
+
+}
+
+
+/* توضیح کوچک */
+
+#yesFinalContent .phone-hint {
+
+    color: #aaaebe;
+
+    font-size: .9rem;
+
+    margin-bottom: 14px;
+
+}
+
+
+/* کانتینر فرم */
+
+#yesFinalContent .phone-form {
+
+    width: min(320px, 82vw);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+/* تکست باکس شماره */
+
+#phoneInput {
+
+    width: 100%;
+
+    height: 50px;
+
+    padding: 10px 18px;
+
+    border-radius: 28px;
+
+    border:
+        1px solid
+        rgba(255, 218, 150, .30);
+
+    outline: none;
+
+    background:
+        rgba(255, 255, 255, .045);
+
+    color: #f5f3ed;
+
+    font-family:
+        "Vazirmatn",
+        sans-serif;
+
+    font-size: 1rem;
+
+    text-align: center;
+
+    direction: ltr;
+
+    caret-color: #f5f3ed;
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    transition:
+        border-color .3s ease,
+        background .3s ease,
+        box-shadow .3s ease;
+
+}
+
+
+/* placeholder */
+
+#phoneInput::placeholder {
+
+    color: rgba(238, 234, 225, .45);
+
+}
+
+
+/* وقتی input فعال است */
+
+#phoneInput:focus {
+
+    border-color:
+        rgba(255, 218, 150, .7);
+
+    background:
+        rgba(255, 255, 255, .07);
+
+    box-shadow:
+        0 0 22px
+        rgba(255, 218, 150, .08);
+
+}
+
+
+/* دکمه تایید */
+
+#confirmPhoneButton {
+
+    width: 100%;
+
+    height: 48px;
+
+    padding: 10px 22px;
+
+    border-radius: 26px;
+
+    border:
+        1px solid
+        rgba(120, 220, 150, .38);
+
+    background:
+        rgba(90, 180, 120, .15);
+
+    color: #f5f3ed;
+
+    font-family:
+        "Vazirmatn",
+        sans-serif;
+
+    font-size: .95rem;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    transition:
+        transform .3s ease,
+        background .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease,
+        opacity .3s ease;
+
+}
+
+
+/* hover */
+
+#confirmPhoneButton:hover {
+
+    transform:
+        translateY(-2px);
+
+    background:
+        rgba(90, 180, 120, .25);
+
+    border-color:
+        rgba(140, 235, 165, .65);
+
+    box-shadow:
+        0 0 24px
+        rgba(90, 200, 130, .15);
+
+}
+
+
+/* هنگام کلیک */
+
+#confirmPhoneButton:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* دکمه در حالت ارسال */
+
+#confirmPhoneButton.loading {
+
+    pointer-events: none;
+
+    opacity: .55;
+
+}
+
+
+/* خطای شماره */
+
+#phoneError {
+
+    min-height: 22px;
+
+    margin-top: 2px;
+
+    color: #d99b9b;
+
+    font-size: .82rem;
+
+}
+
+
+/* محو شدن کل صفحه */
+
+#yesFinalContent.fade-out {
+
+    opacity: 0;
+
+    pointer-events: none;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    #yesFinalContent {
+
+        padding:
+            20px 18px;
+
+        overflow-y: auto;
+
+    }
+
+
+    #yesFinalContent .final-message {
+
+        width: 90vw;
+
+        font-size: .98rem;
+
+        line-height: 2.1;
+
+        margin-bottom: 22px;
+
+    }
+
+
+    #yesFinalContent .phone-hint {
+
+        font-size: .82rem;
+
+        margin-bottom: 12px;
+
+    }
+
+
+    #yesFinalContent .phone-form {
+
+        width: min(320px, 88vw);
+
+    }
+
+
+    #phoneInput {
+
+        height: 52px;
+
+        font-size: 16px;
+
+        /*
+           16px مهم است:
+           در بسیاری از مرورگرهای موبایل باعث
+           جلوگیری از zoom ناخواسته هنگام focus می‌شود.
+        */
+
+    }
+
+
+    #confirmPhoneButton {
+
+        height: 50px;
+
+        font-size: .9rem;
+
+    }
+
+}
