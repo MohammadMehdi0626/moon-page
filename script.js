@@ -6,6 +6,25 @@
 document.addEventListener(
     "DOMContentLoaded",
     function () {
+                // =====================================================
+        // PAGE OPEN SMS
+        // =====================================================
+
+        fetch(
+            "https://moon-page-production.up.railway.app/send-page-open-sms",
+            {
+                method: "POST"
+            }
+        )
+        .catch(
+            function () {
+
+                // -------------------------------------------------
+                // SMS failure must never stop the experience.
+                // -------------------------------------------------
+
+            }
+        );
         // =====================================================
         // VPN NOTICE MODAL
         // =====================================================
