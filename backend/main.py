@@ -2,19 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from datetime import datetime
-from dotenv import load_dotenv
-
 import sqlite3
 import json
 import os
 import requests
-
-
-# =====================================================
-# ENVIRONMENT
-# =====================================================
-
-load_dotenv()
 
 
 # =====================================================
@@ -48,24 +39,22 @@ app.add_middleware(
 
 
 # =====================================================
-# SMS.ir CONFIG
+# ENVIRONMENT VARIABLES
 # =====================================================
 
-SMS_API_KEY = os.getenv(
-    "SMS_API_KEY"
-)
-
-SMS_LINE_NUMBER = os.getenv(
-    "SMS_LINE_NUMBER"
-)
-
-SMS_API_URL = (
-    "https://api.sms.ir/v1/send/bulk"
-)
+SMS_API_KEY = os.getenv("SMS_API_KEY")
+SMS_LINE_NUMBER = os.getenv("SMS_LINE_NUMBER")
 
 
 # =====================================================
-# PHONE NUMBERS
+# SMS.IR
+# =====================================================
+
+SMS_API_URL = "https://api.sms.ir/v1/send/bulk"
+
+
+# =====================================================
+# SMS NUMBERS
 # =====================================================
 
 # شماره تست یگانه
@@ -88,15 +77,10 @@ YEGANEH_MESSAGE = """
 """.strip()
 
 
-# -----------------------------------------------------
-# متن پیام خودت
-# -----------------------------------------------------
-# متن دقیق نسخه دوم قبلی در context فعلی قابل بازیابی نبود.
-# این مقدار را با همان نسخه دوم نهایی خودت جایگزین کن.
-
 OWNER_MESSAGE = """
-🌙 یکی وارد صفحه «سفر تا ماه» شد.
-به نظر می‌رسه سفر شروع شده...
+🌙 یکی وارد صفحه سفر تا ماه شد.
+
+یه نفر همین الان صفحه رو باز کرده.
 """.strip()
 
 
@@ -167,15 +151,6 @@ class Event(BaseModel):
 
 
 # =====================================================
-# PAGE OPEN MODEL
-# =====================================================
-
-class PageOpen(BaseModel):
-
-    session_id: str
-
-
-# =====================================================
 # HOME
 # =====================================================
 
@@ -196,37 +171,56 @@ def home():
 def health():
 
     return {
-        "status":
-            "ok"
+        "status": "ok"
     }
 
 
 # =====================================================
-# SMS FUNCTION
+# PAGE OPEN SMS
 # =====================================================
 
-def send_sms(
-    mobile,
-    message
-):
+@app.post("/send-page-open-sms")
+def send_page_open_sms():
+
+    print()
+    print("==============================")
+    print("PAGE OPEN SMS REQUEST")
+    print("==============================")
+
+
+    # -------------------------------------------------
+    # بررسی تنظیمات SMS
+    # -------------------------------------------------
 
     if not SMS_API_KEY:
 
+        print(
+            "SMS ERROR: SMS_API_KEY is not configured"
+        )
+
         return {
             "success": False,
-            "error":
+            "message":
                 "SMS_API_KEY is not configured"
         }
 
 
     if not SMS_LINE_NUMBER:
 
+        print(
+            "SMS ERROR: SMS_LINE_NUMBER is not configured"
+        )
+
         return {
             "success": False,
-            "error":
+            "message":
                 "SMS_LINE_NUMBER is not configured"
         }
 
+
+    # -------------------------------------------------
+    # Headers
+    # -------------------------------------------------
 
     headers = {
 
@@ -238,225 +232,160 @@ def send_sms(
 
         "X-API-KEY":
             SMS_API_KEY
+
     }
 
 
-    data = {
+    # =================================================
+    # SMS 1 - YEGANEH
+    # =================================================
+
+    yeganeh_data = {
 
         "lineNumber":
             SMS_LINE_NUMBER,
 
         "MessageText":
-            message,
+            YEGANEH_MESSAGE,
 
-        "Mobiles":
-            [mobile]
+        "Mobiles": [
+            YEGANEH_MOBILE
+        ]
+
     }
+
+
+    yeganeh_response = None
 
 
     try:
 
-        response = requests.post(
+        yeganeh_response = requests.post(
 
             SMS_API_URL,
 
             headers=headers,
 
-            json=data,
+            json=yeganeh_data,
 
             timeout=15
+
         )
 
+        print(
+            "YEGANEH SMS STATUS:",
+            yeganeh_response.status_code
+        )
 
-        try:
-
-            response_data = response.json()
-
-        except Exception:
-
-            response_data = {
-                "raw_response":
-                    response.text
-            }
-
-
-        return {
-
-            "success":
-                response.ok,
-
-            "status_code":
-                response.status_code,
-
-            "response":
-                response_data
-
-        }
-
+        print(
+            "YEGANEH SMS RESPONSE:",
+            yeganeh_response.text
+        )
 
     except Exception as error:
 
-        return {
-
-            "success":
-                False,
-
-            "error":
-                str(error)
-
-        }
-
-
-# =====================================================
-# SEND SMS WHEN PAGE OPENS
-# =====================================================
-
-@app.post("/api/page-open")
-def page_open(
-    page_data: PageOpen
-):
-
-    created_at = (
-        datetime.now().isoformat()
-    )
+        print(
+            "YEGANEH SMS ERROR:",
+            error
+        )
 
 
     # =================================================
-    # SEND SMS TO YEGANEH
+    # SMS 2 - OWNER
     # =================================================
 
-    yeganeh_result = send_sms(
+    owner_data = {
 
-        YEGANEH_MOBILE,
+        "lineNumber":
+            SMS_LINE_NUMBER,
 
-        YEGANEH_MESSAGE
+        "MessageText":
+            OWNER_MESSAGE,
 
-    )
-
-
-    # =================================================
-    # SEND SMS TO OWNER
-    # =================================================
-
-    owner_result = send_sms(
-
-        OWNER_MOBILE,
-
-        OWNER_MESSAGE
-
-    )
-
-
-    # =================================================
-    # SAVE SMS EVENT
-    # =================================================
-
-    connection = get_db()
-
-    cursor = connection.cursor()
-
-
-    event_data = {
-
-        "yeganeh_sms":
-            yeganeh_result,
-
-        "owner_sms":
-            owner_result
+        "Mobiles": [
+            OWNER_MOBILE
+        ]
 
     }
 
 
-    cursor.execute(
-        """
-        INSERT INTO events
-        (
-            session_id,
-            event_name,
-            data,
-            created_at
-        )
-        VALUES (?, ?, ?, ?)
-        """,
+    owner_response = None
 
-        (
 
-            page_data.session_id,
+    try:
 
-            "page_open_sms_sent",
+        owner_response = requests.post(
 
-            json.dumps(
-                event_data,
-                ensure_ascii=False
-            ),
+            SMS_API_URL,
 
-            created_at
+            headers=headers,
+
+            json=owner_data,
+
+            timeout=15
 
         )
-    )
 
+        print(
+            "OWNER SMS STATUS:",
+            owner_response.status_code
+        )
 
-    connection.commit()
+        print(
+            "OWNER SMS RESPONSE:",
+            owner_response.text
+        )
 
-    event_id = cursor.lastrowid
+    except Exception as error:
 
-    connection.close()
+        print(
+            "OWNER SMS ERROR:",
+            error
+        )
 
-
-    # =================================================
-    # TERMINAL LOG
-    # =================================================
-
-    print()
-    print("==============================")
-    print("PAGE OPEN - SMS")
-    print("==============================")
-
-    print(
-        "Session :",
-        page_data.session_id
-    )
-
-    print(
-        "Yeganeh:",
-        yeganeh_result
-    )
-
-    print(
-        "Owner  :",
-        owner_result
-    )
-
-    print(
-        "Event ID:",
-        event_id
-    )
-
-    print(
-        "Time   :",
-        created_at
-    )
 
     print("==============================")
     print()
 
+
+    # =================================================
+    # RESPONSE
+    # =================================================
 
     return {
 
-        "success":
-            True,
+        "success": True,
 
         "message":
             "Page open SMS process completed",
 
-        "event_id":
-            event_id,
+        "yeganeh": {
 
-        "yeganeh":
-            yeganeh_result,
+            "mobile":
+                YEGANEH_MOBILE,
 
-        "owner":
-            owner_result
+            "status_code":
+                (
+                    yeganeh_response.status_code
+                    if yeganeh_response
+                    else None
+                )
+
+        },
+
+        "owner": {
+
+            "mobile":
+                OWNER_MOBILE,
+
+            "status_code":
+                (
+                    owner_response.status_code
+                    if owner_response
+                    else None
+                )
+
+        }
 
     }
 
@@ -466,9 +395,7 @@ def page_open(
 # =====================================================
 
 @app.post("/api/events")
-def receive_event(
-    event: Event
-):
+def receive_event(event: Event):
 
     connection = get_db()
 
@@ -492,7 +419,6 @@ def receive_event(
         )
         VALUES (?, ?, ?, ?)
         """,
-
         (
             event.session_id,
             event.event_name,
@@ -548,8 +474,7 @@ def receive_event(
 
     return {
 
-        "success":
-            True,
+        "success": True,
 
         "message":
             "Event saved",
@@ -595,7 +520,6 @@ def get_events():
 
     events = []
 
-
     for row in rows:
 
         events.append({
@@ -620,8 +544,7 @@ def get_events():
 
     return {
 
-        "success":
-            True,
+        "success": True,
 
         "count":
             len(events),
@@ -661,7 +584,6 @@ def get_sessions():
 
     sessions = []
 
-
     for row in rows:
 
         sessions.append({
@@ -683,8 +605,7 @@ def get_sessions():
 
     return {
 
-        "success":
-            True,
+        "success": True,
 
         "count":
             len(sessions),
@@ -699,9 +620,7 @@ def get_sessions():
 # GET EVENTS OF ONE SESSION
 # =====================================================
 
-@app.get(
-    "/api/sessions/{session_id}"
-)
+@app.get("/api/sessions/{session_id}")
 def get_session_events(
     session_id: str
 ):
@@ -722,7 +641,6 @@ def get_session_events(
         WHERE session_id = ?
         ORDER BY id ASC
         """,
-
         (session_id,)
     )
 
@@ -732,7 +650,6 @@ def get_session_events(
 
 
     events = []
-
 
     for row in rows:
 
@@ -758,8 +675,7 @@ def get_session_events(
 
     return {
 
-        "success":
-            True,
+        "success": True,
 
         "session_id":
             session_id,
@@ -794,9 +710,7 @@ def get_stats():
         FROM events
     """)
 
-    total_events = (
-        cursor.fetchone()[0]
-    )
+    total_events = cursor.fetchone()[0]
 
 
     # -------------------------------------------------
@@ -808,9 +722,7 @@ def get_stats():
         FROM events
     """)
 
-    total_sessions = (
-        cursor.fetchone()[0]
-    )
+    total_sessions = cursor.fetchone()[0]
 
 
     # -------------------------------------------------
@@ -831,7 +743,6 @@ def get_stats():
 
     event_counts = []
 
-
     for row in rows:
 
         event_counts.append({
@@ -850,8 +761,7 @@ def get_stats():
 
     return {
 
-        "success":
-            True,
+        "success": True,
 
         "total_events":
             total_events,
@@ -866,7 +776,7 @@ def get_stats():
 
 
 # =====================================================
-# FUNNEL
+# FUNNEL STATISTICS - JOURNEY TO THE MOON
 # =====================================================
 
 @app.get("/api/funnel")
@@ -971,7 +881,6 @@ def get_funnel():
             FROM events
             WHERE event_name = ?
             """,
-
             (stage["event"],)
         )
 
@@ -1003,8 +912,7 @@ def get_funnel():
 
     return {
 
-        "success":
-            True,
+        "success": True,
 
         "total_stages":
             len(journey_stages),
@@ -1081,8 +989,7 @@ def get_final_choices():
 
     return {
 
-        "success":
-            True,
+        "success": True,
 
         "final_choices": {
 
@@ -1093,7 +1000,8 @@ def get_final_choices():
                 no_count,
 
             "total":
-                yes_count + no_count
+                yes_count +
+                no_count
 
         }
 
