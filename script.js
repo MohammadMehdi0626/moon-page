@@ -1724,37 +1724,37 @@ document.addEventListener(
         // ---------------------------------------------
         // نمایش پیام YES
         // ---------------------------------------------
-
+        
         setTimeout(
             function () {
-
+        
                 if (
                     !storyMessageText ||
                     !storyMessage
                 ) {
-
+        
                     return;
-
+        
                 }
-
+        
                 storyMessageText.innerHTML =
                     finalMessages[choice];
-
+        
                 storyMessage.classList.remove(
                     "hidden"
                 );
-
+        
                 requestAnimationFrame(
                     function () {
-
+        
                         storyMessage.classList.add(
                             "show"
                         );
-
+        
                     }
                 );
-
-
+        
+        
                 trackEvent(
                     "final_message_shown",
                     {
@@ -1762,7 +1762,88 @@ document.addEventListener(
                             choice
                     }
                 );
-
+        
+            },
+            1000
+        );
+        
+        
+        // ---------------------------------------------
+        // پیام نهایی بعد از 10 ثانیه محو شود
+        // ---------------------------------------------
+        
+        setTimeout(
+            function () {
+        
+                if (storyMessage) {
+        
+                    storyMessage.classList.remove(
+                        "show"
+                    );
+        
+                }
+        
+        
+                setTimeout(
+                    function () {
+        
+                        const moon =
+                            document.querySelector(
+                                ".moon-glow"
+                            );
+        
+                        const sky =
+                            document.querySelector(
+                                ".sky"
+                            );
+        
+                        const stars =
+                            document.querySelectorAll(
+                                ".stars"
+                            );
+        
+        
+                        if (moon) {
+        
+                            moon.classList.add(
+                                "final-glow"
+                            );
+        
+                        }
+        
+        
+                        if (sky) {
+        
+                            sky.classList.add(
+                                "final-sky"
+                            );
+        
+                        }
+        
+        
+                        stars.forEach(
+                            function (star) {
+        
+                                star.classList.add(
+                                    "final-stars"
+                                );
+        
+                            }
+                        );
+        
+        
+                    },
+                    1200
+                );
+        
+        
+                trackEvent(
+                    "final_scene_started"
+                );
+        
+            },
+            10000
+        );
 
                 // -----------------------------------------
                 // ساخت فرم شماره
