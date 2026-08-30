@@ -1,4 +1,3 @@
-
 // =====================================================
 // PAGE READY
 // =====================================================
@@ -6,7 +5,8 @@
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-                // =====================================================
+
+        // =====================================================
         // PAGE OPEN SMS
         // =====================================================
 
@@ -18,58 +18,50 @@ document.addEventListener(
         )
         .catch(
             function () {
-
-                // -------------------------------------------------
                 // SMS failure must never stop the experience.
-                // -------------------------------------------------
-
             }
         );
+
+
         // =====================================================
         // VPN NOTICE MODAL
         // =====================================================
-        
+
         const vpnModal =
-            document.getElementById(
-                "vpnModal"
-            );
-        
-        
+            document.getElementById("vpnModal");
+
         const vpnModalButton =
-            document.getElementById(
-                "vpnModalButton"
-            );
-        
-        
+            document.getElementById("vpnModalButton");
+
+
         if (
             vpnModal &&
             vpnModalButton
         ) {
-        
+
             vpnModalButton.addEventListener(
                 "click",
                 function () {
-        
+
                     vpnModal.classList.add(
                         "hide"
                     );
-        
-        
+
                     setTimeout(
                         function () {
-        
+
                             vpnModal.remove();
-        
+
                         },
                         600
                     );
-        
+
                 }
             );
-        
+
         }
-        
-        
+
+
         // =====================================================
         // SESSION
         // =====================================================
@@ -105,49 +97,105 @@ document.addEventListener(
             document.getElementById("introContent");
 
         const authenticationContent =
-            document.getElementById("authenticationContent");
+            document.getElementById(
+                "authenticationContent"
+            );
 
         const transitionContent =
-            document.getElementById("transitionContent");
+            document.getElementById(
+                "transitionContent"
+            );
 
         const worldContent =
-            document.getElementById("worldContent");
+            document.getElementById(
+                "worldContent"
+            );
 
         const startButton =
-            document.getElementById("startButton");
+            document.getElementById(
+                "startButton"
+            );
 
         const keywordInput =
-            document.getElementById("keywordInput");
+            document.getElementById(
+                "keywordInput"
+            );
 
         const keywordButton =
-            document.getElementById("keywordButton");
+            document.getElementById(
+                "keywordButton"
+            );
 
         const keywordError =
-            document.getElementById("keywordError");
+            document.getElementById(
+                "keywordError"
+            );
 
         const cat =
-            document.getElementById("cat");
+            document.getElementById(
+                "cat"
+            );
 
         const catMessage =
-            document.getElementById("catMessage");
+            document.getElementById(
+                "catMessage"
+            );
 
         const catMessageText =
-            document.getElementById("catMessageText");
+            document.getElementById(
+                "catMessageText"
+            );
 
         const storyMessage =
-            document.getElementById("storyMessage");
+            document.getElementById(
+                "storyMessage"
+            );
 
         const storyMessageText =
-            document.getElementById("storyMessageText");
+            document.getElementById(
+                "storyMessageText"
+            );
 
         const storyChoices =
-            document.getElementById("storyChoices");
+            document.getElementById(
+                "storyChoices"
+            );
 
         const choiceYes =
-            document.getElementById("choiceYes");
+            document.getElementById(
+                "choiceYes"
+            );
 
         const choiceNo =
-            document.getElementById("choiceNo");
+            document.getElementById(
+                "choiceNo"
+            );
+
+
+        // =====================================================
+        // FINAL PHONE FORM
+        // استفاده از فرم موجود در HTML
+        // =====================================================
+
+        const phoneForm =
+            document.getElementById(
+                "phoneForm"
+            );
+
+        const phoneInput =
+            document.getElementById(
+                "phoneInput"
+            );
+
+        const phoneSubmit =
+            document.getElementById(
+                "phoneSubmit"
+            );
+
+        const phoneError =
+            document.getElementById(
+                "phoneError"
+            );
 
 
         // =====================================================
@@ -160,9 +208,16 @@ document.addEventListener(
         ) {
 
             const eventPayload = {
-                session_id: sessionId,
-                event_name: eventName,
-                data: data
+
+                session_id:
+                    sessionId,
+
+                event_name:
+                    eventName,
+
+                data:
+                    data
+
             };
 
 
@@ -176,12 +231,14 @@ document.addEventListener(
                     method: "POST",
 
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type":
+                            "application/json"
                     },
 
-                    body: JSON.stringify(
-                        eventPayload
-                    ),
+                    body:
+                        JSON.stringify(
+                            eventPayload
+                        ),
 
                     keepalive: true
                 }
@@ -202,10 +259,6 @@ document.addEventListener(
             )
             .catch(
                 function () {
-
-                    // -------------------------------------------------
-                    // Fallback: sendBeacon
-                    // -------------------------------------------------
 
                     try {
 
@@ -233,8 +286,8 @@ document.addEventListener(
                         error
                     ) {
 
-                        // Event tracking failure should
-                        // never stop the main experience.
+                        // Tracking failure must never
+                        // stop the experience.
 
                     }
 
@@ -357,7 +410,9 @@ document.addEventListener(
                 "keydown",
                 function (event) {
 
-                    if (event.key === "Enter") {
+                    if (
+                        event.key === "Enter"
+                    ) {
 
                         event.preventDefault();
 
@@ -378,9 +433,7 @@ document.addEventListener(
         function checkKeyword() {
 
             if (!keywordInput) {
-
                 return;
-
             }
 
 
@@ -600,7 +653,10 @@ document.addEventListener(
                 );
 
 
-            if (!cat || !path) {
+            if (
+                !cat ||
+                !path
+            ) {
 
                 return;
 
@@ -644,9 +700,7 @@ document.addEventListener(
 
 
             if (!matrix) {
-
                 return;
-
             }
 
 
@@ -714,7 +768,10 @@ document.addEventListener(
                 );
 
 
-            if (!path || !cat) {
+            if (
+                !path ||
+                !cat
+            ) {
 
                 return;
 
@@ -769,9 +826,7 @@ document.addEventListener(
 
 
                 if (!matrix) {
-
                     return;
-
                 }
 
 
@@ -862,9 +917,7 @@ document.addEventListener(
         function showCatMessage() {
 
             if (!catMessage) {
-
                 return;
-
             }
 
 
@@ -920,9 +973,7 @@ document.addEventListener(
 
 
                     if (catPetted) {
-
                         return;
-
                     }
 
 
@@ -946,10 +997,6 @@ document.addEventListener(
                     );
 
 
-                    // ---------------------------------------------
-                    // پیام گربه محو شود
-                    // ---------------------------------------------
-
                     if (catMessage) {
 
                         catMessage.classList.remove(
@@ -971,10 +1018,6 @@ document.addEventListener(
                     }
 
 
-                    // ---------------------------------------------
-                    // واکنش نوازش
-                    // ---------------------------------------------
-
                     setTimeout(
                         function () {
 
@@ -992,10 +1035,6 @@ document.addEventListener(
                                 "cat_happy"
                             );
 
-
-                            // -----------------------------------------
-                            // گربه شروع به خروج کند
-                            // -----------------------------------------
 
                             setTimeout(
                                 function () {
@@ -1023,9 +1062,7 @@ document.addEventListener(
         function makeCatLeave() {
 
             if (!cat) {
-
                 return;
-
             }
 
 
@@ -1124,7 +1161,6 @@ document.addEventListener(
                     cat.style.left =
                         `${targetLeft}px`;
 
-
                     cat.style.opacity =
                         "0";
 
@@ -1156,7 +1192,7 @@ document.addEventListener(
 
 
         // =====================================================
-        // داستان بعد از خروج گربه
+        // داستان
         // =====================================================
 
         const storyMessages = [
@@ -1167,7 +1203,6 @@ document.addEventListener(
             ...قرار نبود رسیدن به نور آسون باشه
             `,
 
-
             `
             اگه انیشتین برای رسیدن به هدفش دست از تلاش نمی‌کشید؛<br>
             ...زندگی همه‌مون تیره و تاریک بود<br>
@@ -1175,44 +1210,36 @@ document.addEventListener(
             🌙... ولی راستش من ماه رو می‌خوام 
             `,
 
-
             `
             می‌دونی سخت‌ ترین قسمت رسیدن به یه مقصد چیه؟ <br>
             `,
-
 
             `
              ... اینکه ندونی آخرش قراره بهش برسی یا نه<br>
             `,
 
-
             `
              ... ولی یه چیز رو خوب می‌دونم<br>
             `,
-
 
             `
             اگه چیزی واقعاً برات ارزش داشته باشه؛<br>
              .ارزش تلاش کردن رو داره<br>
            `,
 
-
            `
            ... شاید هنوز ندونی چرا این همه راه رو برات ساختم<br>
           `,
 
-
           `
           ...شاید حتی برات عجیب باشه که یکی برای یه نفر، این‌همه وقت و فکر گذاشته<br>
          `,
-
 
            `
            ،اما بعضی آدم‌ها <br>
            ،وقتی ارزششون رو بفهمی<br>
            دیگه نمی تونی به سادگی از کنارشون رد بشی
          `,
-
 
          `
          این همه راه رو باهم اومدیم <br>
@@ -1411,9 +1438,7 @@ document.addEventListener(
         ) {
 
             if (!storyMessage) {
-
                 return;
-
             }
 
 
@@ -1426,9 +1451,7 @@ document.addEventListener(
                 function () {
 
                     if (callback) {
-
                         callback();
-
                     }
 
                 },
@@ -1468,9 +1491,7 @@ document.addEventListener(
         function showStoryChoices() {
 
             if (!storyChoices) {
-
                 return;
-
             }
 
 
@@ -1502,80 +1523,83 @@ document.addEventListener(
         }
 
 
-       // =====================================================
+        // =====================================================
         // نمایش پیام نهایی
         // =====================================================
-        
+
         function showFinalMessage(
             choice
         ) {
-        
+
             // =================================================
             // NO
             // =================================================
-        
+
             if (choice === "no") {
-        
-                // ---------------------------------------------
-                // دقیقاً رفتار قبلی
-                // ---------------------------------------------
-        
+
                 if (storyChoices) {
-        
+
                     storyChoices.classList.remove(
                         "show"
                     );
-        
+
+
                     setTimeout(
                         function () {
-        
+
                             storyChoices.classList.add(
                                 "hidden"
                             );
-        
+
                         },
                         800
                     );
-        
+
                 }
-        
+
+
                 if (storyMessage) {
-        
+
                     storyMessage.classList.remove(
                         "show"
                     );
-        
+
                 }
-        
+
+
                 setTimeout(
                     function () {
-        
+
                         if (
                             !storyMessageText ||
                             !storyMessage
                         ) {
-        
+
                             return;
-        
+
                         }
-        
+
+
                         storyMessageText.innerHTML =
                             finalMessages[choice];
-        
+
+
                         storyMessage.classList.remove(
                             "hidden"
                         );
-        
+
+
                         requestAnimationFrame(
                             function () {
-        
+
                                 storyMessage.classList.add(
                                     "show"
                                 );
-        
+
                             }
                         );
-        
+
+
                         trackEvent(
                             "final_message_shown",
                             {
@@ -1583,650 +1607,543 @@ document.addEventListener(
                                     choice
                             }
                         );
-        
+
                     },
                     1000
                 );
-        
+
+
                 setTimeout(
                     function () {
-        
+
                         if (storyMessage) {
-        
+
                             storyMessage.classList.remove(
                                 "show"
                             );
-        
+
                         }
-        
+
+
                         setTimeout(
                             function () {
-        
+
                                 const moon =
                                     document.querySelector(
                                         ".moon-glow"
                                     );
-        
+
                                 const sky =
                                     document.querySelector(
                                         ".sky"
                                     );
-        
+
                                 const stars =
                                     document.querySelectorAll(
                                         ".stars"
                                     );
-        
+
+
                                 if (moon) {
-        
+
                                     moon.classList.add(
                                         "final-glow"
                                     );
-        
+
                                 }
-        
+
+
                                 if (sky) {
-        
+
                                     sky.classList.add(
                                         "final-sky"
                                     );
-        
+
                                 }
-        
+
+
                                 stars.forEach(
                                     function (star) {
-        
+
                                         star.classList.add(
                                             "final-stars"
                                         );
-        
+
                                     }
                                 );
-        
+
                             },
                             1200
                         );
-        
+
+
                         trackEvent(
                             "final_scene_started"
                         );
-        
+
                     },
                     10000
                 );
-        
+
+
                 setTimeout(
                     function () {
-        
+
                         const moon =
                             document.querySelector(
                                 ".moon-glow"
                             );
-        
+
+
                         if (moon) {
-        
+
                             moon.classList.add(
                                 "final-glow"
                             );
-        
+
                         }
-        
+
                     },
                     13000
                 );
-        
+
+
                 return;
+
             }
-        
-        
+
+
             // =================================================
             // YES
             // =================================================
-        
+
             if (choice === "yes") {
-        
+
                 // ---------------------------------------------
                 // دکمه‌های انتخاب حذف شوند
                 // ---------------------------------------------
-        
+
                 if (storyChoices) {
-        
+
                     storyChoices.classList.remove(
                         "show"
                     );
-        
+
+
                     setTimeout(
                         function () {
-        
+
                             storyChoices.classList.add(
                                 "hidden"
                             );
-        
+
                         },
                         800
                     );
-        
-                }
-
-
-        // ---------------------------------------------
-        // پیام قبلی محو شود
-        // ---------------------------------------------
-
-        if (storyMessage) {
-
-            storyMessage.classList.remove(
-                "show"
-            );
-
-        }
-
-
-        // ---------------------------------------------
-        // نمایش پیام YES
-        // ---------------------------------------------
-
-        setTimeout(
-            function () {
-
-                if (
-                    !storyMessageText ||
-                    !storyMessage
-                ) {
-
-                    return;
 
                 }
 
-                storyMessageText.innerHTML =
-                    finalMessages[choice];
 
-                storyMessage.classList.remove(
-                    "hidden"
-                );
+                // ---------------------------------------------
+                // پیام قبلی محو شود
+                // ---------------------------------------------
 
-                requestAnimationFrame(
+                if (storyMessage) {
+
+                    storyMessage.classList.remove(
+                        "show"
+                    );
+
+                }
+
+
+                // ---------------------------------------------
+                // نمایش پیام YES
+                // ---------------------------------------------
+
+                setTimeout(
                     function () {
 
-                        storyMessage.classList.add(
-                            "show"
+                        if (
+                            !storyMessageText ||
+                            !storyMessage
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        storyMessageText.innerHTML =
+                            finalMessages[choice];
+
+
+                        storyMessage.classList.remove(
+                            "hidden"
                         );
 
-                    }
+
+                        requestAnimationFrame(
+                            function () {
+
+                                storyMessage.classList.add(
+                                    "show"
+                                );
+
+                            }
+                        );
+
+
+                        trackEvent(
+                            "final_message_shown",
+                            {
+                                choice:
+                                    choice
+                            }
+                        );
+
+
+                        // -----------------------------------------
+                        // نمایش فرم شماره
+                        // -----------------------------------------
+
+                        showFinalContactForm();
+
+                    },
+                    1000
                 );
 
-
-                trackEvent(
-                    "final_message_shown",
-                    {
-                        choice:
-                            choice
-                    }
-                );
-
-
-                // -----------------------------------------
-                // ساخت فرم شماره
-                // -----------------------------------------
-
-                createFinalContactForm();
-
-            },
-            1000
-        );
-
-    }
-
-}
-        // =====================================================
-        // FINAL CONTACT FORM
-        // =====================================================
-        
-        function createFinalContactForm() {
-        
-            // ---------------------------------------------
-            // اگر قبلاً ساخته شده، دوباره نساز
-            // ---------------------------------------------
-        
-            const existingForm =
-                document.getElementById(
-                    "finalContactForm"
-                );
-        
-            if (existingForm) {
-        
-                return;
-        
             }
-        
-        
-            // ---------------------------------------------
-            // Container
-            // ---------------------------------------------
-        
-            const form =
-                document.createElement(
-                    "div"
-                );
-        
-            form.id =
-                "finalContactForm";
-        
-        
-            // ---------------------------------------------
-            // Style
-            // ---------------------------------------------
-        
-            form.style.marginTop =
-                "28px";
-        
-            form.style.display =
-                "flex";
-        
-            form.style.flexDirection =
-                "column";
-        
-            form.style.alignItems =
-                "center";
-        
-            form.style.gap =
-                "12px";
-        
-            form.style.opacity =
-                "0";
-        
-            form.style.transform =
-                "translateY(15px)";
-        
-            form.style.transition =
-                "opacity .8s ease, transform .8s ease";
-        
-        
-            // ---------------------------------------------
-            // Text
-            // ---------------------------------------------
-        
-            const label =
-                document.createElement(
-                    "div"
-                );
-        
-            label.textContent =
-                "اگه دوست داشتی، راه ارتباطی رو برام بذار 🌙";
-        
-            label.style.fontSize =
-                "14px";
-        
-            label.style.opacity =
-                "0.85";
-        
-        
-            // ---------------------------------------------
-            // Input
-            // ---------------------------------------------
-        
-            const input =
-                document.createElement(
-                    "input"
-                );
-        
-            input.id =
-                "finalPhoneInput";
-        
-            input.type =
-                "tel";
-        
-            input.inputMode =
-                "tel";
-        
-            input.autocomplete =
-                "tel";
-        
-            input.placeholder =
-                "شماره موبایل";
-        
-            input.maxLength =
-                13;
-        
-            input.style.width =
-                "min(260px, 80vw)";
-        
-            input.style.boxSizing =
-                "border-box";
-        
-            input.style.padding =
-                "12px 16px";
-        
-            input.style.borderRadius =
-                "14px";
-        
-            input.style.border =
-                "1px solid rgba(255,255,255,.25)";
-        
-            input.style.background =
-                "rgba(255,255,255,.08)";
-        
-            input.style.color =
-                "white";
-        
-            input.style.outline =
-                "none";
-        
-            input.style.textAlign =
-                "center";
-        
-            input.style.fontSize =
-                "15px";
-        
-        
-            // ---------------------------------------------
-            // Error
-            // ---------------------------------------------
-        
-            const error =
-                document.createElement(
-                    "div"
-                );
-        
-            error.id =
-                "finalPhoneError";
-        
-            error.style.fontSize =
-                "13px";
-        
-            error.style.color =
-                "#ffb4b4";
-        
-            error.style.minHeight =
-                "18px";
-        
-        
-            // ---------------------------------------------
-            // Submit button
-            // ---------------------------------------------
-        
-            const button =
-                document.createElement(
-                    "button"
-                );
-        
-            button.type =
-                "button";
-        
-            button.id =
-                "finalPhoneSubmit";
-        
-            button.textContent =
-                "تأیید";
-        
-            button.style.padding =
-                "11px 28px";
-        
-            button.style.borderRadius =
-                "14px";
-        
-            button.style.border =
-                "none";
-        
-            button.style.cursor =
-                "pointer";
-        
-            button.style.fontSize =
-                "14px";
-        
-        
-            // ---------------------------------------------
-            // Append
-            // ---------------------------------------------
-        
-            form.appendChild(
-                label
-            );
-        
-            form.appendChild(
-                input
-            );
-        
-            form.appendChild(
-                error
-            );
-        
-            form.appendChild(
-                button
-            );
-        
-        
-            // ---------------------------------------------
-            // Put below final message
-            // ---------------------------------------------
-        
-            storyMessage.appendChild(
-                form
-            );
-        
-        
-            // ---------------------------------------------
-            // Animate form
-            // ---------------------------------------------
-        
-            requestAnimationFrame(
-                function () {
-        
-                    form.style.opacity =
-                        "1";
-        
-                    form.style.transform =
-                        "translateY(0)";
-        
-                }
-            );
-        
-        
-            // ---------------------------------------------
-            // Submit
-            // ---------------------------------------------
-        
-            button.addEventListener(
-                "click",
-                function () {
-        
-                    submitFinalContact(
-                        input,
-                        error,
-                        button,
-                        form
-                    );
-        
-                }
-            );
-        
-        
-            // ---------------------------------------------
-            // Enter
-            // ---------------------------------------------
-        
-            input.addEventListener(
-                "keydown",
-                function (event) {
-        
-                    if (
-                        event.key === "Enter"
-                    ) {
-        
-                        event.preventDefault();
-        
-                        submitFinalContact(
-                            input,
-                            error,
-                            button,
-                            form
-                        );
-        
-                    }
-        
-                }
-            );
-        
+
         }
 
+
         // =====================================================
-        // SUBMIT FINAL CONTACT
+        // نمایش فرم شماره
         // =====================================================
-        
-        function submitFinalContact(
-            input,
-            error,
-            button,
-            form
+
+        function showFinalContactForm() {
+
+            if (
+                !phoneForm ||
+                !phoneInput ||
+                !phoneSubmit
+            ) {
+
+                console.error(
+                    "FINAL CONTACT FORM ELEMENTS NOT FOUND"
+                );
+
+                return;
+
+            }
+
+
+            // -------------------------------------------------
+            // فرم از حالت hidden خارج شود
+            // -------------------------------------------------
+
+            phoneForm.classList.remove(
+                "hidden"
+            );
+
+
+            // -------------------------------------------------
+            // اطمینان از قابل کلیک بودن فرم
+            // -------------------------------------------------
+
+            phoneForm.style.pointerEvents =
+                "auto";
+
+            phoneForm.style.position =
+                "relative";
+
+            phoneForm.style.zIndex =
+                "100";
+
+
+            phoneInput.style.pointerEvents =
+                "auto";
+
+            phoneInput.style.position =
+                "relative";
+
+            phoneInput.style.zIndex =
+                "101";
+
+            phoneInput.disabled =
+                false;
+
+            phoneInput.readOnly =
+                false;
+
+
+            phoneSubmit.style.pointerEvents =
+                "auto";
+
+            phoneSubmit.style.position =
+                "relative";
+
+            phoneSubmit.style.zIndex =
+                "101";
+
+            phoneSubmit.disabled =
+                false;
+
+
+            // -------------------------------------------------
+            // فوکوس
+            // -------------------------------------------------
+
+            setTimeout(
+                function () {
+
+                    phoneInput.focus();
+
+                },
+                300
+            );
+
+
+            // -------------------------------------------------
+            // Event
+            // -------------------------------------------------
+
+            trackEvent(
+                "contact_form_shown"
+            );
+
+        }
+
+
+        // =====================================================
+        // تبدیل اعداد فارسی و عربی به انگلیسی
+        // =====================================================
+
+        function normalizePhoneDigits(
+            value
         ) {
-        
+
+            return value
+                .replace(
+                    /[۰-۹]/g,
+                    function (digit) {
+
+                        return String(
+                            digit.charCodeAt(0) -
+                            1776
+                        );
+
+                    }
+                )
+                .replace(
+                    /[٠-٩]/g,
+                    function (digit) {
+
+                        return String(
+                            digit.charCodeAt(0) -
+                            1632
+                        );
+
+                    }
+                );
+
+        }
+
+
+        // =====================================================
+        // فرمت شماره
+        // =====================================================
+
+        function normalizePhone(
+            value
+        ) {
+
             let phone =
-                input.value.trim();
-        
-        
-            // ---------------------------------------------
-            // Normalize Persian digits
-            // ---------------------------------------------
-        
+                normalizePhoneDigits(
+                    value
+                );
+
+
+            // حذف فاصله و خط تیره و پرانتز
             phone =
-                phone
-                    .replace(/۰/g, "0")
-                    .replace(/۱/g, "1")
-                    .replace(/۲/g, "2")
-                    .replace(/۳/g, "3")
-                    .replace(/۴/g, "4")
-                    .replace(/۵/g, "5")
-                    .replace(/۶/g, "6")
-                    .replace(/۷/g, "7")
-                    .replace(/۸/g, "8")
-                    .replace(/۹/g, "9");
-        
-        
-            // ---------------------------------------------
-            // Normalize +98
-            // ---------------------------------------------
-        
+                phone.replace(
+                    /[\s\-()]/g,
+                    ""
+                );
+
+
+            // -------------------------------------------------
+            // +98
+            // -------------------------------------------------
+
             if (
                 phone.startsWith("+98")
             ) {
-        
+
                 phone =
                     "0" +
                     phone.substring(3);
-        
+
             }
-        
+
+
+            // -------------------------------------------------
+            // 0098
+            // -------------------------------------------------
+
             else if (
                 phone.startsWith("0098")
             ) {
-        
+
                 phone =
                     "0" +
                     phone.substring(4);
-        
+
             }
-        
-        
-            // ---------------------------------------------
-            // Validate
-            // ---------------------------------------------
-        
+
+
+            return phone;
+
+        }
+
+
+        // =====================================================
+        // Submit Final Contact
+        // =====================================================
+
+        function submitFinalContact() {
+
+            if (
+                !phoneInput ||
+                !phoneSubmit ||
+                !phoneError
+            ) {
+
+                return;
+
+            }
+
+
+            let phone =
+                normalizePhone(
+                    phoneInput.value
+                );
+
+
+            // -------------------------------------------------
+            // نمایش شماره نرمال‌شده
+            // -------------------------------------------------
+
+            phoneInput.value =
+                phone;
+
+
+            // -------------------------------------------------
+            // Validation
+            // -------------------------------------------------
+
             if (
                 !/^09\d{9}$/.test(
                     phone
                 )
             ) {
-        
-                error.textContent =
+
+                phoneError.textContent =
                     "لطفاً یک شماره موبایل معتبر وارد کن.";
-        
+
+
+                phoneInput.focus();
+
                 return;
-        
+
             }
-        
-        
-            // ---------------------------------------------
-            // Loading state
-            // ---------------------------------------------
-        
-            button.disabled =
+
+
+            // -------------------------------------------------
+            // Loading
+            // -------------------------------------------------
+
+            phoneSubmit.disabled =
                 true;
-        
-            input.disabled =
+
+            phoneInput.disabled =
                 true;
-        
-            button.textContent =
+
+            phoneSubmit.textContent =
                 "در حال ثبت...";
-        
-            error.textContent =
+
+            phoneError.textContent =
                 "";
-        
-        
-            // ---------------------------------------------
-            // Send to backend
-            // ---------------------------------------------
-        
+
+
+            // -------------------------------------------------
+            // Backend
+            // -------------------------------------------------
+
             fetch(
                 "https://moon-page-production.up.railway.app/api/final-contact",
                 {
                     method: "POST",
-        
+
                     headers: {
                         "Content-Type":
                             "application/json"
                     },
-        
-                    body: JSON.stringify({
-        
-                        session_id:
-                            sessionId,
-        
-                        phone:
-                            phone
-        
-                    })
+
+                    body:
+                        JSON.stringify(
+                            {
+                                session_id:
+                                    sessionId,
+
+                                phone:
+                                    phone
+                            }
+                        )
                 }
             )
             .then(
                 function (response) {
-        
-                    return response.json()
+
+                    return response
+                        .json()
                         .then(
                             function (data) {
-        
+
                                 return {
                                     ok:
                                         response.ok,
-        
+
                                     data:
                                         data
                                 };
-        
+
                             }
                         );
-        
+
                 }
             )
             .then(
                 function (result) {
-        
+
                     if (
                         !result.ok ||
                         !result.data.success
                     ) {
-        
+
                         throw new Error(
                             result.data.message ||
                             "ثبت شماره انجام نشد."
                         );
-        
+
                     }
-        
-        
-                    // -----------------------------------------
+
+
+                    // -------------------------------------------------
                     // Event
-                    // -----------------------------------------
-        
+                    // -------------------------------------------------
+
                     trackEvent(
                         "contact_submitted",
                         {
@@ -2234,137 +2151,217 @@ document.addEventListener(
                                 phone
                         }
                     );
-        
-        
-                    // -----------------------------------------
+
+
+                    // -------------------------------------------------
                     // Success
-                    // -----------------------------------------
-        
-                    button.textContent =
+                    // -------------------------------------------------
+
+                    phoneSubmit.textContent =
                         "ثبت شد ✓";
-        
-        
-                    // -----------------------------------------
-                    // Form fade
-                    // -----------------------------------------
-        
-                    form.style.opacity =
+
+
+                    // -------------------------------------------------
+                    // Fade form
+                    // -------------------------------------------------
+
+                    phoneForm.style.transition =
+                        "opacity .8s ease, transform .8s ease";
+
+                    phoneForm.style.opacity =
                         "0";
-        
-                    form.style.transform =
+
+                    phoneForm.style.transform =
                         "translateY(-10px)";
-        
-        
-                    // -----------------------------------------
+
+
+                    // -------------------------------------------------
                     // Whole page fade
-                    // -----------------------------------------
-        
+                    // -------------------------------------------------
+
                     setTimeout(
                         function () {
-        
+
                             document.body.style.transition =
                                 "opacity 1.8s ease";
-        
+
                             document.body.style.opacity =
                                 "0";
-        
+
                         },
                         900
                     );
-        
-        
-                    // -----------------------------------------
+
+
+                    // -------------------------------------------------
                     // Final scene
-                    // -----------------------------------------
-        
+                    // -------------------------------------------------
+
                     setTimeout(
                         function () {
-        
+
                             const moon =
                                 document.querySelector(
                                     ".moon-glow"
                                 );
-        
+
                             const sky =
                                 document.querySelector(
                                     ".sky"
                                 );
-        
+
                             const stars =
                                 document.querySelectorAll(
                                     ".stars"
                                 );
-        
-        
+
+
                             if (moon) {
-        
+
                                 moon.classList.add(
                                     "final-glow"
                                 );
-        
+
                             }
-        
-        
+
+
                             if (sky) {
-        
+
                                 sky.classList.add(
                                     "final-sky"
                                 );
-        
+
                             }
-        
-        
+
+
                             stars.forEach(
                                 function (star) {
-        
+
                                     star.classList.add(
                                         "final-stars"
                                     );
-        
+
                                 }
                             );
-        
-        
+
+
                             trackEvent(
                                 "final_scene_started"
                             );
-        
+
                         },
                         1200
                     );
-        
+
                 }
             )
             .catch(
                 function (error) {
-        
+
                     console.error(
                         "FINAL CONTACT ERROR:",
                         error
                     );
-        
-        
-                    // -----------------------------------------
-                    // Restore form
-                    // -----------------------------------------
-        
-                    button.disabled =
+
+
+                    // -------------------------------------------------
+                    // Restore
+                    // -------------------------------------------------
+
+                    phoneSubmit.disabled =
                         false;
-        
-                    input.disabled =
+
+                    phoneInput.disabled =
                         false;
-        
-                    button.textContent =
-                        "تأیید";
-        
-        
-                    error.textContent =
+
+                    phoneSubmit.textContent =
+                        "تأیید 🌙";
+
+
+                    phoneError.textContent =
                         "ارسال انجام نشد؛ دوباره امتحان کن.";
-        
+
+
+                    phoneInput.focus();
+
                 }
             );
-        
+
         }
+
+
+        // =====================================================
+        // اتصال دکمه فرم شماره
+        // =====================================================
+
+        if (phoneSubmit) {
+
+            phoneSubmit.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    submitFinalContact();
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // ENTER داخل تکست‌باکس شماره
+        // =====================================================
+
+        if (phoneInput) {
+
+            phoneInput.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key === "Enter"
+                    ) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        submitFinalContact();
+
+                    }
+
+                }
+            );
+
+
+            // -------------------------------------------------
+            // فقط شماره
+            // -------------------------------------------------
+
+            phoneInput.addEventListener(
+                "input",
+                function () {
+
+                    const normalized =
+                        normalizePhoneDigits(
+                            phoneInput.value
+                        );
+
+
+                    // اجازه اعداد + کاراکترهای لازم
+                    phoneInput.value =
+                        normalized.replace(
+                            /[^0-9+]/g,
+                            ""
+                        );
+
+                }
+            );
+
+        }
+
 
         // =====================================================
         // FINAL ANSWER
