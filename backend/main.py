@@ -58,7 +58,7 @@ SMS_API_URL = "https://api.sms.ir/v1/send/bulk"
 # =====================================================
 
 # شماره تست یگانه
-YEGANEH_MOBILE = "9154956997"
+YEGANEH_MOBILE = "9158674760"
 
 # شماره خودت
 OWNER_MOBILE = "9028671965"
