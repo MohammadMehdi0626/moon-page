@@ -5,7 +5,8 @@
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-                // =====================================================
+
+        // =====================================================
         // PAGE OPEN SMS
         // =====================================================
 
@@ -18,57 +19,54 @@ document.addEventListener(
         .catch(
             function () {
 
-                // -------------------------------------------------
                 // SMS failure must never stop the experience.
-                // -------------------------------------------------
 
             }
         );
+
+
         // =====================================================
         // VPN NOTICE MODAL
         // =====================================================
-        
+
         const vpnModal =
             document.getElementById(
                 "vpnModal"
             );
-        
-        
+
         const vpnModalButton =
             document.getElementById(
                 "vpnModalButton"
             );
-        
-        
+
         if (
             vpnModal &&
             vpnModalButton
         ) {
-        
+
             vpnModalButton.addEventListener(
                 "click",
                 function () {
-        
+
                     vpnModal.classList.add(
                         "hide"
                     );
-        
-        
+
                     setTimeout(
                         function () {
-        
+
                             vpnModal.remove();
-        
+
                         },
                         600
                     );
-        
+
                 }
             );
-        
+
         }
-        
-        
+
+
         // =====================================================
         // SESSION
         // =====================================================
@@ -164,7 +162,6 @@ document.addEventListener(
                 data: data
             };
 
-
             const apiUrl =
                 "https://moon-page-production.up.railway.app/api/events";
 
@@ -202,9 +199,7 @@ document.addEventListener(
             .catch(
                 function () {
 
-                    // -------------------------------------------------
                     // Fallback: sendBeacon
-                    // -------------------------------------------------
 
                     try {
 
@@ -228,9 +223,7 @@ document.addEventListener(
                         );
 
                     }
-                    catch (
-                        error
-                    ) {
+                    catch (error) {
 
                         // Event tracking failure should
                         // never stop the main experience.
@@ -264,11 +257,9 @@ document.addEventListener(
 
                     event.preventDefault();
 
-
                     trackEvent(
                         "start_journey_click"
                     );
-
 
                     introContent.style.transition =
                         "opacity .8s ease, transform .8s ease";
@@ -945,10 +936,6 @@ document.addEventListener(
                     );
 
 
-                    // ---------------------------------------------
-                    // پیام گربه محو شود
-                    // ---------------------------------------------
-
                     if (catMessage) {
 
                         catMessage.classList.remove(
@@ -970,10 +957,6 @@ document.addEventListener(
                     }
 
 
-                    // ---------------------------------------------
-                    // واکنش نوازش
-                    // ---------------------------------------------
-
                     setTimeout(
                         function () {
 
@@ -991,10 +974,6 @@ document.addEventListener(
                                 "cat_happy"
                             );
 
-
-                            // -----------------------------------------
-                            // گربه شروع به خروج کند
-                            // -----------------------------------------
 
                             setTimeout(
                                 function () {
@@ -1166,61 +1145,53 @@ document.addEventListener(
             ...قرار نبود رسیدن به نور آسون باشه
             `,
 
-
             `
             اگه انیشتین برای رسیدن به هدفش دست از تلاش نمی‌کشید؛<br>
             ...زندگی همه‌مون تیره و تاریک بود<br>
             منم دنبال نورم؛<br>
-            🌙... ولی راستش من ماه رو می‌خوام 
+            🌙... ولی راستش من ماه رو می‌خوام
             `,
-
 
             `
-            می‌دونی سخت‌ ترین قسمت رسیدن به یه مقصد چیه؟ <br>
+            می‌دونی سخت‌ترین قسمت رسیدن به یه مقصد چیه؟ <br>
             `,
-
 
             `
-             ... اینکه ندونی آخرش قراره بهش برسی یا نه<br>
+            ... اینکه ندونی آخرش قراره بهش برسی یا نه<br>
             `,
-
 
             `
-             ... ولی یه چیز رو خوب می‌دونم<br>
+            ... ولی یه چیز رو خوب می‌دونم<br>
             `,
-
 
             `
             اگه چیزی واقعاً برات ارزش داشته باشه؛<br>
-             .ارزش تلاش کردن رو داره<br>
-           `,
+            .ارزش تلاش کردن رو داره<br>
+            `,
 
+            `
+            ... شاید هنوز ندونی چرا این همه راه رو برات ساختم<br>
+            `,
 
-           `
-           ... شاید هنوز ندونی چرا این همه راه رو برات ساختم<br>
-          `,
+            `
+            ...شاید حتی برات عجیب باشه که یکی برای یه نفر، این‌همه وقت و فکر گذاشته<br>
+            `,
 
+            `
+            ،اما بعضی آدم‌ها <br>
+            ،وقتی ارزششون رو بفهمی<br>
+            دیگه نمی‌تونی به سادگی از کنارشون رد بشی
+            `,
 
-          `
-          ...شاید حتی برات عجیب باشه که یکی برای یه نفر، این‌همه وقت و فکر گذاشته<br>
-         `,
-
-
-           `
-           ،اما بعضی آدم‌ها <br>
-           ،وقتی ارزششون رو بفهمی<br>
-           دیگه نمی تونی به سادگی از کنارشون رد بشی
-         `,
-
-
-         `
-         این همه راه رو باهم اومدیم <br>
-         فقط برای اینکه آخرش ازت یه چیز کوچیک بخوام <br>
-         میشه با هم صحبت کنیم؟<br>
-         <br> Talk with me ... 🌙
-         ... البته دو نفره <br>
-          🐈😂 ! بدون خانم گربه
-        `
+            `
+            این همه راه رو باهم اومدیم <br>
+            فقط برای اینکه آخرش ازت یه چیز کوچیک بخوام <br>
+            میشه با هم صحبت کنیم؟<br>
+            <br>
+            Talk with me ... 🌙
+            ... البته دو نفره <br>
+            🐈😂 ! بدون خانم گربه
+            `
 
         ];
 
@@ -1233,13 +1204,15 @@ document.addEventListener(
 
             yes: `
                 🌙 ماه <br><br>
-                ممنونم که تا اینجا باهام اومدی .  <br>
+
+                ممنونم که تا اینجا باهام اومدی . <br>
 
                 . راستش، خوشحالم که این قدم آخر رو باهام برداشتی <br>
 
                 ... از اینجا به بعد دیگه نیاز به این صفحه نیست <br>
 
-                خودم باهات ارتباط میگیرم <br>
+                خودم باهات ارتباط می‌گیرم <br>
+
                 ...پس منتظرم باش.<br><br>
 
                 : فعلاً فقط همین رو بدون که <br>
@@ -1501,351 +1474,180 @@ document.addEventListener(
         }
 
 
-       // =====================================================
+        // =====================================================
         // نمایش پیام نهایی
         // =====================================================
-        
+
         function showFinalMessage(
             choice
         ) {
-        
+
             // =================================================
-            // NO
+            // مخفی کردن دکمه‌ها
             // =================================================
-        
-            if (choice === "no") {
-        
-                // ---------------------------------------------
-                // دقیقاً رفتار قبلی
-                // ---------------------------------------------
-        
-                if (storyChoices) {
-        
-                    storyChoices.classList.remove(
-                        "show"
-                    );
-        
-                    setTimeout(
-                        function () {
-        
-                            storyChoices.classList.add(
-                                "hidden"
-                            );
-        
-                        },
-                        800
-                    );
-        
-                }
-        
-                if (storyMessage) {
-        
-                    storyMessage.classList.remove(
-                        "show"
-                    );
-        
-                }
-        
+
+            if (storyChoices) {
+
+                storyChoices.classList.remove(
+                    "show"
+                );
+
+
                 setTimeout(
                     function () {
-        
-                        if (
-                            !storyMessageText ||
-                            !storyMessage
-                        ) {
-        
-                            return;
-        
-                        }
-        
-                        storyMessageText.innerHTML =
-                            finalMessages[choice];
-        
-                        storyMessage.classList.remove(
+
+                        storyChoices.classList.add(
                             "hidden"
                         );
-        
-                        requestAnimationFrame(
-                            function () {
-        
-                                storyMessage.classList.add(
-                                    "show"
-                                );
-        
-                            }
-                        );
-        
-                        trackEvent(
-                            "final_message_shown",
-                            {
-                                choice:
-                                    choice
-                            }
-                        );
-        
+
                     },
-                    1000
+                    800
                 );
-        
-                setTimeout(
-                    function () {
-        
-                        if (storyMessage) {
-        
-                            storyMessage.classList.remove(
+
+            }
+
+
+            // =================================================
+            // محو کردن پیام قبلی
+            // =================================================
+
+            if (storyMessage) {
+
+                storyMessage.classList.remove(
+                    "show"
+                );
+
+            }
+
+
+            // =================================================
+            // نمایش پیام نهایی
+            // =================================================
+
+            setTimeout(
+                function () {
+
+                    if (
+                        !storyMessageText ||
+                        !storyMessage
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    storyMessageText.innerHTML =
+                        finalMessages[choice];
+
+
+                    storyMessage.classList.remove(
+                        "hidden"
+                    );
+
+
+                    requestAnimationFrame(
+                        function () {
+
+                            storyMessage.classList.add(
                                 "show"
                             );
-        
+
                         }
-        
-                        setTimeout(
-                            function () {
-        
-                                const moon =
-                                    document.querySelector(
-                                        ".moon-glow"
-                                    );
-        
-                                const sky =
-                                    document.querySelector(
-                                        ".sky"
-                                    );
-        
-                                const stars =
-                                    document.querySelectorAll(
-                                        ".stars"
-                                    );
-        
-                                if (moon) {
-        
-                                    moon.classList.add(
-                                        "final-glow"
-                                    );
-        
-                                }
-        
-                                if (sky) {
-        
-                                    sky.classList.add(
-                                        "final-sky"
-                                    );
-        
-                                }
-        
-                                stars.forEach(
-                                    function (star) {
-        
-                                        star.classList.add(
-                                            "final-stars"
-                                        );
-        
-                                    }
-                                );
-        
-                            },
-                            1200
-                        );
-        
-                        trackEvent(
-                            "final_scene_started"
-                        );
-        
-                    },
-                    10000
-                );
-        
-                setTimeout(
-                    function () {
-        
-                        const moon =
-                            document.querySelector(
-                                ".moon-glow"
-                            );
-        
-                        if (moon) {
-        
-                            moon.classList.add(
-                                "final-glow"
-                            );
-        
-                        }
-        
-                    },
-                    13000
-                );
-        
-                return;
-            }
-        
-        
-            // =================================================
-            // YES
-            // =================================================
-        
-            if (choice === "yes") {
-        
-                // ---------------------------------------------
-                // دکمه‌های انتخاب حذف شوند
-                // ---------------------------------------------
-        
-                if (storyChoices) {
-        
-                    storyChoices.classList.remove(
-                        "show"
                     );
-        
+
+
+                    trackEvent(
+                        "final_message_shown",
+                        {
+                            choice:
+                                choice
+                        }
+                    );
+
+                },
+                1000
+            );
+
+
+            // =================================================
+            // شروع صحنه نهایی
+            // =================================================
+
+            setTimeout(
+                function () {
+
+                    if (storyMessage) {
+
+                        storyMessage.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+
                     setTimeout(
                         function () {
-        
-                            storyChoices.classList.add(
-                                "hidden"
+
+                            const moon =
+                                document.querySelector(
+                                    ".moon-glow"
+                                );
+
+                            const sky =
+                                document.querySelector(
+                                    ".sky"
+                                );
+
+                            const stars =
+                                document.querySelectorAll(
+                                    ".stars"
+                                );
+
+
+                            if (moon) {
+
+                                moon.classList.add(
+                                    "final-glow"
+                                );
+
+                            }
+
+
+                            if (sky) {
+
+                                sky.classList.add(
+                                    "final-sky"
+                                );
+
+                            }
+
+
+                            stars.forEach(
+                                function (star) {
+
+                                    star.classList.add(
+                                        "final-stars"
+                                    );
+
+                                }
                             );
-        
+
                         },
-                        800
+                        1200
                     );
-        
-                }
 
 
-        // ---------------------------------------------
-        // پیام قبلی محو شود
-        // ---------------------------------------------
+                    trackEvent(
+                        "final_scene_started"
+                    );
 
-        if (storyMessage) {
-
-            storyMessage.classList.remove(
-                "show"
+                },
+                10000
             );
 
         }
 
-
-        // ---------------------------------------------
-        // نمایش پیام YES
-        // ---------------------------------------------
-        
-        setTimeout(
-            function () {
-        
-                if (
-                    !storyMessageText ||
-                    !storyMessage
-                ) {
-        
-                    return;
-        
-                }
-        
-                storyMessageText.innerHTML =
-                    finalMessages[choice];
-        
-                storyMessage.classList.remove(
-                    "hidden"
-                );
-        
-                requestAnimationFrame(
-                    function () {
-        
-                        storyMessage.classList.add(
-                            "show"
-                        );
-        
-                    }
-                );
-        
-        
-                trackEvent(
-                    "final_message_shown",
-                    {
-                        choice:
-                            choice
-                    }
-                );
-        
-            },
-            1000
-        );
-        
-        
-        // ---------------------------------------------
-        // پیام نهایی بعد از 10 ثانیه محو شود
-        // ---------------------------------------------
-        
-        setTimeout(
-            function () {
-        
-                if (storyMessage) {
-        
-                    storyMessage.classList.remove(
-                        "show"
-                    );
-        
-                }
-        
-        
-                setTimeout(
-                    function () {
-        
-                        const moon =
-                            document.querySelector(
-                                ".moon-glow"
-                            );
-        
-                        const sky =
-                            document.querySelector(
-                                ".sky"
-                            );
-        
-                        const stars =
-                            document.querySelectorAll(
-                                ".stars"
-                            );
-        
-        
-                        if (moon) {
-        
-                            moon.classList.add(
-                                "final-glow"
-                            );
-        
-                        }
-        
-        
-                        if (sky) {
-        
-                            sky.classList.add(
-                                "final-sky"
-                            );
-        
-                        }
-        
-        
-                        stars.forEach(
-                            function (star) {
-        
-                                star.classList.add(
-                                    "final-stars"
-                                );
-        
-                            }
-                        );
-        
-        
-                    },
-                    1200
-                );
-        
-        
-                trackEvent(
-                    "final_scene_started"
-                );
-        
-            },
-            10000
-        );
-
-        
 
         // =====================================================
         // FINAL ANSWER
