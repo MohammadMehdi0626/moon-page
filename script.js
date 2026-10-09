@@ -397,7 +397,7 @@ document.addEventListener(
             }
 
 
-            if (keyword === "پرنیان") {
+            if (keyword === "رمز عبور") {
 
                 keywordError.textContent =
                     "";
