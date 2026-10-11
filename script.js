@@ -397,7 +397,7 @@ document.addEventListener(
             }
 
 
-            if (keyword === "رمز عبور") {
+            if (keyword === "پارک پرنس") {
 
                 keywordError.textContent =
                     "";
